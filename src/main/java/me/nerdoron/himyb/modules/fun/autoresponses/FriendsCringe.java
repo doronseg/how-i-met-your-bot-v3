@@ -1,4 +1,4 @@
-package me.nerdoron.himyb.modules.fun;
+package me.nerdoron.himyb.modules.fun.autoresponses;
 
 import groovyjarjarantlr4.v4.runtime.misc.NotNull;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

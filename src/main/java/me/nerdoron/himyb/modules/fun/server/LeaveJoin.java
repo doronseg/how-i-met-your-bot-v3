@@ -1,4 +1,4 @@
-package me.nerdoron.himyb.modules.fun;
+package me.nerdoron.himyb.modules.fun.server;
 
 
 import net.dv8tion.jda.api.entities.Guild;
