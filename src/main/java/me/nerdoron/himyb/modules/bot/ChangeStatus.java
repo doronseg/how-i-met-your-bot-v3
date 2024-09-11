@@ -7,15 +7,17 @@ import java.util.TimerTask;
 import me.nerdoron.himyb.Global;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
+import org.slf4j.Logger;
 
 public class ChangeStatus {
+    private static final Logger logger = Global.logger(ChangeStatus.class);
 
     public static void changeActivity(JDA jda) {
         String[] statuses = {
                 "Whenever I’m sad, I stop being sad and be awesome instead.",
                 "Hey bro, I don’t know what you’re eating cause I don’t have any eyes but it’s basically awesome",
                 "A lie is just a great story that someone ruined with the truth.",
-                "I’m no VIP; I’m not even an IP, I’m just a lonely little P sitting out here in the gutter.| /help",
+                "I’m no VIP; I’m not even an IP, I’m just a lonely little P sitting out here in the gutter.",
                 "I finally found the one, Marshall. Her name is Bacon.",
                 "Your package has always been big enough.",
                 "The only reason to wait a month for sex is if she’s 17 years, 11 months old.",
@@ -71,6 +73,7 @@ public class ChangeStatus {
 
         Random random = new Random();
         String status = statuses[random.nextInt(statuses.length)];
+        logger.info("Changed status to {}", status);
         jda.getPresence().setActivity(Activity.playing(status));
     }
 
