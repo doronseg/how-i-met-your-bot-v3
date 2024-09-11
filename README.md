@@ -9,7 +9,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 ### Initializing Local Project
 To initialize, just clone the repository, In the main folder, which would be named how i met your discord if you cloned it, you need to create 2 files, `db.db`, and `.env`, you will also need the mp4 file, in order for the automatic reply feature to work.
 
-You will also need to create your own bot, on thee [Discord Developer Portal](https://discord.com/developers), and copy the token.
+You will also need to create your own bot, on the [Discord Developer Portal](https://discord.com/developers), and copy the token.
 
 ### .env file
 ```

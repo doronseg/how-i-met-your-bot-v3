@@ -20,13 +20,14 @@ public class Database {
             Class.forName("org.sqlite.JDBC");
             assert false;
             con = DriverManager.getConnection((dotenv.get("DB")));
+            return con;
         } catch (ClassNotFoundException ex) {
             logger.error("An exception (ClassNotFound) occurred while trying to connect to the database!", ex);
         } catch (SQLException ex) {
             logger.error("An exception occurred (SQLException) while trying to connect to the database!", ex);
         }
-
-        return con;
+        logger.error("Could not connect to DB due to an unknown error.");
+        return null;
     }
 
 }

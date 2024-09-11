@@ -3,13 +3,15 @@ package me.nerdoron.himyb.modules.bot;
 import java.util.ArrayList;
 
 import me.nerdoron.himyb.Global;
+import me.nerdoron.himyb.commands.useful.PingCommand;
+import me.nerdoron.himyb.commands.useful.UpTimeCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 
 public class BotCommandsHandler extends ListenerAdapter {
-    public ArrayList<SlashCommand> commands = new ArrayList<>();
+    public final ArrayList<SlashCommand> commands = new ArrayList<>();
 
     public BotCommandsHandler() {
         Global.COMMANDS_HANDLER = this;

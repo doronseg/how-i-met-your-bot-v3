@@ -1,14 +1,11 @@
 package me.nerdoron.himyb;
 
-import java.sql.SQLException;
-import java.util.Arrays;
 
 import me.nerdoron.himyb.modules.bot.ChangeStatus;
 import me.nerdoron.himyb.modules.bot.Database;
 import me.nerdoron.himyb.modules.bot.RegisterEvents;
 import org.slf4j.Logger;
 
-import io.github.cdimascio.dotenv.DotEnvException;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -21,14 +18,10 @@ public class Main {
         String version = "3.0.0 - September 2024";
         logger.info("Hello! You're running {}", version);
         logger.info("Starting stage 1 - setting up environment");
-        try {
-            setupEnv();
-        } catch (DotEnvException ex) {
-            logger.error("Exception occurred whilst trying to setup env file!\n", ex);
-        }
+        setupEnv();
     }
 
-    private static void setupEnv() throws DotEnvException {
+    private static void setupEnv() {
         Dotenv dotenv = Dotenv.load();
         Global.dotenvg = dotenv;
         logger.info("Stage 1 complete!");
@@ -51,15 +44,7 @@ public class Main {
         logger.info("Stage 2 complete!");
         RegisterEvents.registerEvents(jda);
         logger.info("Attempting to establish database connection...");
-        try {
-            tryDb();
-        } catch (ClassNotFoundException ex) {
-            logger.error("An exception (ClassNotFound) occurred while trying to establish connection to the database!",
-                    ex);
-        } catch (SQLException ex) {
-            logger.error("An exception occurred (SQLException) while trying to establish connection to the database!",
-                    ex);
-        }
+        tryDb();
 
         // initial status change
         ChangeStatus.changeActivity(jda);
@@ -68,7 +53,7 @@ public class Main {
         ChangeStatus.activityTimer(jda);
     }
 
-    private static void tryDb() throws ClassNotFoundException, SQLException {
+    private static void tryDb() {
         Database.connect();
         logger.info("Database connection established!");
     }

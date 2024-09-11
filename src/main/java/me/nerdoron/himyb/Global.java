@@ -11,16 +11,15 @@ import org.slf4j.LoggerFactory;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.entities.emoji.CustomEmoji;
-
 import static net.dv8tion.jda.api.entities.emoji.Emoji.fromCustom;
 
 public class Global {
     // global definitions
-    //public static CustomEmoji broCoin = fromCustom("brocoin", 997162208180064276L, false);
-    public static Color embedColor = Color.decode("#2f3136");
+    public static CustomEmoji broCoin = fromCustom("brocoin", 997162208180064276L, false);
+    public static final Color embedColor = Color.decode("#2f3136");
     public static BotCommandsHandler COMMANDS_HANDLER;
-    public static String footertext = "how i met your bot | developed by Doron & Goseale";
-    public static String footerpfp = "https://media.discordapp.net/attachments/850432082738937896/901742492347691028/discord_bot_pfp.jpg";
+    public static final String footertext = "how i met your bot | developed by Doron & Goseale";
+    public static final String footerpfp = "https://media.discordapp.net/attachments/850432082738937896/901742492347691028/discord_bot_pfp.jpg";
     public static Dotenv dotenvg;
 
     // times
