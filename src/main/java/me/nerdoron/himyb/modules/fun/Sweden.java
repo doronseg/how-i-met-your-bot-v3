@@ -17,7 +17,7 @@ public class Sweden extends ListenerAdapter {
             if (event.getChannel().getId().equals("850628227835363358")
                     || (event.getChannel().getId().equals("850625575856504852")))
                 return;
-            FileUpload file = FileUpload.fromData(new File("sweden.mp4"));
+            FileUpload file = FileUpload.fromData(new File("videos/sweden.mp4"));
             event.getChannel().sendMessage("🇸🇪").addFiles(file).queue();
         }
     }
