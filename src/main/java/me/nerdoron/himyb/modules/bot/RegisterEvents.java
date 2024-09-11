@@ -3,6 +3,8 @@ package me.nerdoron.himyb.modules.bot;
 import me.nerdoron.himyb.modules.fun.FriendsCringe;
 import me.nerdoron.himyb.modules.fun.LeaveJoin;
 import me.nerdoron.himyb.modules.fun.Sweden;
+import me.nerdoron.himyb.modules.fun.counting.CountingChannelHandler;
+import me.nerdoron.himyb.modules.fun.counting.CountingEditing;
 import net.dv8tion.jda.api.JDA;
 
 public class RegisterEvents {
@@ -14,10 +16,14 @@ public class RegisterEvents {
 
         // tickets
 
-        // events
+        //fun
         jda.addEventListener(new FriendsCringe());
         jda.addEventListener(new Sweden());
         jda.addEventListener(new LeaveJoin());
+
+        // counting
+        jda.addEventListener(new CountingChannelHandler());
+        jda.addEventListener(new CountingEditing());
     }
 
 }
