@@ -1,7 +1,7 @@
 package me.nerdoron.himyb.modules.bot;
 
 import me.nerdoron.himyb.Global;
-import me.nerdoron.himyb.commands.fun.ReviveCommand;
+import me.nerdoron.himyb.commands.staff.ReviveCommand;
 import me.nerdoron.himyb.commands.useful.ContributeCommand;
 import me.nerdoron.himyb.commands.useful.HelpCommand;
 import me.nerdoron.himyb.commands.useful.PingCommand;
