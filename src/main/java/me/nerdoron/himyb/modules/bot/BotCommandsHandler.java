@@ -15,7 +15,7 @@ import org.slf4j.Logger;
 import java.util.ArrayList;
 
 public class BotCommandsHandler extends ListenerAdapter {
-    private static final Logger logger = Global.logger(BotCommandsHandler.class);
+    private static final Logger logger = LoggingHandler.logger(BotCommandsHandler.class);
     public ArrayList<SlashCommand> commands = new ArrayList<>();
 
 

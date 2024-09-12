@@ -4,6 +4,7 @@ package me.nerdoron.himyb;
 import io.github.cdimascio.dotenv.Dotenv;
 import me.nerdoron.himyb.modules.bot.ChangeStatus;
 import me.nerdoron.himyb.modules.bot.Database;
+import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.bot.RegisterEvents;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -11,7 +12,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.slf4j.Logger;
 
 public class Main {
-    private static final Logger logger = Global.logger(Main.class);
+    private static final Logger logger = LoggingHandler.logger(Main.class);
 
     public static void main(String[] args) {
         logger.info("Hello! You're running {}", Global.botVersion);

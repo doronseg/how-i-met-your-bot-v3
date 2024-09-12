@@ -1,16 +1,16 @@
 package me.nerdoron.himyb.modules.bot;
 
-import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import me.nerdoron.himyb.Global;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Activity;
 import org.slf4j.Logger;
 
+import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class ChangeStatus {
-    private static final Logger logger = Global.logger(ChangeStatus.class);
+    private static final Logger logger = LoggingHandler.logger(ChangeStatus.class);
 
     public static void changeActivity(JDA jda) {
         String[] statuses = {

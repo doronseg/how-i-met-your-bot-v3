@@ -1,14 +1,12 @@
 package me.nerdoron.himyb.modules.bot;
 
-import me.nerdoron.himyb.Global;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
-
 public abstract class SlashCommand {
-    private static final Logger logger = Global.logger(SlashCommand.class);
+    private static final Logger logger = LoggingHandler.logger(SlashCommand.class);
 
     public void executeGlobal(SlashCommandInteractionEvent event) {
         try {

@@ -3,12 +3,8 @@ package me.nerdoron.himyb;
 import io.github.cdimascio.dotenv.Dotenv;
 import me.nerdoron.himyb.modules.bot.BotCommandsHandler;
 import net.dv8tion.jda.api.entities.emoji.CustomEmoji;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.awt.*;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 import static net.dv8tion.jda.api.entities.emoji.Emoji.fromCustom;
@@ -40,37 +36,5 @@ public class Global {
         return r.nextInt(high - min) + min;
     }
 
-    // get time format
-    public static String getTimeStamp() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return now.format(formatter);
-
-    }
-
-    // logging handler
-    public static String className(Class<?> clazz) {
-
-        if (clazz.getName().contains("commands")) {
-            String[] dots = clazz.getName().split("\\.");
-            return getTimeStamp() + " COMMAND > " + dots[dots.length - 1];
-        }
-        if (clazz.getName().contains("modules.bot")) {
-            String[] dots = clazz.getName().split("\\.");
-            return getTimeStamp() + " CORE > " + dots[dots.length - 1];
-        }
-
-        if (clazz.getName().contains("Main")) {
-            String[] dots = clazz.getName().split("\\.");
-            return getTimeStamp() + " HIMYB > " + dots[dots.length - 1];
-        }
-
-        return clazz.getName();
-    }
-
-    // logger
-    public static Logger logger(Class<?> clazz) {
-        return LoggerFactory.getLogger(className(clazz));
-    }
 
 }
