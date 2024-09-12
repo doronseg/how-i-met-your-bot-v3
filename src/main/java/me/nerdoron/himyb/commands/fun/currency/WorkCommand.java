@@ -53,7 +53,10 @@ public class WorkCommand extends SlashCommand {
             logger.info("{} won {} while working.", member.getEffectiveName(), reward);
             event.replyEmbeds(workEmbed(reward)).queue();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            assert member != null;
+            logger.error("{} Tried to work, but an error has occurred.", member.getEffectiveName());
+            e.printStackTrace();
+            event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
         }
     }
 
