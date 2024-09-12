@@ -31,25 +31,10 @@ As of right now, we have 1 SQLITE databases, if you want to contribute and make 
 make sure to create an issue first.
 
 ```
-#Birthday System Table
-CREATE TABLE "birthday" (
-	"uid"	TEXT UNIQUE,
-	"day"	INTEGER,
-	"month"	INTEGER
-);
-#Timezone System Table
-CREATE TABLE "timezones" (
-	"uid"	TEXT UNIQUE,
-	"timezone"	TEXT
-);
-#Cooldown System Table
-CREATE TABLE "cooldowns" (
-	"uid"	TEXT,
-	"cooldowns"	TEXT
-);
-CREATE TABLE "brocoins" (
-	"uid"	TEXT UNIQUE,
-	"amount"	INTEGER
+CREATE TABLE "" (
+	"uid"	TEXT NOT NULL UNIQUE,
+	"amount"	INTEGER,
+	PRIMARY KEY("uid")
 );
 
 ```
