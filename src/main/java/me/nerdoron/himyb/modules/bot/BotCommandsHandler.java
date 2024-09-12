@@ -1,6 +1,7 @@
 package me.nerdoron.himyb.modules.bot;
 
 import me.nerdoron.himyb.Global;
+import me.nerdoron.himyb.commands.currency.BalanceCommand;
 import me.nerdoron.himyb.commands.fun.EightBallCommand;
 import me.nerdoron.himyb.commands.fun.currency.WorkCommand;
 import me.nerdoron.himyb.commands.staff.ReviveCommand;
@@ -37,6 +38,7 @@ public class BotCommandsHandler extends ListenerAdapter {
 
         // currency
         commands.add(new WorkCommand());
+        commands.add(new BalanceCommand());
 
     }
 

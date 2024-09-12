@@ -83,7 +83,7 @@ public class BroCoinsSQL {
         int brocoins;
         try {
             assert con != null;
-            String SQL = "select cash FROM brocoins WHERE uid=?";
+            String SQL = "select bank FROM brocoins WHERE uid=?";
             PreparedStatement ps = con.prepareStatement(SQL);
             ps.setString(1, member.getId());
             ResultSet rs = ps.executeQuery();
