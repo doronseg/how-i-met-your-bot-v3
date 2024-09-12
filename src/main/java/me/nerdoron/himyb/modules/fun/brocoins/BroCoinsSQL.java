@@ -38,7 +38,7 @@ public class BroCoinsSQL {
         return false;
     }
 
-    public boolean hasBrocoins(Member member) {
+    public boolean hasBroBank(Member member) {
         String SQL = "SELECT uid FROM brocoins WHERE UID=?";
         try {
             assert con != null;
@@ -59,7 +59,7 @@ public class BroCoinsSQL {
     }
 
     public int getBrocoins(Member member) {
-        if (!hasBrocoins(member))
+        if (!hasBroBank(member))
             return 0;
         int brocoins;
         try {
@@ -100,7 +100,7 @@ public class BroCoinsSQL {
     }
 
     public void setBrocoins(Member member, int newAmount) throws SQLException {
-        if (hasBrocoins(member)) {
+        if (hasBroBank(member)) {
             assert con != null;
             String SQL = "UPDATE brocoins SET amount = ? WHERE uid = ?";
             PreparedStatement ps = con.prepareStatement(SQL);
