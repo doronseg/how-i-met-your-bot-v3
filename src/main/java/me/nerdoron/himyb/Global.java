@@ -27,9 +27,9 @@ public class Global {
     public static final int HOUR_IN_MS = MIN_IN_MS * 60;
     // global definitions
     public static final CustomEmoji broCoin = fromCustom("brocoin", 997162208180064276L, false);
-    public static final BotCommandsHandler COMMANDS_HANDLER = new BotCommandsHandler();
     public static final CooldownManager COOLDOWN_MANAGER = new CooldownManager();
     //public static final JailHandler JAIL_CHECKER = new JailHandler();
     public static final BroCoinsSQL BROCOINS_SQL = new BroCoinsSQL();
+    public static BotCommandsHandler COMMANDS_HANDLER = new BotCommandsHandler();
     public static Dotenv dotenvg;
 }
