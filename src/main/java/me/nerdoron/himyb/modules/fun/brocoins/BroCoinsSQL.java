@@ -1,6 +1,5 @@
 package me.nerdoron.himyb.modules.fun.brocoins;
 
-import me.nerdoron.himyb.modules.bot.ChangeStatus;
 import me.nerdoron.himyb.modules.bot.Database;
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import net.dv8tion.jda.api.entities.Member;
@@ -14,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BroCoinsSQL {
-    private static final Logger logger = LoggingHandler.logger(ChangeStatus.class);
+    private static final Logger logger = LoggingHandler.logger(BroCoinsSQL.class);
     private static final Connection con = Database.connect();
     private static PreparedStatement ps;
 
@@ -38,7 +37,7 @@ public class BroCoinsSQL {
         return false;
     }
 
-    public boolean hasBroBank(Member member) {
+    public boolean hasAccount(Member member) {
         String SQL = "SELECT uid FROM brocoins WHERE UID=?";
         try {
             assert con != null;
@@ -58,27 +57,47 @@ public class BroCoinsSQL {
         return false;
     }
 
-    public int getBrocoins(Member member) {
-        if (!hasBroBank(member))
+    public int getBroCash(Member member) {
+        if (!hasAccount(member))
             return 0;
         int brocoins;
         try {
             assert con != null;
-            String SQL = "select amount FROM brocoins WHERE uid=?";
+            String SQL = "select cash FROM brocoins WHERE uid=?";
             PreparedStatement ps = con.prepareStatement(SQL);
             ps.setString(1, member.getId());
             ResultSet rs = ps.executeQuery();
             brocoins = rs.getInt(1);
             ps.close();
         } catch (SQLException e) {
-            logger.error("Error while attempting to retrieve {}'s brocoins from the DB ", member.getEffectiveName());
+            logger.error("Error while attempting to retrieve {}'s cash balance from the DB ", member.getEffectiveName());
             e.printStackTrace();
             return 0;
         }
         return brocoins;
     }
 
-    public Map<String, Integer> getBrocoins() {
+    public int getBroBank(Member member) {
+        if (!hasAccount(member))
+            return 0;
+        int brocoins;
+        try {
+            assert con != null;
+            String SQL = "select cash FROM brocoins WHERE uid=?";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, member.getId());
+            ResultSet rs = ps.executeQuery();
+            brocoins = rs.getInt(1);
+            ps.close();
+        } catch (SQLException e) {
+            logger.error("Error while attempting to retrieve {}'s bank balance from the DB ", member.getEffectiveName());
+            e.printStackTrace();
+            return 0;
+        }
+        return brocoins;
+    }
+
+    public Map<String, Integer> getBroCash() {
         Map<String, Integer> result = new HashMap<>();
         try {
             assert con != null;
@@ -99,17 +118,17 @@ public class BroCoinsSQL {
         return result;
     }
 
-    public void setBrocoins(Member member, int newAmount) throws SQLException {
-        if (hasBroBank(member)) {
+    public void setBank(Member member, int newAmount) throws SQLException {
+        if (hasAccount(member)) {
             assert con != null;
-            String SQL = "UPDATE brocoins SET amount = ? WHERE uid = ?";
+            String SQL = "UPDATE brocoins SET bank = ? WHERE uid = ?";
             PreparedStatement ps = con.prepareStatement(SQL);
             ps.setInt(1, newAmount);
             ps.setString(2, member.getId());
             ps.execute();
             ps.close();
         } else {
-            String SQL = "INSERT into brocoins (UID, AMOUNT) values(?,?)";
+            String SQL = "INSERT into brocoins (uid, cash, bank) values(?,0,?)";
             assert con != null;
             PreparedStatement ps = con.prepareStatement(SQL);
             ps.setString(1, member.getId());
@@ -119,9 +138,35 @@ public class BroCoinsSQL {
         }
     }
 
-    public void updateBrocoins(Member member, int amountToChange) throws SQLException {
-        int memberCoins = this.getBrocoins(member);
+    public void updateBank(Member member, int amountToChange) throws SQLException {
+        int memberCoins = this.getBroBank(member);
         memberCoins += amountToChange;
-        setBrocoins(member, memberCoins);
+        setBank(member, memberCoins);
+    }
+
+    public void setCash(Member member, int newAmount) throws SQLException {
+        if (hasAccount(member)) {
+            assert con != null;
+            String SQL = "UPDATE brocoins SET cash = ? WHERE uid = ?";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setInt(1, newAmount);
+            ps.setString(2, member.getId());
+            ps.execute();
+            ps.close();
+        } else {
+            String SQL = "INSERT into brocoins (uid, cash, bank) values(?,?,0)";
+            assert con != null;
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, member.getId());
+            ps.setInt(2, newAmount);
+            ps.execute();
+            ps.close();
+        }
+    }
+
+    public void updateCash(Member member, int amountToChange) throws SQLException {
+        int memberCoins = this.getBroCash(member);
+        memberCoins += amountToChange;
+        setCash(member, memberCoins);
     }
 }

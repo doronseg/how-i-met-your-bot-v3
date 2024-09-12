@@ -2,6 +2,9 @@ package me.nerdoron.himyb;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import me.nerdoron.himyb.modules.bot.BotCommandsHandler;
+import me.nerdoron.himyb.modules.bot.CooldownManager;
+import me.nerdoron.himyb.modules.fun.brocoins.BroCoinsSQL;
+import me.nerdoron.himyb.modules.fun.brocoins.JailHandler;
 import net.dv8tion.jda.api.entities.emoji.CustomEmoji;
 
 import java.awt.*;
@@ -25,6 +28,9 @@ public class Global {
     public static final int HOUR_IN_MS = MIN_IN_MS * 60;
     // global definitions
     public static CustomEmoji broCoin = fromCustom("brocoin", 997162208180064276L, false);
-    public static BotCommandsHandler COMMANDS_HANDLER;
+    public static BotCommandsHandler COMMANDS_HANDLER = new BotCommandsHandler();
+    public static CooldownManager COOLDOWN_MANAGER = new CooldownManager();
     public static Dotenv dotenvg;
+    public static JailHandler JAIL_CHECKER = new JailHandler();
+    public static BroCoinsSQL BROCOINS_SQL = new BroCoinsSQL();
 }

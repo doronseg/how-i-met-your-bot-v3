@@ -1,5 +1,6 @@
 package me.nerdoron.himyb.modules.bot;
 
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 import java.sql.Connection;
@@ -26,6 +27,10 @@ public class CooldownManager {
         return "@" + event.getUser().getId() + event.getName() + "@";
     }
 
+    public static String jailID(Member member) {
+        return "@" + member.getId() + "jail@";
+    }
+
     private static OffsetDateTime parseTimestringToOffset(String timestamp) {
         java.time.format.DateTimeFormatter parser = java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
         java.time.LocalDateTime dt = java.time.LocalDateTime.parse(timestamp, parser);
@@ -47,6 +52,10 @@ public class CooldownManager {
         OffsetDateTime now = OffsetDateTime.now();
         OffsetDateTime plus = now.plusSeconds(timeInSeconds);
         DB_addNewEntry(identifier + " #" + tag, plus);
+    }
+
+    public void deleteCooldown(String identifier) {
+        DB_removeEntry(identifier);
     }
 
     public boolean hasCooldown(String identifier) {

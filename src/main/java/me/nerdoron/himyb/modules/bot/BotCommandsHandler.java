@@ -1,6 +1,8 @@
 package me.nerdoron.himyb.modules.bot;
 
 import me.nerdoron.himyb.Global;
+import me.nerdoron.himyb.commands.fun.EightBallCommand;
+import me.nerdoron.himyb.commands.fun.currency.WorkCommand;
 import me.nerdoron.himyb.commands.staff.ReviveCommand;
 import me.nerdoron.himyb.commands.useful.ContributeCommand;
 import me.nerdoron.himyb.commands.useful.HelpCommand;
@@ -21,11 +23,21 @@ public class BotCommandsHandler extends ListenerAdapter {
 
     public BotCommandsHandler() {
         Global.COMMANDS_HANDLER = this;
+        //useful
         commands.add(new PingCommand());
         commands.add(new UpTimeCommand());
-        commands.add(new ReviveCommand());
         commands.add(new ContributeCommand());
         commands.add(new HelpCommand(this));
+
+        //staff
+        commands.add(new ReviveCommand());
+
+        //fun
+        commands.add(new EightBallCommand());
+
+        // currency
+        commands.add(new WorkCommand());
+
     }
 
     public void updateCommandsOnDiscord(JDA jda) {

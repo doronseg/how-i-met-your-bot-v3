@@ -24,7 +24,10 @@ public class LoggingHandler {
             String[] dots = clazz.getName().split("\\.");
             return getTimeStamp() + " CORE > " + dots[dots.length - 1];
         }
-
+        if (clazz.getName().contains("modules.fun.brocoins")) {
+            String[] dots = clazz.getName().split("\\.");
+            return getTimeStamp() + " BROCOINS > " + dots[dots.length - 1];
+        }
         if (clazz.getName().contains("Main")) {
             String[] dots = clazz.getName().split("\\.");
             return getTimeStamp() + " HIMYB > " + dots[dots.length - 1];
