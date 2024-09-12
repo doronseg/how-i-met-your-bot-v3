@@ -7,17 +7,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import static java.util.Objects.requireNonNull;
+
 public class Database {
     private static final Logger logger = LoggingHandler.logger(Database.class);
 
     public static Connection connect() {
-        Connection con = null;
+        Connection con;
         Dotenv dotenv = Dotenv.load();
 
         try {
             Class.forName("org.sqlite.JDBC");
-            assert false;
-            con = DriverManager.getConnection((dotenv.get("DB")));
+            con = DriverManager.getConnection(requireNonNull(dotenv.get("DB")));
             return con;
         } catch (ClassNotFoundException ex) {
             logger.error("An exception (ClassNotFound) occurred while trying to connect to the database!", ex);
