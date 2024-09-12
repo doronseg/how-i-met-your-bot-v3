@@ -18,41 +18,40 @@ import java.util.Objects;
 import static me.nerdoron.himyb.Global.BROCOINS_SQL;
 import static me.nerdoron.himyb.Global.broCoin;
 
-public class DepositCommand extends SlashCommand {
-    private static final Logger logger = LoggingHandler.logger(DepositCommand.class);
+public class WithdrawCommand extends SlashCommand {
+    private static final Logger logger = LoggingHandler.logger(WithdrawCommand.class);
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         Member member = event.getMember();
-        int deposit = Objects.requireNonNull(event.getOption("amount")).getAsInt();
+        int withdraw = Objects.requireNonNull(event.getOption("amount")).getAsInt();
 
         if (!BROCOINS_SQL.hasAccount(member)) {
             event.reply("You never had any BroCoins :(\nTry earning some cash!").setEphemeral(true).queue();
             return;
         }
-        if (deposit > BROCOINS_SQL.getBroCash(member)) {
-            event.reply("You can't deposit more cash than you have!").setEphemeral(true).queue();
+        if (withdraw > BROCOINS_SQL.getBroBank(member)) {
+            event.reply("You can't withdraw more cash than you have!").setEphemeral(true).queue();
             return;
         }
-        if (deposit < 0) {
-            event.reply("You can't a deposit negative number. Try /withdraw instead!").setEphemeral(true).queue();
+        if (withdraw < 0) {
+            event.reply("You can't a withdraw negative number. Try /deposit instead!").setEphemeral(true).queue();
             return;
         }
-        if (deposit == 0) {
-            event.reply("You can't deposit 0 BroCoins!").setEphemeral(true).queue();
+        if (withdraw == 0) {
+            event.reply("You can't withdraw 0 BroCoins!").setEphemeral(true).queue();
             return;
         }
 
         try {
-            BROCOINS_SQL.updateCash(member, -deposit);
-            BROCOINS_SQL.updateBank(member, deposit);
-            event.replyEmbeds(doneEmbed(member, deposit)).setEphemeral(true).queue();
+            BROCOINS_SQL.updateCash(member, withdraw);
+            BROCOINS_SQL.updateBank(member, -withdraw);
+            event.replyEmbeds(doneEmbed(member, withdraw)).setEphemeral(true).queue();
             assert member != null;
-            logger.info("{}(ID:{}) deposited {} coins into his account.", member.getEffectiveName(), member.getId(), deposit);
-
+            logger.info("{}(ID:{}) withdrew {} coins from his account.", member.getEffectiveName(), member.getId(), withdraw);
         } catch (SQLException e) {
             assert member != null;
-            logger.error("{} Tried to deposit cash, but an error has occurred.", member.getEffectiveName());
+            logger.error("{} Tried to withdraw cash, but an error has occurred.", member.getEffectiveName());
             e.printStackTrace();
             event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
         }
@@ -61,8 +60,8 @@ public class DepositCommand extends SlashCommand {
 
     private MessageEmbed doneEmbed(Member member, int deposit) {
         return new EmbedBuilder()
-                .setTitle(broCoin.getAsMention() + " Deposit successful.")
-                .setDescription("Successfully deposited " + deposit + " " + broCoin.getAsMention() + " into your account.")
+                .setTitle(broCoin.getAsMention() + " Withdraw successful.")
+                .setDescription("Successfully withdrew " + deposit + " " + broCoin.getAsMention() + " from your account.")
                 .addField("Bank Balance", BROCOINS_SQL.getBroBank(member) + " " + broCoin.getAsMention(), true)
                 .addField("Cash Balance", BROCOINS_SQL.getBroCash(member) + " " + broCoin.getAsMention(), true)
                 .setColor(Global.embedColor)
@@ -72,8 +71,8 @@ public class DepositCommand extends SlashCommand {
 
     @Override
     public SlashCommandData getSlash() {
-        SlashCommandData deposit = Commands.slash("deposit", "Deposit cash into your bank account.");
-        deposit.addOption(OptionType.INTEGER, "amount", "How much would you like to deposit?", true);
+        SlashCommandData deposit = Commands.slash("withdraw", "Withdraw cash from your bank account.");
+        deposit.addOption(OptionType.INTEGER, "amount", "How much would you like to withdraw?", true);
         return deposit;
     }
 }
