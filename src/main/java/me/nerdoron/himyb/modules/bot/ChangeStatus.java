@@ -80,7 +80,7 @@ public class ChangeStatus {
     // change status timer every 15-30 minutes
     public static void activityTimer(JDA jda) {
         int delay = 0;
-        int rng = Global.generateNumber(15, 30);
+        int rng = Rng.generateNumber(15, 30);
         int period = rng * Global.MIN_IN_MS;
         Timer timer = new Timer();
 

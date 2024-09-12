@@ -5,7 +5,6 @@ import me.nerdoron.himyb.modules.bot.BotCommandsHandler;
 import net.dv8tion.jda.api.entities.emoji.CustomEmoji;
 
 import java.awt.*;
-import java.util.Random;
 
 import static net.dv8tion.jda.api.entities.emoji.Emoji.fromCustom;
 
@@ -28,13 +27,4 @@ public class Global {
     public static CustomEmoji broCoin = fromCustom("brocoin", 997162208180064276L, false);
     public static BotCommandsHandler COMMANDS_HANDLER;
     public static Dotenv dotenvg;
-
-    // rng
-    public static int generateNumber(int min, int max) {
-        Random r = new Random();
-        int high = max + 1;
-        return r.nextInt(high - min) + min;
-    }
-
-
 }
