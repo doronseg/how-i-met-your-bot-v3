@@ -5,6 +5,7 @@ import me.nerdoron.himyb.modules.fun.autoresponses.Sweden;
 import me.nerdoron.himyb.modules.fun.counting.CountingChannelHandler;
 import me.nerdoron.himyb.modules.fun.counting.CountingEditing;
 import me.nerdoron.himyb.modules.fun.server.LeaveJoin;
+import me.nerdoron.himyb.modules.useful.HelpHandler;
 import net.dv8tion.jda.api.JDA;
 
 public class RegisterEvents {
@@ -20,6 +21,9 @@ public class RegisterEvents {
         jda.addEventListener(new FriendsCringe());
         jda.addEventListener(new Sweden());
         jda.addEventListener(new LeaveJoin());
+
+        // useful
+        jda.addEventListener(new HelpHandler());
 
         // counting
         jda.addEventListener(new CountingChannelHandler());

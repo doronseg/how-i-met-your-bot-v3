@@ -1,22 +1,20 @@
 package me.nerdoron.himyb;
 
 
+import io.github.cdimascio.dotenv.Dotenv;
 import me.nerdoron.himyb.modules.bot.ChangeStatus;
 import me.nerdoron.himyb.modules.bot.Database;
 import me.nerdoron.himyb.modules.bot.RegisterEvents;
-import org.slf4j.Logger;
-
-import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.slf4j.Logger;
 
 public class Main {
     private static final Logger logger = Global.logger(Main.class);
 
     public static void main(String[] args) {
-        String version = "3.0.0 - September 2024";
-        logger.info("Hello! You're running {}", version);
+        logger.info("Hello! You're running {}", Global.botVersion);
         logger.info("Starting stage 1 - setting up environment");
         setupEnv();
     }
