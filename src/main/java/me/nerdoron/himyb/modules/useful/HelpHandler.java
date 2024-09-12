@@ -13,7 +13,7 @@ import org.jetbrains.annotations.NotNull;
 public class HelpHandler extends ListenerAdapter {
 
     // help embed
-    public static MessageEmbed mainMenu = new EmbedBuilder()
+    public static final MessageEmbed mainMenu = new EmbedBuilder()
             .setTitle("🔮 Help Menu")
             .setDescription(
                     "Hello! I'm how i met your bot. You can use the buttons below to view all of my functions, but for now, here is some information about me.")

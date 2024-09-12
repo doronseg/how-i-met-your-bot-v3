@@ -24,9 +24,8 @@ public class CrimeCommand extends SlashCommand {
                     .queue();
             return;
         }
-        if (Global.JAIL_CHECKER.checkIfInJail(member)) {
+        if (JailHandler.checkIfInJail(member)) {
             event.replyEmbeds(JailHandler.inJailEmbed(member)).queue();
-            return;
         }
 
 

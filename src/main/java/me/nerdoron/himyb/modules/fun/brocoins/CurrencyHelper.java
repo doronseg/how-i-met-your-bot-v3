@@ -6,7 +6,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class CurrencyHelper {
-    public static MessageEmbed scammedEmbed = new EmbedBuilder()
+    public final static MessageEmbed scammedEmbed = new EmbedBuilder()
             .setTitle("\uD83D\uDE32  Scammed!")
             .setDescription(String.format("You've worked %s, but your employer scammed you and didn't pay you any money!", getJob()))
             .setColor(Global.embedColor)

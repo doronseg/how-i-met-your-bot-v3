@@ -35,16 +35,13 @@ public class EightBallCommand extends SlashCommand {
             event.reply("That doesn't look like a question.").setEphemeral(true).queue();
             return;
         }
-        event.reply(event.getUser().getAsMention() + " asked me: " + question).queue((m) -> {
-            event.getChannel().sendMessage(responses[random.nextInt(responses.length)]).queue();
-        });
+        event.reply(event.getUser().getAsMention() + " asked me: " + question).queue((m) -> event.getChannel().sendMessage(responses[random.nextInt(responses.length)]).queue());
     }
 
     @Override
     public SlashCommandData getSlash() {
-        SlashCommandData cmd = Commands.slash("8ball", "Ask the magic 8ball a question.")
+        return Commands.slash("8ball", "Ask the magic 8ball a question.")
                 .addOption(OptionType.STRING, "question", "What's the question?",
                         true);
-        return cmd;
     }
 }

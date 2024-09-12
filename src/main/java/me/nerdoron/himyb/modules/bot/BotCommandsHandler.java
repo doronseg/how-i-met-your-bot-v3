@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class BotCommandsHandler extends ListenerAdapter {
     private static final Logger logger = LoggingHandler.logger(BotCommandsHandler.class);
-    public ArrayList<SlashCommand> commands = new ArrayList<>();
+    public final ArrayList<SlashCommand> commands = new ArrayList<>();
 
 
     public BotCommandsHandler() {
