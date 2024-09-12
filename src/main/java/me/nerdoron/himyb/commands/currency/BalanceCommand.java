@@ -21,7 +21,7 @@ public class BalanceCommand extends SlashCommand {
         Member member = event.getMember();
         if (event.getInteraction().getOptions().isEmpty()) {
             if (!BROCOINS_SQL.hasAccount(member)) {
-                event.reply("You never had any BroCoins :(\nTry earning some cash!").queue();
+                event.reply("You never had any BroCoins :(\nTry earning some cash!").setEphemeral(true).queue();
                 return;
             }
             assert member != null;
@@ -31,7 +31,7 @@ public class BalanceCommand extends SlashCommand {
         Member memberToCheck = Objects.requireNonNull(event.getInteraction().getOption("user")).getAsMember();
         if (!BROCOINS_SQL.hasAccount(memberToCheck)) {
             assert memberToCheck != null;
-            event.reply(memberToCheck.getAsMention() + " never had any BroCoins :(\nTell them to earn some cash!").queue();
+            event.reply(memberToCheck.getAsMention() + " never had any BroCoins :(\nTell them to earn some cash!").setEphemeral(true).queue();
             return;
         }
         assert memberToCheck != null;
