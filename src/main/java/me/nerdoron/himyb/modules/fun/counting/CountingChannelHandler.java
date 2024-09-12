@@ -9,13 +9,13 @@ public class CountingChannelHandler extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         Member member = event.getMember();
         assert member != null;
+        if (!(event.getChannel().getId().equals("900090953233231964")))
+            return;
+        
         if (member.getUser().isBot()) {
             event.getMessage().delete().queue();
             return;
         }
-        if (!(event.getChannel().getId().equals("900090953233231964")))
-            return;
-
         String uid = member.getId();
         String messageContent = event.getMessage().getContentDisplay();
         int numberContent;
