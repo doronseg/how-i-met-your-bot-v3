@@ -35,7 +35,7 @@ public class WithdrawCommand extends SlashCommand {
             return;
         }
         if (withdraw < 0) {
-            event.reply("You can't a withdraw negative number. Try /deposit instead!").setEphemeral(true).queue();
+            event.reply("You can't a withdraw a negative number. Try /deposit instead!").setEphemeral(true).queue();
             return;
         }
         if (withdraw == 0) {
