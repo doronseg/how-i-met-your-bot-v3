@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import java.util.Map;
 
 import static me.nerdoron.himyb.Global.BROCOINS_SQL;
+import static me.nerdoron.himyb.Global.broCoin;
 
 public class LeaderboardCommand extends SlashCommand {
 
@@ -43,7 +44,7 @@ public class LeaderboardCommand extends SlashCommand {
 
         EmbedBuilder emb = new EmbedBuilder();
         emb.setColor(Global.embedColor);
-        emb.setTitle("Brocoins Leaderboard");
+        emb.setTitle(broCoin.getAsMention() + "Brocoins Leaderboard");
         emb.setDescription(users.toString());
 
         event.replyEmbeds(emb.build()).setEphemeral(false).queue();
