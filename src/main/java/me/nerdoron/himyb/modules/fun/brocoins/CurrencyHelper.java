@@ -3,6 +3,7 @@ package me.nerdoron.himyb.modules.fun.brocoins;
 import me.nerdoron.himyb.Global;
 import me.nerdoron.himyb.modules.bot.Rng;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class CurrencyHelper {
@@ -39,6 +40,25 @@ public class CurrencyHelper {
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();
     }
+
+    public static MessageEmbed successfulRobEmbed(Member memberToRob, int reward) {
+        return new EmbedBuilder()
+                .setTitle("\uD83E\uDDB9 Robbery successful")
+                .setDescription(String.format("You successfully robbed %s and received %d %s.", memberToRob.getAsMention(), reward, Global.broCoin.getAsMention()))
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
+    public static MessageEmbed unsuccessfulRobEmbed(Member memberToRob) {
+        return new EmbedBuilder()
+                .setTitle("\uD83E\uDD26\u200D♂ Robbery unsuccessful")
+                .setDescription(String.format("You tried to robbed %s, but they caught you. They decided not to press charges against you.", memberToRob.getAsMention()))
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
 
     private static String getJob() {
         String[] jobs = new String[]{

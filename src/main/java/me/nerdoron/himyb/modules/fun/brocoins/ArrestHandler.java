@@ -72,7 +72,7 @@ public class ArrestHandler {
                                 event.getHook().editOriginal("").queue();
                                 event.getHook().editOriginalEmbeds(JailHelper.successRunEmbed()).queue();
                                 event.getHook().editOriginalComponents().queue();
-                                COOLDOWN_MANAGER.addCooldown("arrested", "Ran", HOUR_IN_SECONDS);
+                                COOLDOWN_MANAGER.addCooldown("arrested", "Ran", HOUR_IN_SECONDS / 2);
                                 buttonEvent.deferEdit().queue();
                                 logger.info("{}(ID:{}) was arrested and managed to run!", member.getEffectiveName(), uid);
                                 break;
@@ -103,7 +103,7 @@ public class ArrestHandler {
                                     event.getHook().editOriginal("").queue();
                                     event.getHook().editOriginalEmbeds(JailHelper.successBribeEmbed(broCash / 2)).queue();
                                     event.getHook().editOriginalComponents().queue();
-                                    COOLDOWN_MANAGER.addCooldown("arrested", "Bribed", HOUR_IN_SECONDS);
+                                    COOLDOWN_MANAGER.addCooldown("arrested", "Bribed", HOUR_IN_SECONDS / 4);
                                     buttonEvent.deferEdit().queue();
                                     logger.info("{}(ID:{}) was arrested and bribed the cops with {} coins.", member.getEffectiveName(), uid, broCash / 2);
                                     break;
