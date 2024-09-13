@@ -6,6 +6,7 @@ import me.nerdoron.himyb.commands.currency.batches.DailyCommand;
 import me.nerdoron.himyb.commands.currency.batches.MonthlyCommand;
 import me.nerdoron.himyb.commands.currency.batches.WeeklyCommand;
 import me.nerdoron.himyb.commands.fun.EightBallCommand;
+import me.nerdoron.himyb.commands.fun.currency.CrimeCommand;
 import me.nerdoron.himyb.commands.fun.currency.WorkCommand;
 import me.nerdoron.himyb.commands.staff.ReviveCommand;
 import me.nerdoron.himyb.commands.useful.ContributeCommand;
@@ -38,9 +39,10 @@ public class BotCommandsHandler extends ListenerAdapter {
 
         //fun
         commands.add(new EightBallCommand());
+        commands.add(new WorkCommand());
+        commands.add(new CrimeCommand());
 
         // currency
-        commands.add(new WorkCommand());
         commands.add(new BalanceCommand());
         commands.add(new DepositCommand());
         commands.add(new WithdrawCommand());
@@ -50,6 +52,7 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new DailyCommand());
         commands.add(new WeeklyCommand());
         commands.add(new MonthlyCommand());
+        commands.add(new OddsCommand());
 
     }
 
