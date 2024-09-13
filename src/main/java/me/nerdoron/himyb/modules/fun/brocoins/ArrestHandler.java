@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import static me.nerdoron.himyb.Global.*;
 import static me.nerdoron.himyb.modules.bot.CooldownManager.commandID;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public class ArrestHandler {
     private static final Logger logger = LoggingHandler.logger(ArrestHandler.class);
 
