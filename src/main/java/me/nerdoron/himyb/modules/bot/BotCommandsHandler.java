@@ -9,10 +9,7 @@ import me.nerdoron.himyb.commands.fun.EightBallCommand;
 import me.nerdoron.himyb.commands.fun.currency.CrimeCommand;
 import me.nerdoron.himyb.commands.fun.currency.WorkCommand;
 import me.nerdoron.himyb.commands.staff.ReviveCommand;
-import me.nerdoron.himyb.commands.useful.ContributeCommand;
-import me.nerdoron.himyb.commands.useful.HelpCommand;
-import me.nerdoron.himyb.commands.useful.PingCommand;
-import me.nerdoron.himyb.commands.useful.UpTimeCommand;
+import me.nerdoron.himyb.commands.useful.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -33,6 +30,7 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new UpTimeCommand());
         commands.add(new ContributeCommand());
         commands.add(new HelpCommand(this));
+        commands.add(new BugReportCommand());
 
         //staff
         commands.add(new ReviveCommand());
