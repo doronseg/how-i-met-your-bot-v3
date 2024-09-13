@@ -30,29 +30,31 @@ public class CrimeCommand extends SlashCommand {
             event.replyEmbeds(JailHelper.inJailEmbed(member)).queue();
             return;
         }
-        String remaining = COOLDOWN_MANAGER.parseCooldown(CooldownManager.commandID(event));
+        String remainingCrime = COOLDOWN_MANAGER.parseCooldown(CooldownManager.commandID(event));
+        String remainingArrested = COOLDOWN_MANAGER.parseCooldown("arrested");
+
 
         if (COOLDOWN_MANAGER.hasTag(CooldownManager.commandID(event), "Success")) {
-            event.reply("Don't commit to many crimes! You can attempt a new heist in " + remaining)
+            event.reply("Don't commit to many crimes! You can attempt a new heist in " + remainingCrime)
                     .setEphemeral(true)
                     .queue();
             return;
         }
 
         if (COOLDOWN_MANAGER.hasTag(CooldownManager.commandID(event), "BackOff")) {
-            event.reply("There's still too much heat, Try again in " + remaining).setEphemeral(true)
+            event.reply("There's still too much heat, Try again in " + remainingCrime).setEphemeral(true)
                     .queue();
             return;
         }
 
-        if (COOLDOWN_MANAGER.hasTag(CooldownManager.commandID(event), "Ran")) {
-            event.reply("The cops are looking for you! Don't provoke them, Try again in " + remaining).setEphemeral(true)
+        if (COOLDOWN_MANAGER.hasTag("arrested", "Ran")) {
+            event.reply("The cops are looking for you! Don't provoke them, Try again in " + remainingArrested).setEphemeral(true)
                     .queue();
             return;
         }
 
-        if (COOLDOWN_MANAGER.hasTag(CooldownManager.commandID(event), "Bribed")) {
-            event.reply(":cop:: I don't think that's a good idea. Try again in " + remaining).setEphemeral(true)
+        if (COOLDOWN_MANAGER.hasTag("arrested", "Bribed")) {
+            event.reply(":cop:: I don't think that's a good idea. Try again in " + remainingArrested).setEphemeral(true)
                     .queue();
             return;
         }
