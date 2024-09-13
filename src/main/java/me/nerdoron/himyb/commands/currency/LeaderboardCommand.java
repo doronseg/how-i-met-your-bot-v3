@@ -14,6 +14,7 @@ import static me.nerdoron.himyb.Global.BROCOINS_SQL;
 
 public class LeaderboardCommand extends SlashCommand {
 
+    //TODO: find a way to make it more efficient, perhaps using a list and being able to get the index and then making the embed more clear
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         Map<String, Integer> brocoins = BROCOINS_SQL.getBroCoins();
