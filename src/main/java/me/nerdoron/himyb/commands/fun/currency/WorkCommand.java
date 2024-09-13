@@ -15,8 +15,8 @@ import java.sql.SQLException;
 import static me.nerdoron.himyb.Global.*;
 import static me.nerdoron.himyb.modules.bot.CooldownManager.commandID;
 import static me.nerdoron.himyb.modules.fun.brocoins.CurrencyHelper.workEmbed;
-import static me.nerdoron.himyb.modules.fun.brocoins.JailHandler.checkIfInJail;
-import static me.nerdoron.himyb.modules.fun.brocoins.JailHandler.inJailEmbed;
+import static me.nerdoron.himyb.modules.fun.brocoins.JailHelper.checkIfInJail;
+import static me.nerdoron.himyb.modules.fun.brocoins.JailHelper.inJailEmbed;
 
 public class WorkCommand extends SlashCommand {
     private static final Logger logger = LoggingHandler.logger(WorkCommand.class);

@@ -22,6 +22,24 @@ public class CurrencyHelper {
                 .build();
     }
 
+    public static MessageEmbed successCrimeEmbed(int earning) {
+        return new EmbedBuilder()
+                .setTitle("\uD83E\uDDB9 Smooth Criminal")
+                .setDescription(String.format("You managed to successfully %s and earned %d %s.", getCrime(), earning, Global.broCoin.getAsMention()))
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
+    public static MessageEmbed backOffCrimeCommand() {
+        return new EmbedBuilder()
+                .setTitle("\uD83D\uDEA8 Got away empty-handed")
+                .setDescription(String.format("You tried to %s, but the cops closed in on you, but you managed to get away in time.", getCrime()))
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
     private static String getJob() {
         String[] jobs = new String[]{
                 "as a Software Engineer", "as a Developer", "as a Story teller", "as a Dentist", "as a Veterinarian",

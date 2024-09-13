@@ -8,9 +8,9 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import org.slf4j.Logger;
 
-public class JailHandler {
+public class JailHelper {
     static final CooldownManager COOLDOWN_MANAGER = Global.COOLDOWN_MANAGER;
-    private static final Logger logger = LoggingHandler.logger(JailHandler.class);
+    private static final Logger logger = LoggingHandler.logger(JailHelper.class);
 
     public static MessageEmbed inJailEmbed(Member member) {
         String remaining = COOLDOWN_MANAGER.parseCooldown(CooldownManager.jailID(member));
