@@ -13,7 +13,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 
 import static me.nerdoron.himyb.Global.*;
-import static me.nerdoron.himyb.modules.bot.CooldownManager.commandID;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class ArrestHandler {
@@ -73,7 +72,7 @@ public class ArrestHandler {
                                 event.getHook().editOriginal("").queue();
                                 event.getHook().editOriginalEmbeds(JailHelper.successRunEmbed()).queue();
                                 event.getHook().editOriginalComponents().queue();
-                                COOLDOWN_MANAGER.addCooldown(commandID(event), "Ran", HOUR_IN_SECONDS);
+                                COOLDOWN_MANAGER.addCooldown("arrested", "Ran", HOUR_IN_SECONDS);
                                 buttonEvent.deferEdit().queue();
                                 logger.info("{}(ID:{}) was arrested and managed to run!", member.getEffectiveName(), uid);
                                 break;
@@ -104,7 +103,7 @@ public class ArrestHandler {
                                     event.getHook().editOriginal("").queue();
                                     event.getHook().editOriginalEmbeds(JailHelper.successBribeEmbed(broCash / 2)).queue();
                                     event.getHook().editOriginalComponents().queue();
-                                    COOLDOWN_MANAGER.addCooldown(commandID(event), "Bribed", HOUR_IN_SECONDS);
+                                    COOLDOWN_MANAGER.addCooldown("arrested", "Bribed", HOUR_IN_SECONDS);
                                     buttonEvent.deferEdit().queue();
                                     logger.info("{}(ID:{}) was arrested and bribed the cops with {} coins.", member.getEffectiveName(), uid, broCash / 2);
                                     break;
