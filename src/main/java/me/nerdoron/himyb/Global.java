@@ -29,5 +29,6 @@ public class Global {
     //public static final JailHandler JAIL_CHECKER = new JailHandler();
     public static final BroCoinsSQL BROCOINS_SQL = new BroCoinsSQL();
     public static BotCommandsHandler COMMANDS_HANDLER = new BotCommandsHandler();
+    @SuppressWarnings("unused")
     public static Dotenv dotenvg;
 }

@@ -35,7 +35,6 @@ public class WorkCommand extends SlashCommand {
                     .queue();
             return;
         }
-        int coinsNow = BROCOINS_SQL.getBroCash(member);
         int reward = Rng.generateNumber(1, 15);
         int chance = Rng.generateNumber(1, 100);
         if (chance == 50) {

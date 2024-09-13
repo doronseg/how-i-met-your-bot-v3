@@ -1,5 +1,6 @@
 package me.nerdoron.himyb.commands.fun.currency;
 
+import me.nerdoron.himyb.modules.bot.CooldownManager;
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.bot.Rng;
 import me.nerdoron.himyb.modules.bot.SlashCommand;
@@ -29,6 +30,32 @@ public class CrimeCommand extends SlashCommand {
             event.replyEmbeds(JailHelper.inJailEmbed(member)).queue();
             return;
         }
+        String remaining = COOLDOWN_MANAGER.parseCooldown(CooldownManager.commandID(event));
+
+        if (COOLDOWN_MANAGER.hasTag(CooldownManager.commandID(event), "Success")) {
+            event.reply("Don't commit to many crimes! You can attempt a new heist in " + remaining)
+                    .setEphemeral(true)
+                    .queue();
+            return;
+        }
+
+        if (COOLDOWN_MANAGER.hasTag(CooldownManager.commandID(event), "BackOff")) {
+            event.reply("There's still too much heat, Try again in " + remaining).setEphemeral(true)
+                    .queue();
+            return;
+        }
+
+        if (COOLDOWN_MANAGER.hasTag(CooldownManager.commandID(event), "Ran")) {
+            event.reply("The cops are looking for you! Don't provoke them, Try again in " + remaining).setEphemeral(true)
+                    .queue();
+            return;
+        }
+
+        if (COOLDOWN_MANAGER.hasTag(CooldownManager.commandID(event), "Bribed")) {
+            event.reply(":cop:: I don't think that's a good idea. Try again in " + remaining).setEphemeral(true)
+                    .queue();
+            return;
+        }
 
         int chance = Rng.generateNumber(1, 300);
         int reward = Rng.generateNumber(20, 30);
@@ -55,7 +82,7 @@ public class CrimeCommand extends SlashCommand {
             logger.info("{}(ID:{}) tried to commit a crime, but the cops closed in on him.", member.getEffectiveName(), member.getId());
             return;
         }
-        ArrestHandler.initialArrest(event, "GENERAL", 2 * HOUR_IN_SECONDS);
+        ArrestHandler.initialArrest(event, "GENERAL CRIME", 2 * HOUR_IN_SECONDS);
     }
 
     @Override
