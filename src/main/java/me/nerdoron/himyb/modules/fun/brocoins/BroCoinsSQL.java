@@ -15,33 +15,12 @@ import java.util.Map;
 public class BroCoinsSQL {
     private static final Logger logger = LoggingHandler.logger(BroCoinsSQL.class);
     private static final Connection con = Database.connect();
-    private static PreparedStatement ps;
-
-    public boolean hasBroCoins(Member member) {
-        String SQL = "SELECT uid FROM brocoins WHERE UID=?";
-        try {
-            assert con != null;
-            ps = con.prepareStatement(SQL);
-            ps.setString(1, member.getId());
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                ps.close();
-                return true;
-            } else {
-                ps.close();
-                return false;
-            }
-        } catch (Exception ex) {
-            logger.error(ex.toString());
-        }
-        return false;
-    }
 
     public boolean hasAccount(Member member) {
         String SQL = "SELECT uid FROM brocoins WHERE UID=?";
         try {
             assert con != null;
-            ps = con.prepareStatement(SQL);
+            PreparedStatement ps = con.prepareStatement(SQL);
             ps.setString(1, member.getId());
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
