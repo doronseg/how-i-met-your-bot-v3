@@ -21,10 +21,8 @@ public class Global {
     // times
     public static final int HOUR_IN_SECONDS = 3600;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
-    public static final int MONTH_IN_SECONDS = DAY_IN_SECONDS * 30;
     public static final int SECONDS_IN_MS = 1000;
     public static final int MIN_IN_MS = SECONDS_IN_MS * 60;
-    public static final int HOUR_IN_MS = MIN_IN_MS * 60;
     // global definitions
     public static final CustomEmoji broCoin = fromCustom("brocoin", 997162208180064276L, false);
     public static final CooldownManager COOLDOWN_MANAGER = new CooldownManager();
