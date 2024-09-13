@@ -43,6 +43,7 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new WithdrawCommand());
         commands.add(new TransferCommand());
         commands.add(new GiveCashCommand());
+        commands.add(new LeaderboardCommand());
 
     }
 

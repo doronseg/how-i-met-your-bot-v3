@@ -97,7 +97,7 @@ public class BroCoinsSQL {
         return brocoins;
     }
 
-    public Map<String, Integer> getBroCash() {
+    public Map<String, Integer> getBroCoins() {
         Map<String, Integer> result = new HashMap<>();
         try {
             assert con != null;
@@ -106,8 +106,10 @@ public class BroCoinsSQL {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String userID = rs.getString(1);
-                int userBroCoins = rs.getInt(2);
-                result.put(userID, userBroCoins);
+                int userCash = rs.getInt(2);
+                int userBank = rs.getInt(3);
+                int total = userBank + userCash;
+                result.put(userID, total);
             }
             ps.close();
         } catch (SQLException e) {
