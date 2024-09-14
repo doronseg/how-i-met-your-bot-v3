@@ -41,7 +41,7 @@ public class CoinFlipCommand extends SlashCommand {
         if (rng == 2) result = "Tails";
 
         if (bet > BROCOINS_SQL.getBroCash(event.getMember())) {
-            event.reply("You don't have enough BroCoins!").setEphemeral(true).queue();
+            event.reply("You don't have enough cash!").setEphemeral(true).queue();
             return;
         }
 
@@ -75,7 +75,7 @@ public class CoinFlipCommand extends SlashCommand {
     public SlashCommandData getSlash() {
         SlashCommandData coinflip = Commands.slash("coinflip", "Bet on a coin flip.");
         OptionData bet = new OptionData(OptionType.INTEGER, "bet", "How much do you want to bet?", true);
-        bet.setMinValue(1);
+        bet.setMinValue(15);
         OptionData heads_tails = new OptionData(OptionType.STRING, "type", "Heads or tails?", true);
         heads_tails.addChoice("heads", "Heads");
         heads_tails.addChoice("tails", "Tails");
