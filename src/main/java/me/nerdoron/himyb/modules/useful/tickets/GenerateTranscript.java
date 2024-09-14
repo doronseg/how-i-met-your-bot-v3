@@ -44,9 +44,8 @@ public class GenerateTranscript {
             ArrayList<String> files = new ArrayList<>();
             for (String s : messageIdsFromDb) {
                 files.add("⛓️[" + s + "] ; ");
-                deleteFromLinker(s);
             }
-
+            deleteFromLinker(message.getId());
             builder.append(parsed).append(tag).append(": ").append(content).append(files).append("\n");
         }
         return builder.toString();
