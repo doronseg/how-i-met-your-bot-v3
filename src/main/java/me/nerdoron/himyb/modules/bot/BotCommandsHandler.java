@@ -10,7 +10,10 @@ import me.nerdoron.himyb.commands.fun.currency.CrimeCommand;
 import me.nerdoron.himyb.commands.fun.currency.RobUserCommand;
 import me.nerdoron.himyb.commands.fun.currency.WorkCommand;
 import me.nerdoron.himyb.commands.fun.gambling.CoinFlipCommand;
+import me.nerdoron.himyb.commands.fun.gambling.RussianRoulette;
+import me.nerdoron.himyb.commands.staff.ReplyCommand;
 import me.nerdoron.himyb.commands.staff.ReviveCommand;
+import me.nerdoron.himyb.commands.staff.SayCommand;
 import me.nerdoron.himyb.commands.useful.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -36,6 +39,8 @@ public class BotCommandsHandler extends ListenerAdapter {
 
         //staff
         commands.add(new ReviveCommand());
+        commands.add(new SayCommand());
+        commands.add(new ReplyCommand());
 
         //fun
         commands.add(new EightBallCommand());
@@ -45,6 +50,7 @@ public class BotCommandsHandler extends ListenerAdapter {
 
         //gambling
         commands.add(new CoinFlipCommand());
+        commands.add(new RussianRoulette());
 
         // currency
         commands.add(new BalanceCommand());
