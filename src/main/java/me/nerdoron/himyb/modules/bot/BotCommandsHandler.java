@@ -43,6 +43,7 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new SayCommand());
         commands.add(new ReplyCommand());
         commands.add(new SendPanelsCommand());
+        commands.add(new ApplyCommand());
 
         //fun
         commands.add(new EightBallCommand());
