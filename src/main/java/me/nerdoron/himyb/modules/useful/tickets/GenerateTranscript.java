@@ -1,17 +1,13 @@
 package me.nerdoron.himyb.modules.useful.tickets;
 
-import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import org.slf4j.Logger;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 
 public class GenerateTranscript {
-
-    private static final Logger logger = LoggingHandler.logger(GenerateTranscript.class);
 
 
     public static String generate(TextChannel channel) {

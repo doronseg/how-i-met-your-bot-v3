@@ -3,7 +3,6 @@ package me.nerdoron.himyb.modules.useful.tickets;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -25,7 +24,6 @@ public class TicketButtonHandler extends ListenerAdapter {
 
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event) {
-        Message message = event.getMessage();
         Member member = event.getMember();
         assert member != null;
         Guild guild = event.getGuild();
@@ -34,7 +32,6 @@ public class TicketButtonHandler extends ListenerAdapter {
         String buttonId = event.getComponentId();
         if (buttonId.contains("TICKET:")) {
             String[] buttonSplit = buttonId.split(":");
-            String userId = buttonSplit[1];
             String buttonCategory = buttonSplit[2];
             Role modRole = Objects.requireNonNull(event.getGuild()).getRoleById("850439278717829190");
             assert modRole != null;

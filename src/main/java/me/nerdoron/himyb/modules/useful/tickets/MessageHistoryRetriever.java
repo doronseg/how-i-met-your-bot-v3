@@ -6,8 +6,8 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import java.util.ArrayList;
 
 public class MessageHistoryRetriever {
+    final ArrayList<Message> output = new ArrayList<>();
     Boolean isReady = false;
-    ArrayList<Message> output = new ArrayList<>();
 
     public MessageHistoryRetriever() {
     }

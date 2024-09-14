@@ -1,14 +1,12 @@
 package me.nerdoron.himyb.modules.useful.tickets;
 
 import me.nerdoron.himyb.modules.bot.Database;
-import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.FileUpload;
-import org.slf4j.Logger;
 
 import java.io.File;
 import java.sql.Connection;
@@ -19,8 +17,7 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class TicketFileMonitor extends ListenerAdapter {
-    static final Logger logger = LoggingHandler.logger(TicketFileMonitor.class);
-    String monitorId = "1001811762070421534";
+    final String monitorId = "1001811762070421534";
 
     private static void putToLinker(String messageId, String linkerId) {
         final Connection con = Database.connect();
