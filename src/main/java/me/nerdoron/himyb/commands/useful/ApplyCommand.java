@@ -29,12 +29,11 @@ public class ApplyCommand extends SlashCommand {
 
     @Override
     public SlashCommandData getSlash() {
-        SlashCommandData cmd = Commands.slash("apply", "Apply for an open staff position.")
+
+
+        return Commands.slash("apply", "Apply for an open staff position.")
                 .addOption(OptionType.STRING, "position", "What position would you like to apply to?",
                         true, true);
-
-
-        return cmd;
     }
 
 }
