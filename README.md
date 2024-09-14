@@ -33,7 +33,7 @@ make sure to create an issue first.
 ```SQL
 CREATE TABLE "filemonitor" (
 	"messageid"	TEXT NOT NULL,
-	"linkedmessageid"	TEXT NOT NULL
+	"attachment"	TEXT NOT NULL
 );
 
 CREATE TABLE "cooldowns" (

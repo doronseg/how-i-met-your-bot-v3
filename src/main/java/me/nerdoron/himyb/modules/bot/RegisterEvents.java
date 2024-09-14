@@ -6,6 +6,8 @@ import me.nerdoron.himyb.modules.fun.counting.CountingChannelHandler;
 import me.nerdoron.himyb.modules.fun.counting.CountingEditing;
 import me.nerdoron.himyb.modules.fun.server.LeaveJoin;
 import me.nerdoron.himyb.modules.useful.HelpHandler;
+import me.nerdoron.himyb.modules.useful.tickets.TicketButtonHandler;
+import me.nerdoron.himyb.modules.useful.tickets.TicketFileMonitor;
 import net.dv8tion.jda.api.JDA;
 
 public class RegisterEvents {
@@ -16,6 +18,8 @@ public class RegisterEvents {
         jda.addEventListener(commandsHandler);
 
         // tickets
+        jda.addEventListener(new TicketButtonHandler());
+        jda.addEventListener(new TicketFileMonitor());
 
         //fun
         jda.addEventListener(new FriendsCringe());
