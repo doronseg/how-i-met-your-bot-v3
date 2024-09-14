@@ -30,13 +30,23 @@ DB=jdbc:sqlite:db.db
 As of right now, we have 1 SQLITE databases, if you want to contribute and make an update that includes a new database,
 make sure to create an issue first.
 
-```
-CREATE TABLE "" (
-	"uid"	TEXT NOT NULL UNIQUE,
-	"amount"	INTEGER,
-	PRIMARY KEY("uid")
+```SQL
+CREATE TABLE "filemonitor" (
+	"messageid"	TEXT NOT NULL,
+	"linkedmessageid"	TEXT NOT NULL
 );
 
+CREATE TABLE "cooldowns" (
+	"uid"	TEXT,
+	"cooldown"	INTEGER
+);
+
+CREATE TABLE "brocoins" (
+	"uid"	TEXT NOT NULL UNIQUE,
+	"cash"	INTEGER,
+	"bank"	INTEGER,
+	PRIMARY KEY("uid")
+);
 ```
 
 ## License
