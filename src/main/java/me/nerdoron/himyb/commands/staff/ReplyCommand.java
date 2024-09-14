@@ -31,8 +31,9 @@ public class ReplyCommand extends SlashCommand {
         TextChannel logsChannel = Objects.requireNonNull(event.getGuild()).getTextChannelById("850447694673739816");
         event.deferReply().setEphemeral(true).setContent("Sent your message.").queue();
         assert logsChannel != null;
-        logsChannel.sendMessage(String.format("%s used say command in channel %s.", event.getUser().getEffectiveName(), event.getChannel().getAsMention())).queue();
-        logger.info("{} used reply command in channel #{}.", event.getUser().getEffectiveName(), event.getChannel().getName());
+        logsChannel.sendMessage(String.format("%s used say command in channel %s.", event.getUser().getName(), event.getChannel().getAsMention())).
+                queue();
+        logger.info("{} used reply command in channel #{}.", event.getUser().getName(), event.getChannel().getName());
 
     }
 

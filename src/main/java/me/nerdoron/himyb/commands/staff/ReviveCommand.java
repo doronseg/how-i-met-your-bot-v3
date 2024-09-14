@@ -24,7 +24,7 @@ public class ReviveCommand extends SlashCommand {
             return;
         event.getChannel().sendMessage("<@&900487372251213955>").queue();
         event.getChannel().sendMessage("<@&900487372251213955>").queue();
-        event.deferReply().setEphemeral(true).setContent("Reviving chat...").queue();
+        event.deferReply().setEphemeral(true).setContent("Reviving chat..").queue();
 
     }
 

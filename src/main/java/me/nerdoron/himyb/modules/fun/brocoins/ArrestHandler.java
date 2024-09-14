@@ -43,7 +43,7 @@ public class ArrestHandler {
                     event.getHook().editOriginalEmbeds(JailHelper.timeoutEmbed(potentialTime)).queue();
                     event.getHook().editOriginalComponents().queue();
                     JailHelper.jailMember(member, potentialTime, charge);
-                    logger.info("{}(ID:{}) was arrested but timed out he was jailed for {} hours.", member.getEffectiveName(), uid, potentialTime / HOUR_IN_SECONDS);
+                    logger.info("{}(ID:{}) was arrested but timed out he was jailed for {} hours.", member.getUser().getName(), uid, potentialTime / HOUR_IN_SECONDS);
                 })
                 .subscribe(buttonEvent -> {
                     // handle button interaction
@@ -65,7 +65,7 @@ public class ArrestHandler {
                             event.getHook().editOriginalComponents().queue();
                             JailHelper.jailMember(member, potentialTime, charge);
                             buttonEvent.deferEdit().queue();
-                            logger.info("{}(ID:{}) was arrested and cooperated out he was jailed for {} hours.", member.getEffectiveName(), uid, potentialTime / HOUR_IN_SECONDS);
+                            logger.info("{}(ID:{}) was arrested and cooperated out he was jailed for {} hours.", member.getUser().getName(), uid, potentialTime / HOUR_IN_SECONDS);
                             break;
                         case "run":
                             if (chance < 51) {
@@ -74,7 +74,7 @@ public class ArrestHandler {
                                 event.getHook().editOriginalComponents().queue();
                                 COOLDOWN_MANAGER.addCooldown("arrested", "Ran", HOUR_IN_SECONDS / 2);
                                 buttonEvent.deferEdit().queue();
-                                logger.info("{}(ID:{}) was arrested and managed to run!", member.getEffectiveName(), uid);
+                                logger.info("{}(ID:{}) was arrested and managed to run!", member.getUser().getName(), uid);
                                 break;
                             }
                             // fail
@@ -83,7 +83,7 @@ public class ArrestHandler {
                             event.getHook().editOriginalComponents().queue();
                             JailHelper.jailMember(member, potentialTime * 2, "RESISTING");
                             buttonEvent.deferEdit().queue();
-                            logger.info("{}(ID:{}) was arrested and failed to outrun the cops out he was jailed for {} hours.", member.getEffectiveName(), uid, potentialTime / HOUR_IN_SECONDS);
+                            logger.info("{}(ID:{}) was arrested and failed to outrun the cops out he was jailed for {} hours.", member.getUser().getName(), uid, potentialTime / HOUR_IN_SECONDS);
                             break;
                         case "bribe":
                             if (chance > 51) {
@@ -95,7 +95,7 @@ public class ArrestHandler {
                                     event.getHook().editOriginalComponents().queue();
                                     JailHelper.jailMember(member, potentialTime, charge);
                                     buttonEvent.deferEdit().queue();
-                                    logger.info("{}(ID:{}) was arrested, tried to bribe the cops but he didn't have enough cash. He was jailed for {} hours.", member.getEffectiveName(), uid, potentialTime / HOUR_IN_SECONDS);
+                                    logger.info("{}(ID:{}) was arrested, tried to bribe the cops but he didn't have enough cash. He was jailed for {} hours.", member.getUser().getName(), uid, potentialTime / HOUR_IN_SECONDS);
                                     break;
                                 }
                                 try {
@@ -105,7 +105,7 @@ public class ArrestHandler {
                                     event.getHook().editOriginalComponents().queue();
                                     COOLDOWN_MANAGER.addCooldown("arrested", "Bribed", HOUR_IN_SECONDS / 4);
                                     buttonEvent.deferEdit().queue();
-                                    logger.info("{}(ID:{}) was arrested and bribed the cops with {} coins.", member.getEffectiveName(), uid, broCash / 2);
+                                    logger.info("{}(ID:{}) was arrested and bribed the cops with {} coins.", member.getUser().getName(), uid, broCash / 2);
                                     break;
                                 } catch (SQLException e) {
                                     throw new RuntimeException(e);
@@ -117,7 +117,7 @@ public class ArrestHandler {
                             event.getHook().editOriginalComponents().queue();
                             JailHelper.jailMember(member, potentialTime * 2, "BRIBERY");
                             buttonEvent.deferEdit().queue();
-                            logger.info("{}(ID:{}) was arrested and the cops didn't take his bribe. he was jailed for {} hours.", member.getEffectiveName(), uid, potentialTime / HOUR_IN_SECONDS);
+                            logger.info("{}(ID:{}) was arrested and the cops didn't take his bribe. he was jailed for {} hours.", member.getUser().getName(), uid, potentialTime / HOUR_IN_SECONDS);
 
                             break;
                     }

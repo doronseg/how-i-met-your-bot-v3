@@ -42,7 +42,7 @@ public class Main {
         logger.info("Logged in as {}.", jda.getSelfUser().getName());
         logger.info("Stage 2 complete!");
         RegisterEvents.registerEvents(jda);
-        logger.info("Attempting to establish database connection...");
+        logger.info("Attempting to establish database connection..");
         tryDb();
 
         // initial status change

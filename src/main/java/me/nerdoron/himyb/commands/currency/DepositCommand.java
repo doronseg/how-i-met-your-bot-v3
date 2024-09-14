@@ -48,11 +48,11 @@ public class DepositCommand extends SlashCommand {
             BROCOINS_SQL.updateBank(member, deposit);
             event.replyEmbeds(doneEmbed(member, deposit)).setEphemeral(true).queue();
             assert member != null;
-            logger.info("{}(ID:{}) deposited {} coins into his account.", member.getEffectiveName(), member.getId(), deposit);
+            logger.info("{}(ID:{}) deposited {} coins into his account.", member.getUser().getName(), member.getId(), deposit);
 
         } catch (SQLException e) {
             assert member != null;
-            logger.error("{} Tried to deposit cash, but an error has occurred.", member.getEffectiveName());
+            logger.error("{} Tried to deposit cash, but an error has occurred.", member.getUser().getName());
             e.printStackTrace();
             event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
         }

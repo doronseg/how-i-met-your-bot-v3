@@ -41,7 +41,7 @@ public class WorkCommand extends SlashCommand {
             event.replyEmbeds(CurrencyHelper.scammedEmbed).queue();
             COOLDOWN_MANAGER.addCooldown(commandID(event), 2 * HOUR_IN_SECONDS);
             assert member != null;
-            logger.info("{}(ID:{}) tried to work and got scammed.", member.getEffectiveName(), member.getId());
+            logger.info("{}(ID:{}) tried to work and got scammed.", member.getUser().getName(), member.getId());
             return;
         }
         try {
@@ -49,11 +49,11 @@ public class WorkCommand extends SlashCommand {
             BROCOINS_SQL.updateCash(member, reward);
             COOLDOWN_MANAGER.addCooldown(commandID(event), HOUR_IN_SECONDS);
             assert member != null;
-            logger.info("{}(ID:{}) won {} while working.", member.getEffectiveName(), member.getId(), reward);
+            logger.info("{}(ID:{}) won {} while working.", member.getUser().getName(), member.getId(), reward);
             event.replyEmbeds(workEmbed(reward)).queue();
         } catch (SQLException e) {
             assert member != null;
-            logger.error("{}(ID:{}) Tried to work, but an error has occurred.", member.getEffectiveName(), member.getId());
+            logger.error("{}(ID:{}) Tried to work, but an error has occurred.", member.getUser().getName(), member.getId());
             e.printStackTrace();
             event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
         }

@@ -79,12 +79,13 @@ public class RobUserCommand extends SlashCommand {
             try {
                 BROCOINS_SQL.updateCash(member, reward);
                 BROCOINS_SQL.updateCash(memberToRob, -reward);
-                logger.info("{}(ID:{}) won {} coins while robbing {}(ID:{}).", member.getEffectiveName(), member.getId(), reward, memberToRob.getEffectiveName(), memberToRob.getId());
+                logger.info("{}(ID:{}) won {} coins while robbing {}(ID:{}).", member.getUser().getName(), member.getId(), reward, memberToRob.
+                        getUser().getName(), memberToRob.getId());
                 event.reply(memberToRob.getAsMention()).addEmbeds(CurrencyHelper.successfulRobEmbed(memberToRob, reward)).queue();
                 COOLDOWN_MANAGER.addCooldown(commandID(event), "success", HOUR_IN_SECONDS / 2);
             } catch (SQLException e) {
                 event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
-                logger.error("{}(ID:{}) Tried to rob someone, but an error has occurred.", member.getEffectiveName(), member.getId());
+                logger.error("{}(ID:{}) Tried to rob someone, but an error has occurred.", member.getUser().getName(), member.getId());
                 e.printStackTrace();
             }
             return;
@@ -95,7 +96,7 @@ public class RobUserCommand extends SlashCommand {
         }
         event.reply(memberToRob.getAsMention()).addEmbeds(CurrencyHelper.unsuccessfulRobEmbed(memberToRob)).queue();
         COOLDOWN_MANAGER.addCooldown(commandID(event), "fail", HOUR_IN_SECONDS);
-        logger.error("{}(ID:{}) Tried to rob someone, but was unsuccessful.", member.getEffectiveName(), member.getId());
+        logger.error("{}(ID:{}) Tried to rob someone, but was unsuccessful.", member.getUser().getName(), member.getId());
 
     }
 

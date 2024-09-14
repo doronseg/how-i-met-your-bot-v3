@@ -78,15 +78,16 @@ public class TicketFileMonitor extends ListenerAdapter {
                         }
                         FileUpload file = FileUpload.fromData(temp);
 
-                        monitorChannel.sendMessage("From: " + member.getEffectiveName() + "\nIn channel: " + message.getChannel().getName()).addFiles(file).queue(
-                                (msgInMonitor) -> {
-                                    putToLinker(message.getId(), msgInMonitor.getAttachments().get(0).getProxyUrl());
-                                    delete.set(temp.delete());
-                                },
-                                (error) -> {
-                                    error.printStackTrace();
-                                    delete.set(temp.delete());
-                                });
+                        monitorChannel.sendMessage("From: " + member.getUser().getName() + "\nIn channel: " + message.getChannel().getName()).
+                                addFiles(file).queue(
+                                        (msgInMonitor) -> {
+                                            putToLinker(message.getId(), msgInMonitor.getAttachments().get(0).getProxyUrl());
+                                            delete.set(temp.delete());
+                                        },
+                                        (error) -> {
+                                            error.printStackTrace();
+                                            delete.set(temp.delete());
+                                        });
                     });
         }
     }

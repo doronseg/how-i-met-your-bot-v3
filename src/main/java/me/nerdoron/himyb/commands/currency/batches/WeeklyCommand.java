@@ -34,7 +34,7 @@ public class WeeklyCommand extends SlashCommand {
             Global.COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 7 * Global.DAY_IN_SECONDS);
             event.reply("You claimed your weekly batch of coins, and got " + reward + " " + Global.broCoin.getAsMention()
                     + ".").setEphemeral(true).queue();
-            logger.info("{}(ID:{}) got the weekly batch of coins, ({} Coins", Objects.requireNonNull(event.getMember()).getEffectiveName(), event.getMember().getId(), reward);
+            logger.info("{}(ID:{}) got the weekly batch of coins, ({} Coins", Objects.requireNonNull(event.getMember()).getUser().getName(), event.getMember().getId(), reward);
         } catch (SQLException e) {
             event.reply("Error!").setEphemeral(true).queue();
             e.printStackTrace();

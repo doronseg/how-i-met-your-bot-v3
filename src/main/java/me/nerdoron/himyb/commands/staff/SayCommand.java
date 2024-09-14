@@ -33,8 +33,9 @@ public class SayCommand extends SlashCommand {
         }
         event.getChannel().sendMessage(message).queue();
         event.deferReply().setEphemeral(true).setContent("Sent your message.").queue();
-        logsChannel.sendMessage(String.format("%s used say command in channel %s.", event.getUser().getEffectiveName(), event.getChannel().getAsMention())).queue();
-        logger.info("{} used say command in channel #{}.", event.getUser().getEffectiveName(), event.getChannel().getName());
+        logsChannel.sendMessage(String.format("%s used say command in channel %s.", event.getUser().getUser().getName(), event.getChannel().getAsMention())).
+                queue();
+        logger.info("{} used say command in channel #{}.", event.getUser().getUser().getName(), event.getChannel().getName());
 
     }
 

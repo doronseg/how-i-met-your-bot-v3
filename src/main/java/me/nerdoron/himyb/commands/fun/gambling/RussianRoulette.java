@@ -48,7 +48,7 @@ public class RussianRoulette extends SlashCommand {
         File video = getRandomRussianRoulette(rand);
         FileUpload file = FileUpload.fromData(video);
         event.reply(
-                        "You bet " + bet + " " + Global.broCoin.getAsMention() + " on " + number + ". Let's see if you won...")
+                        "You bet " + bet + " " + Global.broCoin.getAsMention() + " on " + number + ". Let's see if you won..")
                 .addFiles(file)
                 .queue();
 
@@ -60,7 +60,7 @@ public class RussianRoulette extends SlashCommand {
                 logger.info("{}(ID:{}) won a russian roulette while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
                 COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.HOUR_IN_SECONDS / 2);
             } catch (SQLException e) {
-                logger.error("{}(ID:{}) Tried to bet on russian roulette, but an error has occurred.", member.getEffectiveName(), member.getId());
+                logger.error("{}(ID:{}) Tried to bet on russian roulette, but an error has occurred.", member.getUser().getName(), member.getId());
                 e.printStackTrace();
                 event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
             }
@@ -72,7 +72,7 @@ public class RussianRoulette extends SlashCommand {
                 logger.info("{}(ID:{}) lost a russian roulette while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
                 COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.HOUR_IN_SECONDS / 2);
             } catch (SQLException e) {
-                logger.error("{}(ID:{}) Tried to bet on russian roulette, but an error has occurred.", member.getEffectiveName(), member.getId());
+                logger.error("{}(ID:{}) Tried to bet on russian roulette, but an error has occurred.", member.getUser().getName(), member.getId());
                 e.printStackTrace();
                 event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
             }

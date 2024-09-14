@@ -54,10 +54,10 @@ public class GiveCashCommand extends SlashCommand {
             BROCOINS_SQL.updateCash(memberToTransferTo, transfer);
             assert member != null;
             event.reply(memberToTransferTo.getAsMention()).addEmbeds(doneEmbed(member, memberToTransferTo, transfer)).queue();
-            logger.info("{}(ID:{}) gave {} coins cash to {}(ID:{}).", member.getEffectiveName(), member.getId(), transfer, memberToTransferTo.getEffectiveName(), memberToTransferTo.getId());
+            logger.info("{}(ID:{}) gave {} coins cash to {}(ID:{}).", member.getUser().getName(), member.getId(), transfer, memberToTransferTo.getUser().getName(), memberToTransferTo.getId());
         } catch (SQLException e) {
             assert member != null;
-            logger.error("{} Tried to transfer cash, but an error has occurred.", member.getEffectiveName());
+            logger.error("{} Tried to transfer cash, but an error has occurred.", member.getUser().getName());
             e.printStackTrace();
             event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
         }
@@ -69,7 +69,7 @@ public class GiveCashCommand extends SlashCommand {
                 .setTitle(broCoin.getAsMention() + " Cash transaction successful.")
                 .setDescription(member.getAsMention() + " gave " + transfer + " " + broCoin.getAsMention() + " in cash to " + memberToTransferTo.getAsMention() + ".")
                 .addField("Your Cash Balance", BROCOINS_SQL.getBroCash(member) + " " + broCoin.getAsMention(), true)
-                .addField(memberToTransferTo.getEffectiveName() + "'s Cash Balance", BROCOINS_SQL.getBroCash(memberToTransferTo) + " " + broCoin.getAsMention(), true)
+                .addField(memberToTransferTo.getUser().getName() + "'s Cash Balance", BROCOINS_SQL.getBroCash(memberToTransferTo) + " " + broCoin.getAsMention(), true)
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();

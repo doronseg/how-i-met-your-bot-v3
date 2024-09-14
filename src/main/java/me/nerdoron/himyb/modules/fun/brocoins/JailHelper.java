@@ -105,7 +105,7 @@ public class JailHelper {
         if (COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "ROBBERY")) return "`Robbery`";
 
 
-        logger.error("Unknown charge for member {}", member.getEffectiveName());
+        logger.error("Unknown charge for member {}", member.getUser().getName());
         return "ERROR";
     }
 

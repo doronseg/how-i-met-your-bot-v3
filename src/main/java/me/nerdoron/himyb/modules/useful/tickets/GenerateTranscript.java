@@ -1,8 +1,12 @@
 package me.nerdoron.himyb.modules.useful.tickets;
 
+import me.nerdoron.himyb.modules.bot.Database;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -40,6 +44,7 @@ public class GenerateTranscript {
             ArrayList<String> files = new ArrayList<>();
             for (String s : messageIdsFromDb) {
                 files.add("⛓️[" + s + "] ; ");
+                deleteFromLinker(s);
             }
 
             builder.append(parsed).append(tag).append(": ").append(content).append(files).append("\n");
@@ -60,5 +65,18 @@ public class GenerateTranscript {
                 + numberHelper(time.getSecond()) + "] ";
     }
 
+    private static void deleteFromLinker(String messageId) {
+        final Connection con = Database.connect();
+        assert con != null;
+        try {
+            String SQL = "DELETE from filemonitor where messageId=?";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, messageId);
+            ps.execute();
+            ps.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
 }

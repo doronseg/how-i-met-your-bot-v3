@@ -49,7 +49,7 @@ public class BroCoinsSQL {
             brocoins = rs.getInt(1);
             ps.close();
         } catch (SQLException e) {
-            logger.error("Error while attempting to retrieve {}'s cash balance from the DB ", member.getEffectiveName());
+            logger.error("Error while attempting to retrieve {}'s cash balance from the DB ", member.getUser().getName());
             e.printStackTrace();
             return 0;
         }
@@ -69,7 +69,7 @@ public class BroCoinsSQL {
             brocoins = rs.getInt(1);
             ps.close();
         } catch (SQLException e) {
-            logger.error("Error while attempting to retrieve {}'s bank balance from the DB ", member.getEffectiveName());
+            logger.error("Error while attempting to retrieve {}'s bank balance from the DB ", member.getUser().getName());
             e.printStackTrace();
             return 0;
         }

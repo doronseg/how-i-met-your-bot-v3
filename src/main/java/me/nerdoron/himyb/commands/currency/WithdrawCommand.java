@@ -48,10 +48,10 @@ public class WithdrawCommand extends SlashCommand {
             BROCOINS_SQL.updateBank(member, -withdraw);
             event.replyEmbeds(doneEmbed(member, withdraw)).setEphemeral(true).queue();
             assert member != null;
-            logger.info("{}(ID:{}) withdrew {} coins from his account.", member.getEffectiveName(), member.getId(), withdraw);
+            logger.info("{}(ID:{}) withdrew {} coins from his account.", member.getUser().getName(), member.getId(), withdraw);
         } catch (SQLException e) {
             assert member != null;
-            logger.error("{} Tried to withdraw cash, but an error has occurred.", member.getEffectiveName());
+            logger.error("{} Tried to withdraw cash, but an error has occurred.", member.getUser().getName());
             e.printStackTrace();
             event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
         }

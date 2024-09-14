@@ -34,7 +34,7 @@ public class MonthlyCommand extends SlashCommand {
             Global.COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 30 * Global.DAY_IN_SECONDS);
             event.reply("You claimed your monthly batch of coins, and got " + reward + " " + Global.broCoin.getAsMention()
                     + ".").setEphemeral(true).queue();
-            logger.info("{}(ID:{}) got the monthly batch of coins, ({} Coins", Objects.requireNonNull(event.getMember()).getEffectiveName(), event.getMember().getId(), reward);
+            logger.info("{}(ID:{}) got the monthly batch of coins, ({} Coins", Objects.requireNonNull(event.getMember()).getUser().getName(), event.getMember().getId(), reward);
         } catch (SQLException e) {
             event.reply("Error!").setEphemeral(true).queue();
             e.printStackTrace();

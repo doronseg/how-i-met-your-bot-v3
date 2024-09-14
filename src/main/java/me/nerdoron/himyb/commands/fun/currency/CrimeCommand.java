@@ -68,11 +68,11 @@ public class CrimeCommand extends SlashCommand {
                 BROCOINS_SQL.updateCash(member, reward);
                 COOLDOWN_MANAGER.addCooldown(commandID(event), "Success", HOUR_IN_SECONDS / 2);
                 assert member != null;
-                logger.info("{}(ID:{}) won {} while committing a crime.", member.getEffectiveName(), member.getId(), reward);
+                logger.info("{}(ID:{}) won {} while committing a crime.", member.getUser().getName(), member.getId(), reward);
                 event.replyEmbeds(successCrimeEmbed(reward)).queue();
             } catch (SQLException e) {
                 assert member != null;
-                logger.error("{}(ID:{}) Tried to commit a crime, but an error has occurred.", member.getEffectiveName(), member.getId());
+                logger.error("{}(ID:{}) Tried to commit a crime, but an error has occurred.", member.getUser().getName(), member.getId());
                 e.printStackTrace();
                 event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
             }
@@ -81,7 +81,7 @@ public class CrimeCommand extends SlashCommand {
             COOLDOWN_MANAGER.addCooldown(commandID(event), "BackOff", HOUR_IN_SECONDS);
             event.replyEmbeds(CurrencyHelper.backOffCrimeCommand()).queue();
             assert member != null;
-            logger.info("{}(ID:{}) tried to commit a crime, but the cops closed in on him.", member.getEffectiveName(), member.getId());
+            logger.info("{}(ID:{}) tried to commit a crime, but the cops closed in on him.", member.getUser().getName(), member.getId());
             return;
         }
         ArrestHandler.initialArrest(event, "GENERAL", 2 * HOUR_IN_SECONDS);

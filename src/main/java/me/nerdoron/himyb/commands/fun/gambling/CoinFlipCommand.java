@@ -53,7 +53,7 @@ public class CoinFlipCommand extends SlashCommand {
                 logger.info("{}(ID:{}) won a coin flip while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
                 COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.HOUR_IN_SECONDS / 2);
             } catch (SQLException e) {
-                logger.error("{}(ID:{}) Tried to flip a coin, but an error has occurred.", member.getEffectiveName(), member.getId());
+                logger.error("{}(ID:{}) Tried to flip a coin, but an error has occurred.", member.getUser().getName(), member.getId());
                 e.printStackTrace();
                 event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
             }
@@ -64,7 +64,7 @@ public class CoinFlipCommand extends SlashCommand {
                 logger.info("{}(ID:{}) lost a coin flip while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
                 Global.COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.HOUR_IN_SECONDS / 2);
             } catch (SQLException e) {
-                logger.error("{}(ID:{}) Tried to flip a coin, but an error has occurred.", member.getEffectiveName(), member.getId());
+                logger.error("{}(ID:{}) Tried to flip a coin, but an error has occurred.", member.getUser().getName(), member.getId());
                 e.printStackTrace();
                 event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
             }

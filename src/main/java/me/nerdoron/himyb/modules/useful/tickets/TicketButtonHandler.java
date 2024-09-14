@@ -40,7 +40,7 @@ public class TicketButtonHandler extends ListenerAdapter {
 
             switch (buttonCategory) {
                 case "ADMIN":
-                    String adminName = "admin-" + member.getEffectiveName();
+                    String adminName = "admin-" + member.getUser().getName();
                     TextChannel adminChannel = Objects.requireNonNull(guild.getCategoryById(categoryId))
                             .createTextChannel(adminName)
                             .addPermissionOverride(guild.getPublicRole(), new ArrayList<>(), perms)
@@ -55,7 +55,7 @@ public class TicketButtonHandler extends ListenerAdapter {
                             .queue();
                     break;
                 case "STAFF":
-                    String staffName = "ticket-" + member.getEffectiveName();
+                    String staffName = "ticket-" + member.getUser().getName();
                     TextChannel staffChannel = Objects.requireNonNull(guild.getCategoryById(categoryId))
                             .createTextChannel(staffName)
                             .addPermissionOverride(guild.getPublicRole(), new ArrayList<>(), perms)
