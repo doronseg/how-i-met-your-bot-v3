@@ -18,14 +18,13 @@ public class Global {
     public static final String jdaGithubLink = "https://github.com/discord-jda/JDA/releases/tag/v5.1.0";
     public static final String footertext = "how i met your bot " + botVersion + " | developed by Doron";
     public static final String footerpfp = "https://media.discordapp.net/attachments/850432082738937896/901742492347691028/discord_bot_pfp.jpg";
+    public static final CustomEmoji broCoin = fromCustom("brocoin", 997162208180064276L, false);
+    public static final CooldownManager COOLDOWN_MANAGER = new CooldownManager();
     // times
     public static final int HOUR_IN_SECONDS = 3600;
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
     public static final int SECONDS_IN_MS = 1000;
     public static final int MIN_IN_MS = SECONDS_IN_MS * 60;
-    // global definitions
-    public static final CustomEmoji broCoin = fromCustom("brocoin", 997162208180064276L, false);
-    public static final CooldownManager COOLDOWN_MANAGER = new CooldownManager();
     //public static final JailHandler JAIL_CHECKER = new JailHandler();
     public static final BroCoinsSQL BROCOINS_SQL = new BroCoinsSQL();
     public static BotCommandsHandler COMMANDS_HANDLER = new BotCommandsHandler();
