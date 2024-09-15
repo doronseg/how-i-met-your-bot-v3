@@ -9,7 +9,7 @@ import me.nerdoron.himyb.commands.fun.EightBallCommand;
 import me.nerdoron.himyb.commands.fun.currency.CrimeCommand;
 import me.nerdoron.himyb.commands.fun.currency.RobUserCommand;
 import me.nerdoron.himyb.commands.fun.currency.WorkCommand;
-import me.nerdoron.himyb.commands.fun.gambling.CoinFlipCommand;
+import me.nerdoron.himyb.commands.fun.gambling.CoinFlip;
 import me.nerdoron.himyb.commands.fun.gambling.RussianRoulette;
 import me.nerdoron.himyb.commands.staff.ReplyCommand;
 import me.nerdoron.himyb.commands.staff.ReviveCommand;
@@ -52,7 +52,7 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new RobUserCommand());
 
         //gambling
-        commands.add(new CoinFlipCommand());
+        commands.add(new CoinFlip());
         commands.add(new RussianRoulette());
 
         // currency

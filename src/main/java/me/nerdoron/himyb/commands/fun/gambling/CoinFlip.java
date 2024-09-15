@@ -19,8 +19,8 @@ import java.util.Objects;
 import static me.nerdoron.himyb.Global.BROCOINS_SQL;
 import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
 
-public class CoinFlipCommand extends SlashCommand {
-    private static final Logger logger = LoggingHandler.logger(CoinFlipCommand.class);
+public class CoinFlip extends SlashCommand {
+    private static final Logger logger = LoggingHandler.logger(CoinFlip.class);
 
     @SuppressWarnings("LoggingSimilarMessage")
     @Override
