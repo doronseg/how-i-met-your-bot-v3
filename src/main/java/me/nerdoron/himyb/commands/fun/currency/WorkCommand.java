@@ -35,7 +35,7 @@ public class WorkCommand extends SlashCommand {
                     .queue();
             return;
         }
-        int reward = Rng.generateNumber(1, 15);
+        int reward = Rng.generateNumber(10, 15);
         int chance = Rng.generateNumber(1, 100);
         if (chance == 50) {
             event.replyEmbeds(CurrencyHelper.scammedEmbed).queue();

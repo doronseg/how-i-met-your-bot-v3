@@ -6,6 +6,7 @@ import me.nerdoron.himyb.modules.bot.Rng;
 import me.nerdoron.himyb.modules.bot.SlashCommand;
 import me.nerdoron.himyb.modules.fun.brocoins.ArrestHandler;
 import me.nerdoron.himyb.modules.fun.brocoins.CurrencyHelper;
+import me.nerdoron.himyb.modules.fun.brocoins.JailHelper;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -26,6 +27,14 @@ public class RobUserCommand extends SlashCommand {
     public void execute(SlashCommandInteractionEvent event) {
         String remainingArrested = COOLDOWN_MANAGER.parseCooldown("arrested");
         String remainingRobUser = COOLDOWN_MANAGER.parseCooldown(CooldownManager.commandID(event));
+
+        Member member = event.getMember();
+        assert member != null;
+
+        if (JailHelper.checkIfInJail(member)) {
+            event.replyEmbeds(JailHelper.inJailEmbed(member)).queue();
+            return;
+        }
 
         if (COOLDOWN_MANAGER.hasTag("arrested", "Ran")) {
             event.reply("The cops are looking for you! Don't provoke them, Try again in " + remainingArrested).setEphemeral(true)
@@ -51,8 +60,6 @@ public class RobUserCommand extends SlashCommand {
             return;
         }
 
-        Member member = event.getMember();
-        assert member != null;
         Member memberToRob = Objects.requireNonNull(event.getInteraction().getOption("user")).getAsMember();
         assert memberToRob != null;
         if (!BROCOINS_SQL.hasAccount(memberToRob)) {
