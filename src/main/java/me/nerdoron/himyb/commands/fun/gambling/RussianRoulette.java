@@ -56,7 +56,7 @@ public class RussianRoulette extends SlashCommand {
             // win
             try {
                 BROCOINS_SQL.updateCash(event.getMember(), 2 * bet);
-                event.getHook().editOriginal(String.format("You bet %d %s on %d and won %d %s!", bet, Global.broCoin.getAsMention(), number, bet * 2, Global.broCoin.getAsMention())).queueAfter(10, TimeUnit.SECONDS);
+                event.getHook().editOriginal(String.format("You bet %d %s on %d and won %d %s!", bet, Global.broCoin.getAsMention(), number, bet * 3, Global.broCoin.getAsMention())).queueAfter(10, TimeUnit.SECONDS);
                 logger.info("{}(ID:{}) won a russian roulette while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
                 COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.HOUR_IN_SECONDS / 2);
             } catch (SQLException e) {
@@ -97,7 +97,6 @@ public class RussianRoulette extends SlashCommand {
 
     private Boolean doesWin(int rand, int num) {
         return rand == num;
-
     }
 
 
