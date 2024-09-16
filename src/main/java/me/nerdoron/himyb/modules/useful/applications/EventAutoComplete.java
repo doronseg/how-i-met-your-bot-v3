@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class EventAutoComplete extends ListenerAdapter {
-    String[] positions = new String[]{
+    final String[] positions = new String[]{
             "Event Manager"
     };
 

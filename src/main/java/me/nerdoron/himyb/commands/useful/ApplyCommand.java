@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class ApplyCommand extends SlashCommand {
 
-    EventModal eventModal = new EventModal();
+    final EventModal eventModal = new EventModal();
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
