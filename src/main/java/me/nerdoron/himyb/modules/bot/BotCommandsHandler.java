@@ -10,6 +10,7 @@ import me.nerdoron.himyb.commands.fun.currency.CrimeCommand;
 import me.nerdoron.himyb.commands.fun.currency.RobUserCommand;
 import me.nerdoron.himyb.commands.fun.currency.WorkCommand;
 import me.nerdoron.himyb.commands.fun.gambling.CoinFlip;
+import me.nerdoron.himyb.commands.fun.gambling.LuckyDraw;
 import me.nerdoron.himyb.commands.fun.gambling.RussianRoulette;
 import me.nerdoron.himyb.commands.staff.ReplyCommand;
 import me.nerdoron.himyb.commands.staff.ReviveCommand;
@@ -37,6 +38,8 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new ContributeCommand());
         commands.add(new HelpCommand(this));
         commands.add(new BugReportCommand());
+        commands.add(new OddsCommand());
+        commands.add(new TosCommand());
 
         //staff
         commands.add(new ReviveCommand());
@@ -54,6 +57,7 @@ public class BotCommandsHandler extends ListenerAdapter {
         //gambling
         commands.add(new CoinFlip());
         commands.add(new RussianRoulette());
+        commands.add(new LuckyDraw());
 
         // currency
         commands.add(new BalanceCommand());
@@ -65,7 +69,6 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new DailyCommand());
         commands.add(new WeeklyCommand());
         commands.add(new MonthlyCommand());
-        commands.add(new OddsCommand());
 
     }
 
