@@ -49,6 +49,8 @@ CREATE TABLE "brocoins" (
 );
 ```
 
-## License
+## Legal
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT License](https://choosealicense.com/licenses/mit/)\
+[TOS](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/Terms-Of-Service)\
+[Privacy Policy](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/Privacy-Policy)
