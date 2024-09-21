@@ -5,6 +5,7 @@ import me.nerdoron.himyb.modules.bot.CooldownManager;
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.bot.Rng;
 import me.nerdoron.himyb.modules.bot.SlashCommand;
+import me.nerdoron.himyb.modules.fun.brocoins.JailHelper;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -25,11 +26,16 @@ public class CoinFlip extends SlashCommand {
     @SuppressWarnings("LoggingSimilarMessage")
     @Override
     public void execute(SlashCommandInteractionEvent event) {
+
         String type = Objects.requireNonNull(event.getOption("type")).getAsString();
         int bet = Objects.requireNonNull(event.getOption("bet")).getAsInt();
         int rng = Rng.generateNumber(1, 2);
         Member member = event.getMember();
         assert member != null;
+        if (JailHelper.checkIfInJail(member)) {
+            event.replyEmbeds(JailHelper.inJailEmbed(member)).queue();
+            return;
+        }
         if (COOLDOWN_MANAGER.hasCooldown(CooldownManager.commandID(event))) {
             String remaining = COOLDOWN_MANAGER.parseCooldown(CooldownManager.commandID(event));
             event.reply("Don't pull a Kira and get addicted to gambling! You can do it again in " + remaining)

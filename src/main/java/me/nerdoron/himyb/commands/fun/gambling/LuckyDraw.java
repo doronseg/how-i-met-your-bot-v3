@@ -5,6 +5,7 @@ import me.nerdoron.himyb.modules.bot.CooldownManager;
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.bot.Rng;
 import me.nerdoron.himyb.modules.bot.SlashCommand;
+import me.nerdoron.himyb.modules.fun.brocoins.JailHelper;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -28,6 +29,10 @@ public class LuckyDraw extends SlashCommand {
     public void execute(SlashCommandInteractionEvent event) {
         Member member = event.getMember();
         assert member != null;
+        if (JailHelper.checkIfInJail(member)) {
+            event.replyEmbeds(JailHelper.inJailEmbed(member)).queue();
+            return;
+        }
         if (COOLDOWN_MANAGER.hasCooldown(CooldownManager.commandID(event))) {
             String time = COOLDOWN_MANAGER.parseCooldown(CooldownManager.commandID(event));
             event.reply("Chill out bucko! I know it's tempting... " + time).setEphemeral(true)
