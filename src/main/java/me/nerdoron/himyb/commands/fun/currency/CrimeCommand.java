@@ -60,7 +60,7 @@ public class CrimeCommand extends SlashCommand {
         }
 
         int chance = Rng.generateNumber(1, 300);
-        int reward = Rng.generateNumber(20, 30);
+        int reward = Rng.generateNumber(50, 75);
         // success
         if (chance % 3 == 0) {
             try {
