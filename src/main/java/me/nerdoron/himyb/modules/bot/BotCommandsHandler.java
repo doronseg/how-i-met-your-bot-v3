@@ -12,10 +12,7 @@ import me.nerdoron.himyb.commands.fun.currency.WorkCommand;
 import me.nerdoron.himyb.commands.fun.gambling.CoinFlip;
 import me.nerdoron.himyb.commands.fun.gambling.LuckyDraw;
 import me.nerdoron.himyb.commands.fun.gambling.RussianRoulette;
-import me.nerdoron.himyb.commands.staff.ReplyCommand;
-import me.nerdoron.himyb.commands.staff.ReviveCommand;
-import me.nerdoron.himyb.commands.staff.SayCommand;
-import me.nerdoron.himyb.commands.staff.SendPanelsCommand;
+import me.nerdoron.himyb.commands.staff.*;
 import me.nerdoron.himyb.commands.useful.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -49,6 +46,7 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new ReplyCommand());
         commands.add(new SendPanelsCommand());
         commands.add(new ApplyCommand());
+        commands.add(new RemoveBirthdayCommand());
 
         //fun
         commands.add(new EightBallCommand());
