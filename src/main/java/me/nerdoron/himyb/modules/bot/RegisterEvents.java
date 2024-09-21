@@ -8,6 +8,8 @@ import me.nerdoron.himyb.modules.fun.server.LeaveJoin;
 import me.nerdoron.himyb.modules.useful.HelpHandler;
 import me.nerdoron.himyb.modules.useful.applications.EventAutoComplete;
 import me.nerdoron.himyb.modules.useful.applications.EventManagerApplicationHandler;
+import me.nerdoron.himyb.modules.useful.birthdays.BirthdayFunction;
+import me.nerdoron.himyb.modules.useful.birthdays.BirthdayModalHandler;
 import me.nerdoron.himyb.modules.useful.tickets.TicketButtonHandler;
 import me.nerdoron.himyb.modules.useful.tickets.TicketFileMonitor;
 import net.dv8tion.jda.api.JDA;
@@ -27,6 +29,10 @@ public class RegisterEvents {
         jda.addEventListener(new FriendsCringe());
         jda.addEventListener(new Sweden());
         jda.addEventListener(new LeaveJoin());
+
+        //birthdays
+        jda.addEventListener(new BirthdayModalHandler());
+        jda.addEventListener(new BirthdayFunction());
 
         // useful
         jda.addEventListener(new HelpHandler());

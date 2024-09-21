@@ -47,6 +47,13 @@ CREATE TABLE "brocoins" (
 	"bank"	INTEGER,
 	PRIMARY KEY("uid")
 );
+
+CREATE TABLE "birthday" (
+	"uid"	TEXT UNIQUE,
+	"day"	INTEGER,
+	"month"	INTEGER,
+	PRIMARY KEY("uid")
+);
 ```
 
 ## Legal
