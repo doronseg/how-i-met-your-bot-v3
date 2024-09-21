@@ -1,7 +1,6 @@
 package me.nerdoron.himyb.modules.useful.birthdays;
 
 import me.nerdoron.himyb.Global;
-import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.fun.brocoins.BroCoinsSQL;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
@@ -13,7 +12,6 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 
 public class BirthdayFunction extends ListenerAdapter {
 
-    private static final Logger logger = LoggingHandler.logger(BirthdayFunction.class);
     final BroCoinsSQL broCoinsSQL = new BroCoinsSQL();
     final BirthdayChecks birthdayChecks = new BirthdayChecks();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -56,7 +53,6 @@ public class BirthdayFunction extends ListenerAdapter {
         assert channel != null;
 
         ArrayList<String> birthdaysUserIDs = birthdayChecks.getBirthdays(day, month);
-        logger.info(birthdaysUserIDs.toString());
 
         guild.findMembersWithRoles(role).onSuccess(members -> {
             boolean someoneHasBdayRole = false;

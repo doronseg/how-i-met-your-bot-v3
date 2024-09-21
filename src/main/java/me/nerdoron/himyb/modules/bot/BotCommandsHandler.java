@@ -41,6 +41,7 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new OddsCommand());
         commands.add(new TosCommand());
         commands.add(new BirthdayCommand());
+        commands.add(new SelfPromoCommand());
 
         //staff
         commands.add(new ReviveCommand());
