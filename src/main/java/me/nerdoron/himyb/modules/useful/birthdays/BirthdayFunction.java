@@ -25,10 +25,9 @@ import java.util.concurrent.TimeUnit;
 public class BirthdayFunction extends ListenerAdapter {
 
     private static final Logger logger = LoggingHandler.logger(BirthdayFunction.class);
+    final BroCoinsSQL broCoinsSQL = new BroCoinsSQL();
+    final BirthdayChecks birthdayChecks = new BirthdayChecks();
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-    BroCoinsSQL broCoinsSQL = new BroCoinsSQL();
-    BirthdayChecks birthdayChecks = new BirthdayChecks();
 
     @Override
     public void onReady(@NotNull ReadyEvent event) {

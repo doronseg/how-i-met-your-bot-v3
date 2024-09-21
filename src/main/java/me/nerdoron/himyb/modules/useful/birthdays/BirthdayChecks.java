@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public class BirthdayChecks {
     private static final Logger logger = LoggingHandler.logger(BirthdayChecks.class);
+    @SuppressWarnings("CanBeFinal")
     Connection con = Database.connect();
 
     public boolean hasBirthday(String uid) {

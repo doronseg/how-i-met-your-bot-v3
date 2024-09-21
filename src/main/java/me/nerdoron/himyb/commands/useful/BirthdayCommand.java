@@ -11,7 +11,7 @@ import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 public class BirthdayCommand extends SlashCommand {
 
     final BirthdayModal birthdayModal = new BirthdayModal();
-    BirthdayChecks birthdayChecks = new BirthdayChecks();
+    final BirthdayChecks birthdayChecks = new BirthdayChecks();
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {

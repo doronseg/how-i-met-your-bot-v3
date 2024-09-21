@@ -13,7 +13,6 @@ import java.util.Objects;
 
 public class BirthdayModalHandler extends ListenerAdapter {
     private static final Logger logger = LoggingHandler.logger(BirthdayChecks.class);
-    BirthdayChecks birthdaySQL = new BirthdayChecks();
 
     int getDaysInMonth(int month) {
         switch (month) {

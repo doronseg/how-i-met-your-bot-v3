@@ -25,7 +25,6 @@ public class Global {
     public static final int DAY_IN_SECONDS = HOUR_IN_SECONDS * 24;
     public static final int SECONDS_IN_MS = 1000;
     public static final int MIN_IN_MS = SECONDS_IN_MS * 60;
-    public static final int HOUR_IN_MS = SECONDS_IN_MS * HOUR_IN_SECONDS;
     //public static final JailHandler JAIL_CHECKER = new JailHandler();
     public static final BroCoinsSQL BROCOINS_SQL = new BroCoinsSQL();
     public static BotCommandsHandler COMMANDS_HANDLER = new BotCommandsHandler();
