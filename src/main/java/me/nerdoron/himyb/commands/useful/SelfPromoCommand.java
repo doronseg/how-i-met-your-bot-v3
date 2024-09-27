@@ -11,7 +11,7 @@ import java.util.Objects;
 
 public class SelfPromoCommand extends SlashCommand {
 
-    SelfPromoModal selfPromoModal = new SelfPromoModal();
+    final SelfPromoModal selfPromoModal = new SelfPromoModal();
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {

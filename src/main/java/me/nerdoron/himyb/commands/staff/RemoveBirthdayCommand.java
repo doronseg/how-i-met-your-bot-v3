@@ -17,7 +17,7 @@ import java.sql.SQLException;
 import java.util.Objects;
 
 public class RemoveBirthdayCommand extends SlashCommand {
-    BirthdayChecks birthdayChecks = new BirthdayChecks();
+    final BirthdayChecks birthdayChecks = new BirthdayChecks();
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {

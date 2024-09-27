@@ -7,29 +7,27 @@ import net.dv8tion.jda.api.interactions.modals.Modal;
 
 public class SelfPromoModal {
 
-    TextInput link = TextInput
-            .create("selfpromo-link", "What is the link you want to promote?", TextInputStyle.SHORT)
-            .setRequired(true)
-            .setMaxLength(100)
-            .setPlaceholder("discord.gg/himym")
-            .build();
-
-    TextInput description = TextInput
+    final TextInput description = TextInput
             .create("selfpromo-desc", "Describe what you want to promote:", TextInputStyle.PARAGRAPH)
             .setMinLength(10)
             .setMaxLength(1000)
             .setRequired(true)
             .setPlaceholder("This is an epic server I created, everyone should join it!")
             .build();
-
-    TextInput additional = TextInput
+    final TextInput link = TextInput
+            .create("selfpromo-link", "What is the link you want to promote?", TextInputStyle.SHORT)
+            .setRequired(true)
+            .setMaxLength(100)
+            .setPlaceholder("discord.gg/himym")
+            .build();
+    final TextInput additional = TextInput
             .create("selfpromo-additional", "Any additional information?", TextInputStyle.PARAGRAPH)
             .setPlaceholder("This is a discord partnered server!")
             .setRequired(false)
             .setMaxLength(1000)
             .build();
 
-    public Modal modal = Modal.create("selfpromo-modal", "Submit a link for Self Promotion.")
+    public final Modal modal = Modal.create("selfpromo-modal", "Submit a link for Self Promotion.")
             .addComponents(ActionRow.of(link), ActionRow.of(description), ActionRow.of(additional)).build();
 
 }
