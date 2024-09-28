@@ -7,6 +7,7 @@ import me.nerdoron.himyb.modules.fun.brocoins.BroCoinsSQL;
 import net.dv8tion.jda.api.entities.emoji.CustomEmoji;
 
 import java.awt.*;
+import java.time.Duration;
 
 import static net.dv8tion.jda.api.entities.emoji.Emoji.fromCustom;
 
@@ -27,6 +28,7 @@ public class Global {
     public static final int MIN_IN_MS = SECONDS_IN_MS * 60;
     //public static final JailHandler JAIL_CHECKER = new JailHandler();
     public static final BroCoinsSQL BROCOINS_SQL = new BroCoinsSQL();
+    public static final Duration TIMEOUT_DURATION = Duration.ofMinutes(5);
     public static BotCommandsHandler COMMANDS_HANDLER = new BotCommandsHandler();
     @SuppressWarnings("unused")
     public static Dotenv dotenvg;

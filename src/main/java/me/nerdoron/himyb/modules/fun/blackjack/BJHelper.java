@@ -169,7 +169,7 @@ public class BJHelper {
             BJCard firstCard = cards.get(0);
             int firstCardValue = firstCard.getNumber();
             sb.append(firstCard.getCard()).append(" (").append(firstCardValue).append(") ");
-            return sb.append("❔ (Total: ?)").toString().trim();
+            return sb.append(BJCard.backOfCard.getAsMention()).append(" (Total: ?)").toString().trim();
         }
 
         for (BJCard card : cards) {

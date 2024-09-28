@@ -12,14 +12,12 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.slf4j.Logger;
 
 import java.sql.SQLException;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import static me.nerdoron.himyb.Global.BROCOINS_SQL;
-import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
+import static me.nerdoron.himyb.Global.*;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class BJHandler {
@@ -79,10 +77,9 @@ public class BJHandler {
 
     // handle blackjack game
     private void bjGame(SlashCommandInteractionEvent event, int bet, Member member, String uid, List<BJCard> userHand, List<BJCard> deck, List<BJCard> botHand) {
-        final Duration timeout = Duration.ofMinutes(5);
         event.getJDA().listenOnce(ButtonInteractionEvent.class)
                 .filter(buttonInteractionEvent -> buttonInteractionEvent.getChannel().getId().equals(event.getChannel().getId()))
-                .timeout(timeout, () -> {
+                .timeout(TIMEOUT_DURATION, () -> {
                     event.getHook().editOriginalEmbeds(BJHelper.blackJackTimeOut(bet)).queue();
                     event.getHook().editOriginalComponents().queue();
                     COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
