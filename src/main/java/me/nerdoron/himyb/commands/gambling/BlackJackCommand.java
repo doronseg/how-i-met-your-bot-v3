@@ -60,7 +60,7 @@ public class BlackJackCommand extends SlashCommand {
     @Override
     public SlashCommandData getSlash() {
         SlashCommandData cmd = Commands.slash("blackjack", "Play a round of blackjack with the bot as the dealer");
-        OptionData bet = new OptionData(OptionType.INTEGER, "bet", "How many BroCoins you wanna bet", true);
+        OptionData bet = new OptionData(OptionType.INTEGER, "bet", "How many BroCoins do you want to bet?", true);
         bet.setMinValue(25);
         cmd.addOptions(bet);
         return cmd;
