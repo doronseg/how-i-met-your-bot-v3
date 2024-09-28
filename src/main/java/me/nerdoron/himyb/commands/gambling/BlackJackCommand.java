@@ -1,4 +1,4 @@
-package me.nerdoron.himyb.commands.fun.gambling;
+package me.nerdoron.himyb.commands.gambling;
 
 import me.nerdoron.himyb.modules.bot.CooldownManager;
 import me.nerdoron.himyb.modules.bot.SlashCommand;

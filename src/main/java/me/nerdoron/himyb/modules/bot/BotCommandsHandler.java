@@ -9,10 +9,10 @@ import me.nerdoron.himyb.commands.fun.EightBallCommand;
 import me.nerdoron.himyb.commands.fun.currency.CrimeCommand;
 import me.nerdoron.himyb.commands.fun.currency.RobUserCommand;
 import me.nerdoron.himyb.commands.fun.currency.WorkCommand;
-import me.nerdoron.himyb.commands.fun.gambling.BlackJackCommand;
-import me.nerdoron.himyb.commands.fun.gambling.CoinFlip;
-import me.nerdoron.himyb.commands.fun.gambling.LuckyDraw;
-import me.nerdoron.himyb.commands.fun.gambling.RussianRoulette;
+import me.nerdoron.himyb.commands.gambling.BlackJackCommand;
+import me.nerdoron.himyb.commands.gambling.CoinFlip;
+import me.nerdoron.himyb.commands.gambling.LuckyDraw;
+import me.nerdoron.himyb.commands.gambling.RussianRoulette;
 import me.nerdoron.himyb.commands.staff.*;
 import me.nerdoron.himyb.commands.useful.*;
 import net.dv8tion.jda.api.JDA;
@@ -102,6 +102,8 @@ public class BotCommandsHandler extends ListenerAdapter {
                 return "🦩 Fun Commands";
             case "currency":
                 return "🪙 Currency Commands";
+            case "gambling":
+                return "\uD83C\uDFB0 Gambling Commands";
             default:
                 return null;
         }
