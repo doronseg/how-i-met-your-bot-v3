@@ -1,6 +1,7 @@
 package me.nerdoron.himyb.modules.bot;
 
 import me.nerdoron.himyb.modules.fun.autoresponses.FriendsCringe;
+import me.nerdoron.himyb.modules.fun.autoresponses.Major;
 import me.nerdoron.himyb.modules.fun.autoresponses.Sweden;
 import me.nerdoron.himyb.modules.fun.counting.CountingChannelHandler;
 import me.nerdoron.himyb.modules.fun.counting.CountingEditing;
@@ -30,6 +31,7 @@ public class RegisterEvents {
         //fun
         jda.addEventListener(new FriendsCringe());
         jda.addEventListener(new Sweden());
+        jda.addEventListener(new Major());
         jda.addEventListener(new LeaveJoin());
 
         //birthdays
