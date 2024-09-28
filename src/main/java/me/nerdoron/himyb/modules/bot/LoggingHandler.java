@@ -30,7 +30,11 @@ public class LoggingHandler {
         }
         if (clazz.getName().contains("modules.fun.blackjack")) {
             String[] dots = clazz.getName().split("\\.");
-            return getTimeStamp() + " Blackjack > " + dots[dots.length - 1];
+            return getTimeStamp() + " BLACKJACK > " + dots[dots.length - 1];
+        }
+        if (clazz.getName().contains("modules.fun.texasholdem")) {
+            String[] dots = clazz.getName().split("\\.");
+            return getTimeStamp() + " TEXAS HOLD'EM > " + dots[dots.length - 1];
         }
         if (clazz.getName().contains("Main")) {
             String[] dots = clazz.getName().split("\\.");
