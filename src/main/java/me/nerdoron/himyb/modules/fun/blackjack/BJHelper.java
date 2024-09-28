@@ -59,7 +59,7 @@ public class BJHelper {
     public static MessageEmbed resolveGame(int bet, List<BJCard> userCards, List<BJCard> dealerCards, List<BJCard> deck, Member member) throws SQLException {
         String result;
         int userHand = getHandValue(userCards);
-        int botHand = getHandValue(dealerCards);
+        int botHand;
 
         if (userHand == 21) {
             endBjGame(member);
@@ -68,8 +68,8 @@ public class BJHelper {
             return new EmbedBuilder()
                     .setTitle("♣️♦️ Blackjack - Game Over")
                     .setDescription(result)
-                    .addField("Your cards:", formatCardListWithValues(userCards, true), false) // Show full hand and individual card values
-                    .addField("My cards:", formatCardListWithValues(dealerCards, true), false)
+                    .addField("Your cards:", formatCardListWithValues(userCards, true), false)
+                    .addField("My cards:", formatCardListWithValues(dealerCards, false), false)
                     .setColor(Global.embedColor)
                     .setFooter(Global.footertext, Global.footerpfp)
                     .build();
@@ -81,12 +81,10 @@ public class BJHelper {
         }
         botHand = getHandValue(dealerCards);
 
-        logger.info("Userhand: {} | Bothand: {}", userHand, botHand);
 
         if (userHand > 21) {
             result = String.format("You busted! You lose %d %s.", bet, Global.broCoin.getAsMention());
             BROCOINS_SQL.updateCash(member, -bet);
-            logger.info("Bust");
             logger.info("{}(ID:{}) played blackjack for {} and lost.", member.getUser().getName(), member.getId(), bet);
             endBjGame(member);
             return new EmbedBuilder()
@@ -99,26 +97,21 @@ public class BJHelper {
                     .build();
         } else if (userHand > botHand) {
             result = String.format("You win! You earned %d %s.", bet, Global.broCoin.getAsMention());
-            logger.info("userHand > botHand");
             logger.info("{}(ID:{}) played blackjack for {} and won.", member.getUser().getName(), member.getId(), bet);
             BROCOINS_SQL.updateCash(member, bet);
         } else if (botHand > 21) {
             result = String.format("You win! You earned %d %s.", bet, Global.broCoin.getAsMention());
-            logger.info("bothand > 21");
             logger.info("{}(ID:{}) played blackjack for {} and won.", member.getUser().getName(), member.getId(), bet);
             BROCOINS_SQL.updateCash(member, bet);
         } else if (userHand == botHand) {
             result = String.format("It's a tie. You get your bet back of %d %s back.", bet, Global.broCoin.getAsMention());
-            logger.info("userhand = bothand");
             logger.info("{}(ID:{}) played blackjack for {} and tied.", member.getUser().getName(), member.getId(), bet);
         } else if (botHand == 21) {
             result = String.format("Bot wins. You lose %d %s.", bet, Global.broCoin.getAsMention());
-            logger.info("bothand==21");
             logger.info("{}(ID:{}) played blackjack for {} and lost.", member.getUser().getName(), member.getId(), bet);
             BROCOINS_SQL.updateCash(member, -bet);
         } else {
             result = String.format("Bot wins. You lose %d %s.", bet, Global.broCoin.getAsMention());
-            logger.info("else");
             logger.info("{}(ID:{}) played blackjack for {} and lost.", member.getUser().getName(), member.getId(), bet);
             BROCOINS_SQL.updateCash(member, -bet);
         }
