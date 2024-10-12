@@ -12,10 +12,13 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
+import net.dv8tion.jda.api.utils.FileUpload;
 import org.slf4j.Logger;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 import static me.nerdoron.himyb.Global.BROCOINS_SQL;
 import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
@@ -51,22 +54,30 @@ public class CoinFlip extends SlashCommand {
             return;
         }
 
+        File video = getHeadsOrTails(rng);
+        FileUpload file = FileUpload.fromData(video);
+        event.reply(
+                        String.format("You bet %d %s on %s Let's see if you won..", bet, Global.broCoin.getAsMention(), result))
+                .addFiles(file)
+                .queue();
+
+
         if (type.equals(result)) {
             // win
             try {
                 BROCOINS_SQL.updateCash(event.getMember(), bet);
-                event.reply(String.format("%s bet %d %s on a coin flip, won, and doubled their bet!", member.getAsMention(), bet, Global.broCoin.getAsMention())).queue();
+                event.getHook().editOriginal(String.format("%s bet %d %s on a coin flip, won, and doubled their bet!", member.getAsMention(), bet, Global.broCoin.getAsMention())).queueAfter(10, TimeUnit.SECONDS);
                 logger.info("{}(ID:{}) won a coin flip while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
                 COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.HOUR_IN_SECONDS / 2);
             } catch (SQLException e) {
                 logger.error("{}(ID:{}) Tried to flip a coin, but an error has occurred.", member.getUser().getName(), member.getId());
                 e.printStackTrace();
-                event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
+                event.reply("An error has occurred. Don't worry, you haven't lost your bet.").setEphemeral(true).queue();
             }
         } else {
             try {
                 BROCOINS_SQL.updateCash(event.getMember(), -(bet));
-                event.reply((String.format("%s bet %d %s on a coin flip, lost, and lost their bet!", member.getAsMention(), bet, Global.broCoin.getAsMention()))).queue();
+                event.getHook().editOriginal((String.format("%s bet %d %s on a coin flip, lost, and lost their bet!", member.getAsMention(), bet, Global.broCoin.getAsMention()))).queueAfter(10, TimeUnit.SECONDS);
                 logger.info("{}(ID:{}) lost a coin flip while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
                 Global.COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.HOUR_IN_SECONDS / 2);
             } catch (SQLException e) {
@@ -88,5 +99,16 @@ public class CoinFlip extends SlashCommand {
 
         coinflip.addOptions(bet, heads_tails);
         return coinflip;
+    }
+
+
+    private File getHeadsOrTails(int rng) {
+        if (rng == 1) {
+            // Heads
+            return new File("videos/coinflip1.mp4");
+        } else
+            //tails
+            return new File("videos/coinflip2.mp4");
+
     }
 }

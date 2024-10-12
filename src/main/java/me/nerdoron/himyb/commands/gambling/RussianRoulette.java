@@ -53,7 +53,7 @@ public class RussianRoulette extends SlashCommand {
         File video = getRandomRussianRoulette(rand);
         FileUpload file = FileUpload.fromData(video);
         event.reply(
-                        "You bet " + bet + " " + Global.broCoin.getAsMention() + " on " + number + ". Let's see if you won..")
+                        String.format("You bet %d %s on %d. Let's see if you won..", bet, Global.broCoin.getAsMention(), number))
                 .addFiles(file)
                 .queue();
 
