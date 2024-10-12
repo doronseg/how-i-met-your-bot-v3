@@ -14,8 +14,7 @@ public class LeaveJoin extends ListenerAdapter {
     public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
         TextChannel joinLeaves = event.getGuild().getTextChannelById("867770758976372766");
         assert joinLeaves != null;
-        joinLeaves.sendMessage("**" + event.getUser().getName() + "**#" + event.getUser().getDiscriminator()
-                + " is now the Blitz! <:awman:853645381215715360>").queue();
+        joinLeaves.sendMessage(String.format("**%s** is now the Blitz! <:awman:853645381215715360>", event.getUser().getName())).queue();
         updateChannelName(event.getGuild());
     }
 
@@ -23,8 +22,7 @@ public class LeaveJoin extends ListenerAdapter {
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
         TextChannel joinLeaves = event.getGuild().getTextChannelById("867770758976372766");
         assert joinLeaves != null;
-        joinLeaves.sendMessage("Welcome " + event.getMember().getAsMention()
-                + ", to **how i met your discord** <:hello:851462988153618452>").queue();
+        joinLeaves.sendMessage(String.format("Welcome %s, to **how i met your discord** <:hello:851462988153618452>", event.getMember().getAsMention())).queue();
         updateChannelName(event.getGuild());
 
     }
