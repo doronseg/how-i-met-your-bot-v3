@@ -55,7 +55,7 @@ public class HiLoCommand extends SlashCommand {
     public SlashCommandData getSlash() {
         SlashCommandData cmd = Commands.slash("hilo", "Play a round of Hi-Lo");
         OptionData bet = new OptionData(OptionType.INTEGER, "bet", "How many BroCoins do you want to enter with?", true);
-        bet.setMinValue(40);
+        bet.setMinValue(25);
         cmd.addOptions(bet);
         return cmd;
     }
