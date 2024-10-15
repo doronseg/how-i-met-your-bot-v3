@@ -171,7 +171,7 @@ public class HiLoHandler {
                     if (noOfRounds == 1) {
                         winnings = bet * 2;
                     } else {
-                        winnings = bet + game.getWinnings();
+                        winnings = game.getWinnings() * 2;
                     }
 
                     switch (buttonCategory) {
