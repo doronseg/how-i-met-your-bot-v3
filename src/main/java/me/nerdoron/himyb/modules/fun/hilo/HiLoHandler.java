@@ -214,7 +214,7 @@ public class HiLoHandler {
     private void lower(SlashCommandInteractionEvent event, HiLoGame game, Member member, String uid, HiLoCard newCard, HiLoCard nextCard, int noOfRounds, ButtonInteractionEvent buttonInteractionEvent, int winnings) {
         buttonInteractionEvent.deferEdit().queue();
         if (!higherOrLower(nextCard, newCard)) {
-            game.setWinnings(game.getWinnings() + game.getBet());
+            game.setWinnings(winnings);
             game.setNoOfRounds(noOfRounds + 1);
             handleGame(event, game, member);
             return;

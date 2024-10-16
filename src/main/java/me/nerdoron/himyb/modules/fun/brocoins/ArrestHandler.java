@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import static me.nerdoron.himyb.Global.*;
 
-@SuppressWarnings("ResultOfMethodCallIgnored")
 public class ArrestHandler {
     private static final Logger logger = LoggingHandler.logger(ArrestHandler.class);
 
