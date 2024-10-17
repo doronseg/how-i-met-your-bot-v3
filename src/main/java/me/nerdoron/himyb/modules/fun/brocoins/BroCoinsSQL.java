@@ -1,8 +1,11 @@
 package me.nerdoron.himyb.modules.fun.brocoins;
 
+import me.nerdoron.himyb.Global;
+import me.nerdoron.himyb.modules.bot.CooldownManager;
 import me.nerdoron.himyb.modules.bot.Database;
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.slf4j.Logger;
 
 import java.sql.Connection;
@@ -125,6 +128,16 @@ public class BroCoinsSQL {
         setBank(member, memberCoins);
     }
 
+    public boolean hasCoinBoost(Member member) {
+        String[] boostTypes = {"noob", "pro", "gambler"};
+        for (String boost : boostTypes) {
+            if (Global.COOLDOWN_MANAGER.hasCooldown(CooldownManager.coinsCooldown(member, boost))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void setCash(Member member, int newAmount) throws SQLException {
         if (hasAccount(member)) {
             assert con != null;
@@ -145,9 +158,38 @@ public class BroCoinsSQL {
         }
     }
 
-    public void updateCash(Member member, int amountToChange) throws SQLException {
+    public void updateCashMultiplier(Member member, SlashCommandInteractionEvent event, int amountToChange) throws SQLException {
         int memberCoins = this.getBroCash(member);
+        if (amountToChange > 0 && hasCoinBoost(member)) {
+            CoinMultiplier multiplier = CoinMultiplier.getMultiplier(member);
+            setCash(member, multiplier.applyMultiplier(amountToChange));
+            event.getChannel().sendMessage(String.format("%s won %d %s thanks to their active coin multiplier!", member.getAsMention(), multiplier.applyMultiplier(amountToChange), Global.broCoin.getAsMention())).queue();
+            return;
+        }
         memberCoins += amountToChange;
         setCash(member, memberCoins);
     }
+
+    public void updateCashMultiplierDM(Member member, int amountToChange) throws SQLException {
+        int memberCoins = this.getBroCash(member);
+        if (amountToChange > 0 && hasCoinBoost(member)) {
+            CoinMultiplier multiplier = CoinMultiplier.getMultiplier(member);
+            setCash(member, multiplier.applyMultiplier(amountToChange));
+            member.getUser().openPrivateChannel().flatMap(channel ->
+                    channel.sendMessage(String.format("You won %d %s thanks to your active coin multiplier!", multiplier.applyMultiplier(amountToChange), Global.broCoin.getAsMention()))
+            ).queue();
+            return;
+        }
+        memberCoins += amountToChange;
+        setCash(member, memberCoins);
+    }
+
+    public void updateCashWithoutMultiplier(Member member, int amountToChange) throws SQLException {
+        int memberCoins = this.getBroCash(member);
+        memberCoins += amountToChange;
+        setCash(member, memberCoins);
+
+    }
+
+
 }

@@ -50,7 +50,7 @@ public class LuckyDraw extends SlashCommand {
         if (doesWin(rand, number)) {
             // win
             try {
-                BROCOINS_SQL.updateCash(event.getMember(), 14 * bet);
+                BROCOINS_SQL.updateCashMultiplier(event.getMember(), event, 14 * bet);
                 event.reply(String.format("You bet %d %s on %d and won %d %s!", bet, Global.broCoin.getAsMention(), number, bet * 15, Global.broCoin.getAsMention())).queue();
                 logger.info("{}(ID:{}) won a Lucky Draw while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
                 COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 30);
@@ -62,7 +62,7 @@ public class LuckyDraw extends SlashCommand {
         } else {
             // lose
             try {
-                BROCOINS_SQL.updateCash(event.getMember(), -bet);
+                BROCOINS_SQL.updateCashWithoutMultiplier(event.getMember(), -bet);
                 event.reply(String.format("You bet %d %s on %d and lost. What a shame!", bet, Global.broCoin.getAsMention(), number)).queue();
                 logger.info("{}(ID:{}) lost a Lucky Draw while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
                 COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 30);

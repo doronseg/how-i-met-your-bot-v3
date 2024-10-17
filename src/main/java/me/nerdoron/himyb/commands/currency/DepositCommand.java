@@ -44,7 +44,7 @@ public class DepositCommand extends SlashCommand {
         }
 
         try {
-            BROCOINS_SQL.updateCash(member, -deposit);
+            BROCOINS_SQL.updateCashWithoutMultiplier(member, -deposit);
             BROCOINS_SQL.updateBank(member, deposit);
             event.replyEmbeds(doneEmbed(member, deposit)).setEphemeral(true).queue();
             assert member != null;

@@ -84,8 +84,8 @@ public class RobUserCommand extends SlashCommand {
             int reward = amount / robRng;
             logger.info(String.valueOf(reward));
             try {
-                BROCOINS_SQL.updateCash(member, reward);
-                BROCOINS_SQL.updateCash(memberToRob, -reward);
+                BROCOINS_SQL.updateCashMultiplier(member, event, reward);
+                BROCOINS_SQL.updateCashWithoutMultiplier(memberToRob, -reward);
                 logger.info("{}(ID:{}) won {} coins while robbing {}(ID:{}).", member.getUser().getName(), member.getId(), reward, memberToRob.
                         getUser().getName(), memberToRob.getId());
                 event.reply(memberToRob.getAsMention()).addEmbeds(CurrencyHelper.successfulRobEmbed(memberToRob, reward)).queue();

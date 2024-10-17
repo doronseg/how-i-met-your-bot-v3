@@ -50,8 +50,8 @@ public class GiveCashCommand extends SlashCommand {
         }
 
         try {
-            BROCOINS_SQL.updateCash(member, -transfer);
-            BROCOINS_SQL.updateCash(memberToTransferTo, transfer);
+            BROCOINS_SQL.updateCashWithoutMultiplier(member, -transfer);
+            BROCOINS_SQL.updateCashWithoutMultiplier(memberToTransferTo, transfer);
             assert member != null;
             event.reply(memberToTransferTo.getAsMention()).addEmbeds(doneEmbed(member, memberToTransferTo, transfer)).queue();
             logger.info("{}(ID:{}) gave {} coins cash to {}(ID:{}).", member.getUser().getName(), member.getId(), transfer, memberToTransferTo.getUser().getName(), memberToTransferTo.getId());

@@ -84,7 +84,7 @@ public class BJHandler {
                     COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
                     BJHelper.endBjGame(member);
                     try {
-                        BROCOINS_SQL.updateCash(member, -bet);
+                        BROCOINS_SQL.updateCashWithoutMultiplier(member, -bet);
                         logger.info("{}(ID:{}) timed out on a Blackjack game and lost {}", member.getUser().getName(), member.getId(), bet);
                     } catch (SQLException e) {
                         logger.error("Error updating cash for {}: {}", member.getUser().getName(), e.getMessage());

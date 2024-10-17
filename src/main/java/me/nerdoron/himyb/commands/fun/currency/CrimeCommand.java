@@ -65,7 +65,7 @@ public class CrimeCommand extends SlashCommand {
         if (chance % 3 == 0) {
             try {
                 if (chance == 3 || chance == 99 || chance == 102 || chance == 199) reward = reward * 3;
-                BROCOINS_SQL.updateCash(member, reward);
+                BROCOINS_SQL.updateCashMultiplier(member, event, reward);
                 COOLDOWN_MANAGER.addCooldown(commandID(event), "Success", HOUR_IN_SECONDS / 2);
                 assert member != null;
                 logger.info("{}(ID:{}) won {} while committing a crime.", member.getUser().getName(), member.getId(), reward);

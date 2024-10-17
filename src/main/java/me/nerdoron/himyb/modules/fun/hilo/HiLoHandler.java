@@ -91,7 +91,7 @@ public class HiLoHandler {
         if (tie(firstCard, newCard)) {
             HiLoHelper.endHiLoGame(member);
             try {
-                BROCOINS_SQL.updateCash(member, game.getWinnings() - game.getBet());
+                BROCOINS_SQL.updateCashMultiplier(member, event, game.getWinnings() - game.getBet());
                 event.getHook().editOriginalComponents().queue();
                 event.getHook().editOriginalEmbeds(HiLoHelper.tie(game.getWinnings(), newCard, firstCard)).queue();
                 logger.info("{}(ID:{}) played HiLo, and tied on the first round. Not winning anything.", member.getUser().getName(), uid);
@@ -128,7 +128,7 @@ public class HiLoHandler {
             COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
             HiLoHelper.endHiLoGame(member);
             try {
-                BROCOINS_SQL.updateCash(member, game.getWinnings() - game.getBet());
+                BROCOINS_SQL.updateCashMultiplier(member, event, game.getWinnings() - game.getBet());
                 event.getHook().editOriginalComponents().queue();
                 event.getHook().editOriginalEmbeds(HiLoHelper.tie(game.getWinnings(), previousCard, newCard)).queue();
                 logger.info("{}(ID:{}) played HiLo, and tied. Winning {}", member.getUser().getName(), uid, game.getWinnings());
@@ -197,7 +197,7 @@ public class HiLoHandler {
             return;
         }
         try {
-            BROCOINS_SQL.updateCash(member, -game.getBet());
+            BROCOINS_SQL.updateCashWithoutMultiplier(member, -game.getBet());
             event.getHook().editOriginalComponents().queue();
             COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
             event.getHook().editOriginalEmbeds(HiLoHelper.hiLoLose(game.getWinnings(), nextCard, newCard)).queue();
@@ -220,7 +220,7 @@ public class HiLoHandler {
             return;
         }
         try {
-            BROCOINS_SQL.updateCash(member, -game.getBet());
+            BROCOINS_SQL.updateCashWithoutMultiplier(member, -game.getBet());
             event.getHook().editOriginalComponents().queue();
             COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
             event.getHook().editOriginalEmbeds(HiLoHelper.hiLoLose(game.getWinnings(), nextCard, newCard)).queue();
@@ -238,7 +238,7 @@ public class HiLoHandler {
         COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
         HiLoHelper.endHiLoGame(member);
         try {
-            BROCOINS_SQL.updateCash(member, game.getWinnings());
+            BROCOINS_SQL.updateCashMultiplier(member, event, game.getWinnings());
             event.getHook().editOriginalComponents().queue();
             event.getHook().editOriginalEmbeds(HiLoHelper.hiLoCashOut(game.getWinnings())).queue();
             logger.info("{}(ID:{}) played HiLo, and won {}", member.getUser().getName(), uid, game.getWinnings());

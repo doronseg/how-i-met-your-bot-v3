@@ -33,7 +33,7 @@ public class InventoryHandler {
         }
 
         try {
-            BROCOINS_SQL.updateCash(member, -price);
+            BROCOINS_SQL.updateCashWithoutMultiplier(member, -price);
 
             // roles
             if (type.startsWith("R")) {

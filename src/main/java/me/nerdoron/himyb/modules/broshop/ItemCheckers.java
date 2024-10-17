@@ -24,12 +24,13 @@ public class ItemCheckers {
         Guild guild = jda.getGuildById("850396197646106624");
         assert guild != null;
 
-        // check for experience boosters
         scheduledExecutorService.scheduleAtFixedRate(() -> {
             try {
                 guild.loadMembers().onSuccess(members -> {
-                    String[] cooldowns = {"novice", "apprentice", "grandmaster"};
-                    for (String cooldown : cooldowns) {
+                    String[] expCooldowns = {"novice", "apprentice", "grandmaster"};
+                    String[] coinCooldowns = {"noob", "pro", "gambler"};
+                    // exp cooldowns
+                    for (String cooldown : expCooldowns) {
                         for (Member member : members) {
                             Role role = getRoleFromCooldown(cooldown, guild);
                             if (!COOLDOWN_MANAGER.hasCooldown(CooldownManager.expCooldown(member, cooldown))) {
@@ -40,6 +41,19 @@ public class ItemCheckers {
                             }
                         }
                     }
+                    // coin booster
+                    for (String cooldown : coinCooldowns) {
+                        for (Member member : members) {
+                            Role role = getRoleFromCooldown(cooldown, guild);
+                            if (!COOLDOWN_MANAGER.hasCooldown(CooldownManager.coinsCooldown(member, cooldown))) {
+                                if (member.getRoles().contains(role)) {
+                                    removeRole(role, guild, member, cooldown);
+                                    logger.info("Coin Booster {} ended for {}. Removing role.", role.getName(), member.getEffectiveName());
+                                }
+                            }
+                        }
+                    }
+
                 }).onError(e -> logger.error("Failed to load members: {}", e.getMessage()));
             } catch (Exception e) {
                 logger.error("An error occurred in the scheduled task", e);
@@ -56,6 +70,12 @@ public class ItemCheckers {
                 return guild.getRoleById(1135324427739996160L);
             case "grandmaster":
                 return guild.getRoleById(1135324489589203095L);
+            case "noob":
+                return guild.getRoleById(1296495024086843393L);
+            case "pro":
+                return guild.getRoleById(1296495213854064742L);
+            case "gambler":
+                return guild.getRoleById(1296495296200573068L);
             default:
                 throw new IllegalStateException("Unexpected value: " + identifier);
         }
@@ -64,7 +84,7 @@ public class ItemCheckers {
     private void removeRole(Role roleToRemove, Guild guild, Member member, String identifier) {
         if (roleToRemove != null) {
             guild.removeRoleFromMember(member, roleToRemove).queue(
-                    success -> Objects.requireNonNull(guild.getTextChannelById("1296434268238516274")).sendMessageEmbeds(ShopHelper.expBoostEnd(member, identifier)).queue()
+                    success -> Objects.requireNonNull(guild.getTextChannelById("1296434268238516274")).sendMessageEmbeds(ShopHelper.boostEnd(member, identifier)).queue()
             );
         }
 

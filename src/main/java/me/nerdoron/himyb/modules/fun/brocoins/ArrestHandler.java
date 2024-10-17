@@ -98,7 +98,7 @@ public class ArrestHandler {
                                     break;
                                 }
                                 try {
-                                    BROCOINS_SQL.updateCash(member, -(broCash / 2));
+                                    BROCOINS_SQL.updateCashWithoutMultiplier(member, -(broCash / 2));
                                     event.getHook().editOriginal("").queue();
                                     event.getHook().editOriginalEmbeds(JailHelper.successBribeEmbed(broCash / 2)).queue();
                                     event.getHook().editOriginalComponents().queue();
