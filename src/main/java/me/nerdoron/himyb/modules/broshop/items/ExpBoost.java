@@ -57,10 +57,10 @@ public class ExpBoost {
     }
 
     private static class ExpBoostInfo {
-        long roleId;
-        String cooldownName;
-        int durationInSeconds;
-        String successMessage;
+        final long roleId;
+        final String cooldownName;
+        final int durationInSeconds;
+        final String successMessage;
 
         public ExpBoostInfo(long roleId, String cooldownName, int durationInSeconds, String successMessage) {
             this.roleId = roleId;

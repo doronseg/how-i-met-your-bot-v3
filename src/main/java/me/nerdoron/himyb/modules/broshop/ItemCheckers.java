@@ -18,7 +18,7 @@ import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
 public class ItemCheckers {
 
     private static final Logger logger = LoggerFactory.getLogger(ItemCheckers.class);
-    ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
+    final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
     public void checkForItems(JDA jda) {
         Guild guild = jda.getGuildById("850396197646106624");
@@ -40,9 +40,7 @@ public class ItemCheckers {
                             }
                         }
                     }
-                }).onError(e -> {
-                    logger.error("Failed to load members: {}", e.getMessage());
-                });
+                }).onError(e -> logger.error("Failed to load members: {}", e.getMessage()));
             } catch (Exception e) {
                 logger.error("An error occurred in the scheduled task", e);
             }
