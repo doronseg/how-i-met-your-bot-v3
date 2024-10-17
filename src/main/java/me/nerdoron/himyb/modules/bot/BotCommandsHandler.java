@@ -5,6 +5,9 @@ import me.nerdoron.himyb.commands.currency.*;
 import me.nerdoron.himyb.commands.currency.batches.DailyCommand;
 import me.nerdoron.himyb.commands.currency.batches.MonthlyCommand;
 import me.nerdoron.himyb.commands.currency.batches.WeeklyCommand;
+import me.nerdoron.himyb.commands.currency.broshop.BroShopCommand;
+import me.nerdoron.himyb.commands.currency.broshop.BuyCommand;
+import me.nerdoron.himyb.commands.currency.broshop.InventoryCommand;
 import me.nerdoron.himyb.commands.fun.EightBallCommand;
 import me.nerdoron.himyb.commands.fun.currency.CrimeCommand;
 import me.nerdoron.himyb.commands.fun.currency.RobUserCommand;
@@ -59,6 +62,11 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new BlackJackCommand());
         commands.add(new UltimateTHCommand());
         commands.add(new HiLoCommand());
+
+        //shop
+        commands.add(new BroShopCommand());
+        commands.add(new BuyCommand());
+        commands.add(new InventoryCommand());
 
         // currency
         commands.add(new BalanceCommand());
