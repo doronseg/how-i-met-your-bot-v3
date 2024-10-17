@@ -35,8 +35,8 @@ public class CooldownManager {
         return "@" + member.getId() + type + "@";
     }
 
-    public static String coinsCooldown(Member member) {
-        return "@" + member.getId() + "coins@";
+    public static String coinsCooldown(Member member, String type) {
+        return "@" + member.getId() + type + "@";
     }
 
     private static OffsetDateTime parseTimestringToOffset(String timestamp) {

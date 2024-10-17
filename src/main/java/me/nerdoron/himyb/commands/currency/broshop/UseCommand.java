@@ -3,6 +3,7 @@ package me.nerdoron.himyb.commands.currency.broshop;
 import me.nerdoron.himyb.modules.bot.SlashCommand;
 import me.nerdoron.himyb.modules.broshop.InventoryHandler;
 import me.nerdoron.himyb.modules.broshop.ShopItem;
+import me.nerdoron.himyb.modules.broshop.items.CoinBoost;
 import me.nerdoron.himyb.modules.broshop.items.ExpBoost;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -41,8 +42,13 @@ public class UseCommand extends SlashCommand {
             }
             if (item.startsWith("X")) {
                 // XP
-                ExpBoost expMultiplier = new ExpBoost();
-                if (expMultiplier.useExpBoost(item, member, event)) {
+                ExpBoost expBoost = new ExpBoost();
+                if (expBoost.useExpBoost(item, member, event)) {
+                    inventoryHandler.removeFromInventory(member, item);
+                }
+            } else if (item.startsWith("C")) {
+                CoinBoost coinBoost = new CoinBoost();
+                if (coinBoost.useCoinBoost(item, member, event)) {
                     inventoryHandler.removeFromInventory(member, item);
                 }
             }

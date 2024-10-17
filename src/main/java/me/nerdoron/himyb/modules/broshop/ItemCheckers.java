@@ -1,12 +1,12 @@
 package me.nerdoron.himyb.modules.broshop;
 
 import me.nerdoron.himyb.modules.bot.CooldownManager;
+import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Objects;
 import java.util.concurrent.Executors;
@@ -17,7 +17,7 @@ import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
 
 public class ItemCheckers {
 
-    private static final Logger logger = LoggerFactory.getLogger(ItemCheckers.class);
+    private static final Logger logger = LoggingHandler.logger(ItemCheckers.class);
     final ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(1);
 
     public void checkForItems(JDA jda) {

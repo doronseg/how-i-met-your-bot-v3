@@ -2,11 +2,11 @@ package me.nerdoron.himyb.modules.broshop;
 
 import me.nerdoron.himyb.Global;
 import me.nerdoron.himyb.modules.bot.Database;
+import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +19,7 @@ import static me.nerdoron.himyb.Global.BROCOINS_SQL;
 
 public class InventoryHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(InventoryHandler.class);
+    private static final Logger logger = LoggingHandler.logger(InventoryHandler.class);
     private static final Connection con = Database.connect();
 
     public void buyItem(SlashCommandInteractionEvent event, Member member, ShopItem shopItem) {

@@ -2,13 +2,13 @@ package me.nerdoron.himyb.modules.broshop.items;
 
 import me.nerdoron.himyb.Global;
 import me.nerdoron.himyb.modules.bot.CooldownManager;
+import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.broshop.ShopHelper;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,7 @@ import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
 
 public class ExpBoost {
 
-    private static final Logger logger = LoggerFactory.getLogger(ExpBoost.class);
+    private static final Logger logger = LoggingHandler.logger(ExpBoost.class);
     private final Map<String, ExpBoostInfo> boostInfoMap;
 
     {
