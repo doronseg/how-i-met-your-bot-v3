@@ -18,7 +18,7 @@ import static me.nerdoron.himyb.Global.BROCOINS_SQL;
 import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
 
 public class HiLoCommand extends SlashCommand {
-    HiLoHandler hiLoHandler = new HiLoHandler();
+    final HiLoHandler hiLoHandler = new HiLoHandler();
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -55,7 +55,7 @@ public class HiLoCommand extends SlashCommand {
     public SlashCommandData getSlash() {
         SlashCommandData cmd = Commands.slash("hilo", "Play a round of Hi-Lo");
         OptionData bet = new OptionData(OptionType.INTEGER, "bet", "How many BroCoins do you want to enter with?", true);
-        bet.setMinValue(40);
+        bet.setMinValue(25);
         cmd.addOptions(bet);
         return cmd;
     }

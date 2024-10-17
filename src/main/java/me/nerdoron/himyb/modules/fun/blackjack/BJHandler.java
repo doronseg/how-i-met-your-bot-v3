@@ -19,7 +19,6 @@ import java.util.List;
 
 import static me.nerdoron.himyb.Global.*;
 
-@SuppressWarnings("ResultOfMethodCallIgnored")
 public class BJHandler {
     private static final Logger logger = LoggingHandler.logger(BJHandler.class);
 

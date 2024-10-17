@@ -25,7 +25,7 @@ public class HiLoHelper {
                 .setTitle("♣️♦️ Hi-Lo")
                 .setDescription("Welcome to Hi-Lo. Click Start Game when you're ready to start.")
                 .addField("Initial bet:", String.format("%d %s", bet, Global.broCoin.getAsMention()), true)
-                .addField("How the game works", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/Blackjack-Explanation)", false)
+                .addField("How the game works", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/HiLo-Explanation)", false)
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();
@@ -38,7 +38,7 @@ public class HiLoHelper {
                 .addField("Your Card", formatCardWithName(card), true)
                 .addField("Next card", HiLoCard.backOfCard.getAsMention(), true)
                 .addField("Initial bet:", String.format("%d %s", bet, Global.broCoin.getAsMention()), false)
-                .addField("How the game works", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/Blackjack-Explanation)", false)
+                .addField("How the game works", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/HiLo-Explanation)", false)
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();
@@ -52,7 +52,7 @@ public class HiLoHelper {
                 .addField("Next card", HiLoCard.backOfCard.getAsMention(), true)
                 .addField("Previous Cards", table, true)
                 .addField("Current winnings:", String.format("%d %s", bet, Global.broCoin.getAsMention()), false)
-                .addField("How the game works", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/Blackjack-Explanation)", false)
+                .addField("How the game works", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/HiLo-Explanation)", false)
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();
@@ -65,7 +65,7 @@ public class HiLoHelper {
                 .addField("New Card", formatCardWithName(newCard), true)
                 .addField("Your Card", formatCardWithName(oldCard), true)
                 .addField("Amount lost:", String.format("%d %s", bet, Global.broCoin.getAsMention()), true)
-                .addField("How the game works", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/Blackjack-Explanation)", false)
+                .addField("How the game works", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/HiLo-Explanation)", false)
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();
@@ -76,7 +76,7 @@ public class HiLoHelper {
                 .setTitle("♣️♦️ Cashed out")
                 .setDescription("You cashed out.")
                 .addField("Amount won:", String.format("%d %s", bet, Global.broCoin.getAsMention()), true)
-                .addField("How the game works", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/Blackjack-Explanation)", false)
+                .addField("How the game works", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/HiLo-Explanation)", false)
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();
@@ -89,7 +89,7 @@ public class HiLoHelper {
                 .addField("New Card", formatCardWithName(newCard), true)
                 .addField("Your Card", formatCardWithName(oldCard), true)
                 .addField("Amount won:", String.format("%d %s", bet, Global.broCoin.getAsMention()), true)
-                .addField("How the game works", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/Blackjack-Explanation)", false)
+                .addField("How the game works", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/HiLo-Explanation)", false)
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();

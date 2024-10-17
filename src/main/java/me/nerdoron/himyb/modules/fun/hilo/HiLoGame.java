@@ -29,7 +29,6 @@ public class HiLoGame {
         this.bet = bet;
     }
 
-
     public List<HiLoCard> getDeck() {
         return deck;
     }
