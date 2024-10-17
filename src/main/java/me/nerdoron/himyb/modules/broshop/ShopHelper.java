@@ -170,7 +170,7 @@ public class ShopHelper {
     public static MessageEmbed expBoostEnd(Member member, String item) {
         return new EmbedBuilder()
                 .setTitle("Experience Booster Ended")
-                .setDescription(String.format("Exp Boost %s ended for %s `(ID:%s).`", item, member.getAsMention(), member.getId()))
+                .setDescription(String.format("Exp Boost %s ended for %s `(ID:%s)`.", item, member.getAsMention(), member.getId()))
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();

@@ -1,4 +1,4 @@
-package me.nerdoron.himyb.modules.broshop.items.exp;
+package me.nerdoron.himyb.modules.broshop.items;
 
 import me.nerdoron.himyb.Global;
 import me.nerdoron.himyb.modules.bot.CooldownManager;
@@ -7,6 +7,8 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,6 +18,7 @@ import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
 
 public class ExpBoost {
 
+    private static final Logger logger = LoggerFactory.getLogger(ExpBoost.class);
     private final Map<String, ExpBoostInfo> boostInfoMap;
 
     {
@@ -43,6 +46,7 @@ public class ExpBoost {
         addRole(member, boostInfo.cooldownName, boostInfo.durationInSeconds, role, guild);
         event.reply("Successfully redeemed " + boostInfo.successMessage).setEphemeral(true).queue();
         Objects.requireNonNull(event.getGuild().getTextChannelById("1296434268238516274")).sendMessageEmbeds(ShopHelper.expBoostRedeemed(member, boostInfo.successMessage)).queue();
+        logger.info("{} (ID:{}) redeemed {}.", member.getUser().getName(), member.getId(), type);
         return true;
     }
 

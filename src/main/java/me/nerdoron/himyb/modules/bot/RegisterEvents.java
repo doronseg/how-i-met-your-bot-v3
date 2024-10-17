@@ -1,5 +1,6 @@
 package me.nerdoron.himyb.modules.bot;
 
+import me.nerdoron.himyb.modules.broshop.ItemCheckers;
 import me.nerdoron.himyb.modules.broshop.ShopButtons;
 import me.nerdoron.himyb.modules.broshop.itemAutoComplete;
 import me.nerdoron.himyb.modules.fun.autoresponses.Canada;
@@ -46,6 +47,8 @@ public class RegisterEvents {
         //shop
         jda.addEventListener(new ShopButtons());
         jda.addEventListener(new itemAutoComplete());
+        ItemCheckers itemCheckers = new ItemCheckers();
+        itemCheckers.checkForItems(jda);
 
         // useful
         jda.addEventListener(new HelpHandler());

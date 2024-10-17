@@ -84,6 +84,14 @@ public class CooldownManager {
         }
     }
 
+    public OffsetDateTime getCooldownEnd(String identifier) {
+        Map<String, OffsetDateTime> cooldowns = DB_findIdentifier(identifier);
+        if (cooldowns != null && !cooldowns.isEmpty()) {
+            return cooldowns.values().iterator().next();
+        }
+        return OffsetDateTime.now();
+    }
+
     public boolean hasTag(String identifier, String tag) {
         Map<String, OffsetDateTime> cooldown = DB_findIdentifier(identifier);
         if (cooldown == null) {

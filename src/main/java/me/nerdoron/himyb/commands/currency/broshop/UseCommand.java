@@ -3,7 +3,7 @@ package me.nerdoron.himyb.commands.currency.broshop;
 import me.nerdoron.himyb.modules.bot.SlashCommand;
 import me.nerdoron.himyb.modules.broshop.InventoryHandler;
 import me.nerdoron.himyb.modules.broshop.ShopItem;
-import me.nerdoron.himyb.modules.broshop.items.exp.ExpBoost;
+import me.nerdoron.himyb.modules.broshop.items.ExpBoost;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
