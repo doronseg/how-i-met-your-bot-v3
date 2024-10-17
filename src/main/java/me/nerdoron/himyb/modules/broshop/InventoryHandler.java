@@ -43,7 +43,7 @@ public class InventoryHandler {
                 );
                 //other
             } else {
-                updateInventory(member, type);
+                addToInventory(member, type);
                 int noOfItem = getItemAmount(member, type);
                 if (noOfItem == 0) noOfItem = 1;
                 int finalNoOfItem = noOfItem;
@@ -59,7 +59,7 @@ public class InventoryHandler {
         }
     }
 
-    private void updateInventory(Member member, String type) throws SQLException {
+    private void addToInventory(Member member, String type) throws SQLException {
         String SQL;
         if (getItemAmount(member, type) == 0) {
             SQL = String.format(
@@ -78,6 +78,7 @@ public class InventoryHandler {
         }
     }
 
+
     public int getItemAmount(Member member, String itemType) throws SQLException {
         String SQL = String.format("SELECT %s FROM inventory WHERE uid=?", itemType);
 
@@ -91,6 +92,17 @@ public class InventoryHandler {
             }
         }
         return 0;
+    }
+
+    public void removeFromInventory(Member member, String itemType) throws SQLException {
+        String SQL = String.format(
+                "UPDATE inventory SET %s = %s - 1 WHERE uid = ? AND %s > 0", itemType, itemType, itemType);
+
+        assert con != null;
+        try (PreparedStatement ps = con.prepareStatement(SQL)) {
+            ps.setString(1, member.getId());
+            ps.execute();
+        }
     }
 
     private CompletableFuture<String> generateLog(SlashCommandInteractionEvent event, Member member, ShopItem item) {

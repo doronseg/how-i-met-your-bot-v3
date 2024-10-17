@@ -31,6 +31,14 @@ public class CooldownManager {
         return "@" + member.getId() + "jail@";
     }
 
+    public static String expCooldown(Member member, String type) {
+        return "@" + member.getId() + type + "@";
+    }
+
+    public static String coinsCooldown(Member member) {
+        return "@" + member.getId() + "coins@";
+    }
+
     private static OffsetDateTime parseTimestringToOffset(String timestamp) {
         java.time.format.DateTimeFormatter parser = java.time.format.DateTimeFormatter.ISO_OFFSET_DATE_TIME;
         java.time.LocalDateTime dt = java.time.LocalDateTime.parse(timestamp, parser);

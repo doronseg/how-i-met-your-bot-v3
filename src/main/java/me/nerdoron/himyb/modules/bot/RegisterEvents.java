@@ -1,7 +1,7 @@
 package me.nerdoron.himyb.modules.bot;
 
-import me.nerdoron.himyb.modules.broshop.BuyAutocomplete;
 import me.nerdoron.himyb.modules.broshop.ShopButtons;
+import me.nerdoron.himyb.modules.broshop.itemAutoComplete;
 import me.nerdoron.himyb.modules.fun.autoresponses.Canada;
 import me.nerdoron.himyb.modules.fun.autoresponses.FriendsCringe;
 import me.nerdoron.himyb.modules.fun.autoresponses.Major;
@@ -45,7 +45,7 @@ public class RegisterEvents {
 
         //shop
         jda.addEventListener(new ShopButtons());
-        jda.addEventListener(new BuyAutocomplete());
+        jda.addEventListener(new itemAutoComplete());
 
         // useful
         jda.addEventListener(new HelpHandler());

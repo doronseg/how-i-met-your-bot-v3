@@ -8,11 +8,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 
-public class BuyAutocomplete extends ListenerAdapter {
+public class itemAutoComplete extends ListenerAdapter {
 
     @Override
     public void onCommandAutoCompleteInteraction(@NotNull CommandAutoCompleteInteractionEvent event) {
-        if (event.getName().equals("buy") && event.getFocusedOption().getName().equals("item")) {
+        if ((event.getName().equals("buy") || event.getName().equals("use")) && event.getFocusedOption().getName().equals("item")) {
             ArrayList<Command.Choice> options = new ArrayList<>();
             for (String type : ShopItem.allItemTypes()) {
                 options.add(new Command.Choice(type, type));
