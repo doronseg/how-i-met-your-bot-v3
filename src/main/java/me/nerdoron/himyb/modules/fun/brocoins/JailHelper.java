@@ -121,6 +121,9 @@ public class JailHelper {
         if (COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "BRIBERY")) return "`Bribery`";
         if (COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "RESISTING")) return "`Resisting Arrest`";
         if (COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "GENERAL")) return "`Commiting a crime`";
+        if (COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "CONTRABAND_SMUGGLE"))
+            return "`Smuggling contraband`";
+        if (COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "CONTRABAND_DEAL")) return "`Dealing contraband`";
         if (COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "ROBBERY")) return "`Robbery`";
 
 
