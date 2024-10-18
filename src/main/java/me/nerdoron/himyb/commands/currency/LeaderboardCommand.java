@@ -30,6 +30,9 @@ public class LeaderboardCommand extends SlashCommand {
         }
 
         StringBuilder users = new StringBuilder();
+        int pos = 1;
+        String emote;
+
         for (String userID : sorted.keySet()) {
             int coins = sorted.get(userID);
             if (coins > 0) {
@@ -37,17 +40,32 @@ public class LeaderboardCommand extends SlashCommand {
                 for (int i = textCoins.length(); i < longest; i++) {
                     textCoins = String.format(" %s", textCoins);
                 }
-                users.append(" <@").append(userID).append("> | Total balance: `").append(textCoins).append("` ").append(Global.broCoin.getAsMention()).append("\n");
 
+                if (pos == 1) {
+                    emote = " :first_place:";
+                } else if (pos == 2) {
+                    emote = " :second_place:";
+                } else if (pos == 3) {
+                    emote = " :third_place:";
+                } else {
+                    emote = " <:BroCoin:997169032522375230>";
+                }
+//                users.append(" <@").append(userID).append("> | Total balance: `").append(textCoins).append("` ").append(Global.broCoin.getAsMention()).append("\n");
+                users.append(pos).append(". **`").append(textCoins).append("`** ").append(emote).append("\t").append("<@!").append(userID).append(">").append("\n");
+                pos += 1;
             }
         }
 
         EmbedBuilder emb = new EmbedBuilder();
-        emb.setColor(Global.embedColor);
-        emb.setTitle(broCoin.getAsMention() + "Brocoins Leaderboard");
-        emb.setDescription(users.toString());
+
+             emb.setTitle("Top 10 Leaderboard "+ broCoin.getAsMention())
+                .setColor(Global.embedColor)
+                .setDescription(users.toString())
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
 
         event.replyEmbeds(emb.build()).setEphemeral(false).queue();
+
     }
 
     @Override
