@@ -120,7 +120,7 @@ public class THHandler {
                     event.getHook().editOriginalComponents().queue();
                     COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
                     try {
-                        BROCOINS_SQL.updateCash(member, -bet);
+                        BROCOINS_SQL.updateCashWithoutMultiplier(member, -bet);
                     } catch (SQLException e) {
                         MessageEmbed err = THHelper.createErrorEmbed(e.getMessage());
                         event.getHook().editOriginalEmbeds(err).queue();
@@ -190,7 +190,7 @@ public class THHandler {
                     event.getHook().editOriginalComponents().queue();
                     COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
                     try {
-                        BROCOINS_SQL.updateCash(member, -bet);
+                        BROCOINS_SQL.updateCashWithoutMultiplier(member, -bet);
                     } catch (SQLException e) {
                         MessageEmbed err = THHelper.createErrorEmbed(e.getMessage());
                         event.getHook().editOriginalEmbeds(err).queue();
@@ -255,7 +255,7 @@ public class THHandler {
                     event.getHook().editOriginalComponents().queue();
                     COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
                     try {
-                        BROCOINS_SQL.updateCash(member, -bet);
+                        BROCOINS_SQL.updateCashWithoutMultiplier(member, -bet);
                     } catch (SQLException e) {
                         MessageEmbed err = THHelper.createErrorEmbed(e.getMessage());
                         event.getHook().editOriginalEmbeds(err).queue();
@@ -283,7 +283,7 @@ public class THHandler {
                             event.getHook().editOriginalComponents().queue();
                             COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
                             try {
-                                BROCOINS_SQL.updateCash(member, -bet);
+                                BROCOINS_SQL.updateCashWithoutMultiplier(member, -bet);
                             } catch (SQLException e) {
                                 MessageEmbed err = THHelper.createErrorEmbed(e.getMessage());
                                 event.getHook().editOriginalEmbeds(err).queue();
@@ -322,7 +322,7 @@ public class THHandler {
                 int tripsReturn = calculateTripsReturn(playerCards) * trips;
                 game.setBet(tripsReturn + blindReturn + bet);
                 try {
-                    BROCOINS_SQL.updateCash(member, bet);
+                    BROCOINS_SQL.updateCashMultiplier(member, event, bet);
                     logger.info("{}(ID:{}) played poker, and won {}", member.getUser().getName(), uid, bet);
                     event.getHook().editOriginalEmbeds(THHelper.revealDealerCards(playerCards, tableCards, dealerCards, blind, ante, trips, play)).queue();
                     event.getHook().editOriginalEmbeds(THHelper.playerWin(playerCards, tableCards, dealerCards, rankAsString(dealerRank), rankAsString(playerRank), blindReturn, tripsReturn, game.getBet())).queueAfter(5, TimeUnit.SECONDS);
@@ -336,7 +336,7 @@ public class THHandler {
             case "dealer":
                 event.getHook().editOriginalComponents().queue();
                 try {
-                    BROCOINS_SQL.updateCash(member, -bet);
+                    BROCOINS_SQL.updateCashWithoutMultiplier(member, -bet);
                     logger.info("{}(ID:{}) played poker, and lost {}", member.getUser().getName(), uid, bet);
                     event.getHook().editOriginalEmbeds(THHelper.revealDealerCards(playerCards, tableCards, dealerCards, blind, ante, trips, play)).queue();
                     event.getHook().editOriginalEmbeds(THHelper.playerLose(playerCards, tableCards, dealerCards, rankAsString(dealerRank), rankAsString(playerRank), bet)).queueAfter(5, TimeUnit.SECONDS);

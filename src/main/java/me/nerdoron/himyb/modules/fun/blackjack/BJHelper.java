@@ -84,7 +84,7 @@ public class BJHelper {
 
         if (userHand > 21) {
             result = String.format("You busted! You lose %d %s.", bet, Global.broCoin.getAsMention());
-            BROCOINS_SQL.updateCash(member, -bet);
+            BROCOINS_SQL.updateCashWithoutMultiplier(member, -bet);
             logger.info("{}(ID:{}) played blackjack for {} and lost.", member.getUser().getName(), member.getId(), bet);
             endBjGame(member);
             return new EmbedBuilder()
@@ -98,22 +98,22 @@ public class BJHelper {
         } else if (userHand > botHand) {
             result = String.format("You win! You earned %d %s.", bet, Global.broCoin.getAsMention());
             logger.info("{}(ID:{}) played blackjack for {} and won.", member.getUser().getName(), member.getId(), bet);
-            BROCOINS_SQL.updateCash(member, bet);
+            BROCOINS_SQL.updateCashMultiplierDM(member, bet);
         } else if (botHand > 21) {
             result = String.format("You win! You earned %d %s.", bet, Global.broCoin.getAsMention());
             logger.info("{}(ID:{}) played blackjack for {} and won.", member.getUser().getName(), member.getId(), bet);
-            BROCOINS_SQL.updateCash(member, bet);
+            BROCOINS_SQL.updateCashMultiplierDM(member, bet);
         } else if (userHand == botHand) {
             result = String.format("It's a tie. You get your bet back of %d %s back.", bet, Global.broCoin.getAsMention());
             logger.info("{}(ID:{}) played blackjack for {} and tied.", member.getUser().getName(), member.getId(), bet);
         } else if (botHand == 21) {
             result = String.format("Bot wins. You lose %d %s.", bet, Global.broCoin.getAsMention());
             logger.info("{}(ID:{}) played blackjack for {} and lost.", member.getUser().getName(), member.getId(), bet);
-            BROCOINS_SQL.updateCash(member, -bet);
+            BROCOINS_SQL.updateCashWithoutMultiplier(member, -bet);
         } else {
             result = String.format("Bot wins. You lose %d %s.", bet, Global.broCoin.getAsMention());
             logger.info("{}(ID:{}) played blackjack for {} and lost.", member.getUser().getName(), member.getId(), bet);
-            BROCOINS_SQL.updateCash(member, -bet);
+            BROCOINS_SQL.updateCashWithoutMultiplier(member, -bet);
         }
 
         endBjGame(member);

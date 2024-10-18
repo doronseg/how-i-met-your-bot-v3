@@ -17,12 +17,14 @@ import me.nerdoron.himyb.commands.gambling.*;
 import me.nerdoron.himyb.commands.staff.*;
 import me.nerdoron.himyb.commands.useful.*;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import org.slf4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class BotCommandsHandler extends ListenerAdapter {
     private static final Logger logger = LoggingHandler.logger(BotCommandsHandler.class);
@@ -95,6 +97,10 @@ public class BotCommandsHandler extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
         String commandName = event.getName();
+        if (!(Objects.requireNonNull(event.getMember()).hasPermission(Permission.BAN_MEMBERS))) {
+            event.reply("Please use the correct bot.").setEphemeral(true).queue();
+            return;
+        }
         for (SlashCommand command : commands) {
             if (command.getSlash().getName().equals(commandName)) {
                 command.execute(event);

@@ -46,7 +46,7 @@ public class WorkCommand extends SlashCommand {
         }
         try {
             if (chance == 1 || chance == 99) reward = reward * 3;
-            BROCOINS_SQL.updateCash(member, reward);
+            BROCOINS_SQL.updateCashMultiplier(member, event, reward);
             COOLDOWN_MANAGER.addCooldown(commandID(event), HOUR_IN_SECONDS);
             assert member != null;
             logger.info("{}(ID:{}) won {} while working.", member.getUser().getName(), member.getId(), reward);

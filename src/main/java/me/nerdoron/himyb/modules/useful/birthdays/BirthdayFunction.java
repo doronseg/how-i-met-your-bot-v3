@@ -75,7 +75,7 @@ public class BirthdayFunction extends ListenerAdapter {
                             if (member != null && !member.getRoles().contains(role)) {
                                 guild.addRoleToMember(member, role).queue();
                                 try {
-                                    broCoinsSQL.updateCash(member, 150);
+                                    broCoinsSQL.updateCashMultiplierDM(member, 150);
                                 } catch (SQLException e) {
                                     throw new RuntimeException(e);
                                 }

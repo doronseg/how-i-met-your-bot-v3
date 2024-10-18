@@ -158,19 +158,28 @@ public class ShopHelper {
                 .build();
     }
 
-    public static MessageEmbed expBoostRedeemed(Member member, String item) {
+    public static MessageEmbed boostRedeemed(Member member, String item) {
         return new EmbedBuilder()
                 .setTitle("Inventory Item Redeemed")
-                .setDescription(String.format("%s `(ID:%s)` redeemed experience boost %s", member.getAsMention(), member.getId(), item))
+                .setDescription(String.format("%s `(ID:%s)` redeemed boost %s", member.getAsMention(), member.getId(), item))
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();
     }
 
-    public static MessageEmbed expBoostEnd(Member member, String item) {
+    public static MessageEmbed cardRedeemed(Member member, String item) {
         return new EmbedBuilder()
-                .setTitle("Experience Booster Ended")
-                .setDescription(String.format("Exp Boost %s ended for %s `(ID:%s).`", item, member.getAsMention(), member.getId()))
+                .setTitle("Inventory Item Redeemed")
+                .setDescription(String.format("%s `(ID:%s)` redeemed %s", member.getAsMention(), member.getId(), item))
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
+    public static MessageEmbed boostEnd(Member member, String item) {
+        return new EmbedBuilder()
+                .setTitle("Booster Ended")
+                .setDescription(String.format("Boost %s ended for %s `(ID:%s)`.", item, member.getAsMention(), member.getId()))
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();

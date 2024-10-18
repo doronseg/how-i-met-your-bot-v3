@@ -1,10 +1,10 @@
 package me.nerdoron.himyb.commands.fun.currency;
 
-import me.nerdoron.himyb.modules.bot.CooldownManager;
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.bot.Rng;
 import me.nerdoron.himyb.modules.bot.SlashCommand;
 import me.nerdoron.himyb.modules.fun.brocoins.ArrestHandler;
+import me.nerdoron.himyb.modules.fun.brocoins.CheckCrimeCooldowns;
 import me.nerdoron.himyb.modules.fun.brocoins.CurrencyHelper;
 import me.nerdoron.himyb.modules.fun.brocoins.JailHelper;
 import net.dv8tion.jda.api.entities.Member;
@@ -25,9 +25,6 @@ public class RobUserCommand extends SlashCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        String remainingArrested = COOLDOWN_MANAGER.parseCooldown("arrested");
-        String remainingRobUser = COOLDOWN_MANAGER.parseCooldown(CooldownManager.commandID(event));
-
         Member member = event.getMember();
         assert member != null;
 
@@ -36,27 +33,7 @@ public class RobUserCommand extends SlashCommand {
             return;
         }
 
-        if (COOLDOWN_MANAGER.hasTag("arrested", "Ran")) {
-            event.reply("The cops are looking for you! Don't provoke them, Try again in " + remainingArrested).setEphemeral(true)
-                    .queue();
-            return;
-        }
-
-        if (COOLDOWN_MANAGER.hasTag("arrested", "Bribed")) {
-            event.reply(":cop:: I don't think that's a good idea. Try again in " + remainingArrested).setEphemeral(true)
-                    .queue();
-            return;
-        }
-        if (COOLDOWN_MANAGER.hasTag(CooldownManager.commandID(event), "success")) {
-            event.reply("Don't commit too many robberies! You can attempt a new robbery in " + remainingRobUser)
-                    .setEphemeral(true)
-                    .queue();
-            return;
-        }
-        if (COOLDOWN_MANAGER.hasTag(CooldownManager.commandID(event), "fail")) {
-            event.reply("Don't push your luck! You can attempt a new robbery in " + remainingRobUser)
-                    .setEphemeral(true)
-                    .queue();
+        if (CheckCrimeCooldowns.noCooldown(event)) {
             return;
         }
 
@@ -84,8 +61,8 @@ public class RobUserCommand extends SlashCommand {
             int reward = amount / robRng;
             logger.info(String.valueOf(reward));
             try {
-                BROCOINS_SQL.updateCash(member, reward);
-                BROCOINS_SQL.updateCash(memberToRob, -reward);
+                BROCOINS_SQL.updateCashMultiplier(member, event, reward);
+                BROCOINS_SQL.updateCashWithoutMultiplier(memberToRob, -reward);
                 logger.info("{}(ID:{}) won {} coins while robbing {}(ID:{}).", member.getUser().getName(), member.getId(), reward, memberToRob.
                         getUser().getName(), memberToRob.getId());
                 event.reply(memberToRob.getAsMention()).addEmbeds(CurrencyHelper.successfulRobEmbed(memberToRob, reward)).queue();

@@ -3,7 +3,10 @@ package me.nerdoron.himyb.commands.currency.broshop;
 import me.nerdoron.himyb.modules.bot.SlashCommand;
 import me.nerdoron.himyb.modules.broshop.InventoryHandler;
 import me.nerdoron.himyb.modules.broshop.ShopItem;
-import me.nerdoron.himyb.modules.broshop.items.exp.ExpBoost;
+import me.nerdoron.himyb.modules.broshop.items.BribeCops;
+import me.nerdoron.himyb.modules.broshop.items.CoinBoost;
+import me.nerdoron.himyb.modules.broshop.items.ExpBoost;
+import me.nerdoron.himyb.modules.broshop.items.JailCard;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -39,14 +42,37 @@ public class UseCommand extends SlashCommand {
                 event.reply("You don't have that in your inventory. Try buying it first!").setEphemeral(true).queue();
                 return;
             }
+            item = item.toUpperCase();
             if (item.startsWith("X")) {
                 // XP
-                ExpBoost expMultiplier = new ExpBoost();
-                if (expMultiplier.useExpBoost(item, member, event)) {
+                ExpBoost expBoost = new ExpBoost();
+                if (expBoost.useExpBoost(item, member, event)) {
                     inventoryHandler.removeFromInventory(member, item);
                 }
+            } else if (item.startsWith("C")) {
+                CoinBoost coinBoost = new CoinBoost();
+                if (coinBoost.useCoinBoost(item, member, event)) {
+                    inventoryHandler.removeFromInventory(member, item);
+                }
+            } else if (item.startsWith("I")) {
+                switch (item) {
+                    case "I1":
+                        BribeCops bribeCops = new BribeCops();
+                        if (bribeCops.useBribe(member, event)) {
+                            inventoryHandler.removeFromInventory(member, item);
+                        }
+                        break;
+                    case "I2":
+                        event.reply("You can't use a lottery card. Wait patiently until the lottery is rolled.").queue();
+                        break;
+                    case "I3":
+                        JailCard jailCard = new JailCard();
+                        if (jailCard.useJailCard(member, event)) {
+                            inventoryHandler.removeFromInventory(member, item);
+                        }
+                        break;
+                }
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

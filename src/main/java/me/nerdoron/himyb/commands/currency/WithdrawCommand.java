@@ -44,7 +44,7 @@ public class WithdrawCommand extends SlashCommand {
         }
 
         try {
-            BROCOINS_SQL.updateCash(member, withdraw);
+            BROCOINS_SQL.updateCashWithoutMultiplier(member, withdraw);
             BROCOINS_SQL.updateBank(member, -withdraw);
             event.replyEmbeds(doneEmbed(member, withdraw)).setEphemeral(true).queue();
             assert member != null;

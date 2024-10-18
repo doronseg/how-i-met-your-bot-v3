@@ -30,7 +30,7 @@ public class DailyCommand extends SlashCommand {
         }
 
         try {
-            BROCOINS_SQL.updateCash(event.getMember(), reward);
+            BROCOINS_SQL.updateCashMultiplierDM(event.getMember(), reward);
             Global.COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.DAY_IN_SECONDS);
             event.reply("You claimed your daily batch of coins, and got " + reward + " " + Global.broCoin.getAsMention()
                     + ".").setEphemeral(true).queue();

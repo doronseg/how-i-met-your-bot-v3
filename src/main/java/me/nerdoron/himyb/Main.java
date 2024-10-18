@@ -40,6 +40,7 @@ public class Main {
                         GatewayIntent.DIRECT_MESSAGES, GatewayIntent.MESSAGE_CONTENT)
                 .build();
         logger.info("Logged in as {}.", jda.getSelfUser().getName());
+        jda.awaitReady();
         logger.info("Stage 2 complete!");
         RegisterEvents.registerEvents(jda);
         logger.info("Attempting to establish database connection..");

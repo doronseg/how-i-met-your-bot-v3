@@ -57,6 +57,7 @@ public class TicketFileMonitor extends ListenerAdapter {
     @SuppressWarnings("WriteOnlyObject")
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+        if (!event.getMessage().isFromGuild()) return;
         TextChannel monitorChannel = event.getGuild().getTextChannelById(monitorId);
         assert monitorChannel != null;
         Member member = event.getMember();
