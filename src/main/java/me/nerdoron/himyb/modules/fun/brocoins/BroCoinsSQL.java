@@ -161,8 +161,9 @@ public class BroCoinsSQL {
     public void updateCashMultiplier(Member member, SlashCommandInteractionEvent event, int amountToChange) throws SQLException {
         int memberCoins = this.getBroCash(member);
         if (amountToChange > 0 && hasCoinBoost(member)) {
+            memberCoins += amountToChange;
             CoinMultiplier multiplier = CoinMultiplier.getMultiplier(member);
-            setCash(member, multiplier.applyMultiplier(amountToChange));
+            setCash(member, multiplier.applyMultiplier(memberCoins));
             event.getChannel().sendMessage(String.format("%s won %d %s thanks to their active coin multiplier!", member.getAsMention(), multiplier.applyMultiplier(amountToChange), Global.broCoin.getAsMention())).queue();
             return;
         }
@@ -173,8 +174,9 @@ public class BroCoinsSQL {
     public void updateCashMultiplierDM(Member member, int amountToChange) throws SQLException {
         int memberCoins = this.getBroCash(member);
         if (amountToChange > 0 && hasCoinBoost(member)) {
+            memberCoins += amountToChange;
             CoinMultiplier multiplier = CoinMultiplier.getMultiplier(member);
-            setCash(member, multiplier.applyMultiplier(amountToChange));
+            setCash(member, multiplier.applyMultiplier(memberCoins));
             member.getUser().openPrivateChannel().flatMap(channel ->
                     channel.sendMessage(String.format("You won %d %s thanks to your active coin multiplier!", multiplier.applyMultiplier(amountToChange), Global.broCoin.getAsMention()))
             ).queue();
@@ -188,8 +190,5 @@ public class BroCoinsSQL {
         int memberCoins = this.getBroCash(member);
         memberCoins += amountToChange;
         setCash(member, memberCoins);
-
     }
-
-
 }
