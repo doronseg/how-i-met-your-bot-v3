@@ -158,10 +158,19 @@ public class ShopHelper {
                 .build();
     }
 
-    public static MessageEmbed expBoostRedeemed(Member member, String item) {
+    public static MessageEmbed boostRedeemed(Member member, String item) {
         return new EmbedBuilder()
                 .setTitle("Inventory Item Redeemed")
-                .setDescription(String.format("%s `(ID:%s)` redeemed experience boost %s", member.getAsMention(), member.getId(), item))
+                .setDescription(String.format("%s `(ID:%s)` redeemed boost %s", member.getAsMention(), member.getId(), item))
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
+    public static MessageEmbed cardRedeemed(Member member, String item) {
+        return new EmbedBuilder()
+                .setTitle("Inventory Item Redeemed")
+                .setDescription(String.format("%s `(ID:%s)` redeemed %s", member.getAsMention(), member.getId(), item))
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();

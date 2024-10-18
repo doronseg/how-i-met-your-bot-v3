@@ -3,6 +3,8 @@ package me.nerdoron.himyb.commands.currency.broshop;
 import me.nerdoron.himyb.modules.bot.SlashCommand;
 import me.nerdoron.himyb.modules.broshop.InventoryHandler;
 import me.nerdoron.himyb.modules.broshop.ShopItem;
+import me.nerdoron.himyb.modules.fun.brocoins.JailHelper;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -14,6 +16,13 @@ public class BuyCommand extends SlashCommand {
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         String item = Objects.requireNonNull(event.getOption("item")).getAsString();
+
+        Member member = event.getMember();
+
+        if (JailHelper.checkIfInJail(member)) {
+            event.replyEmbeds(JailHelper.inJailEmbed(member)).queue();
+            return;
+        }
 
         ShopItem selectedItem = null;
         for (ShopItem shopItem : ShopItem.values()) {
@@ -27,10 +36,9 @@ public class BuyCommand extends SlashCommand {
             event.reply("Item not found. Please make sure you have the correct item ID.").setEphemeral(true).queue();
             return;
         }
-        
-        InventoryHandler inventoryHandler = new InventoryHandler();
-        inventoryHandler.buyItem(event, event.getMember(), selectedItem);
 
+        InventoryHandler inventoryHandler = new InventoryHandler();
+        inventoryHandler.buyItem(event, member, selectedItem);
     }
 
     @Override

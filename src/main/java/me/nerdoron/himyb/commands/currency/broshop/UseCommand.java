@@ -5,6 +5,7 @@ import me.nerdoron.himyb.modules.broshop.InventoryHandler;
 import me.nerdoron.himyb.modules.broshop.ShopItem;
 import me.nerdoron.himyb.modules.broshop.items.CoinBoost;
 import me.nerdoron.himyb.modules.broshop.items.ExpBoost;
+import me.nerdoron.himyb.modules.broshop.items.JailCard;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -51,8 +52,22 @@ public class UseCommand extends SlashCommand {
                 if (coinBoost.useCoinBoost(item, member, event)) {
                     inventoryHandler.removeFromInventory(member, item);
                 }
+            } else if (item.startsWith("I")) {
+                switch (item) {
+                    case "I1":
+                        // bribe
+                        break;
+                    case "I2":
+                        // lottery
+                        break;
+                    case "I3":
+                        JailCard jailCard = new JailCard();
+                        if (jailCard.useJailCard(member, event)) {
+                            inventoryHandler.removeFromInventory(member, item);
+                        }
+                        break;
+                }
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

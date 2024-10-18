@@ -45,7 +45,7 @@ public class ExpBoost {
         Role role = guild.getRoleById(boostInfo.roleId);
         addRole(member, boostInfo.cooldownName, boostInfo.durationInSeconds, role, guild);
         event.reply("Successfully redeemed " + boostInfo.successMessage).setEphemeral(true).queue();
-        Objects.requireNonNull(event.getGuild().getTextChannelById("1296434268238516274")).sendMessageEmbeds(ShopHelper.expBoostRedeemed(member, boostInfo.successMessage)).queue();
+        Objects.requireNonNull(event.getGuild().getTextChannelById("1296434268238516274")).sendMessageEmbeds(ShopHelper.boostRedeemed(member, boostInfo.successMessage)).queue();
         logger.info("{} (ID:{}) redeemed {}.", member.getUser().getName(), member.getId(), type);
         return true;
     }
