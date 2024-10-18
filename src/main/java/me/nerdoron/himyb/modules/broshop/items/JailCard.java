@@ -9,6 +9,9 @@ import org.slf4j.Logger;
 
 import java.util.Objects;
 
+import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
+import static me.nerdoron.himyb.Global.HOUR_IN_SECONDS;
+
 public class JailCard {
     private static final Logger logger = LoggingHandler.logger(CoinBoost.class);
 
@@ -18,7 +21,8 @@ public class JailCard {
             return false;
         }
         JailHelper.unJailMember(member);
-        event.reply("Successfully redeemed Jail Card. You're no longer jailed.").setEphemeral(true).queue();
+        event.replyEmbeds(JailHelper.jailCard()).queue();
+        COOLDOWN_MANAGER.addCooldown("arrested", "card", HOUR_IN_SECONDS / 4);
         Objects.requireNonNull(Objects.requireNonNull(event.getGuild()).getTextChannelById("1296434268238516274")).sendMessageEmbeds(ShopHelper.cardRedeemed(member, "get out of jail free card.")).queue();
         logger.info("{} (ID:{}) redeemed {}.", member.getUser().getName(), member.getId(), "get out of jail card");
         return true;

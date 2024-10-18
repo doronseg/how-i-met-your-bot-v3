@@ -3,6 +3,7 @@ package me.nerdoron.himyb.commands.currency.broshop;
 import me.nerdoron.himyb.modules.bot.SlashCommand;
 import me.nerdoron.himyb.modules.broshop.InventoryHandler;
 import me.nerdoron.himyb.modules.broshop.ShopItem;
+import me.nerdoron.himyb.modules.broshop.items.BribeCops;
 import me.nerdoron.himyb.modules.broshop.items.CoinBoost;
 import me.nerdoron.himyb.modules.broshop.items.ExpBoost;
 import me.nerdoron.himyb.modules.broshop.items.JailCard;
@@ -41,6 +42,7 @@ public class UseCommand extends SlashCommand {
                 event.reply("You don't have that in your inventory. Try buying it first!").setEphemeral(true).queue();
                 return;
             }
+            item = item.toUpperCase();
             if (item.startsWith("X")) {
                 // XP
                 ExpBoost expBoost = new ExpBoost();
@@ -55,7 +57,10 @@ public class UseCommand extends SlashCommand {
             } else if (item.startsWith("I")) {
                 switch (item) {
                     case "I1":
-                        // bribe
+                        BribeCops bribeCops = new BribeCops();
+                        if (bribeCops.useBribe(member, event)) {
+                            inventoryHandler.removeFromInventory(member, item);
+                        }
                         break;
                     case "I2":
                         // lottery

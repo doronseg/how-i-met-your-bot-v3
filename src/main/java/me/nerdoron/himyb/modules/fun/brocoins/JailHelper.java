@@ -33,6 +33,16 @@ public class JailHelper {
                 .build();
     }
 
+    public static MessageEmbed activeBribeEmbed() {
+        return new EmbedBuilder()
+                .setTitle("⛓️\u200D\uD83D\uDCA5 A free man!")
+                .setDescription("You have an active bribe. The police let you go.")
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
+
     public static MessageEmbed timeoutEmbed(int time) {
         return new EmbedBuilder()
                 .setTitle("\uD83D\uDC6E Jailed!")
@@ -64,6 +74,15 @@ public class JailHelper {
         return new EmbedBuilder()
                 .setTitle("⛓️\u200D\uD83D\uDCA5 A free man!")
                 .setDescription("You've successfully fled the police! Go lay low for a while.")
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
+    public static MessageEmbed jailCard() {
+        return new EmbedBuilder()
+                .setTitle("⛓️\u200D\uD83D\uDCA5 A free man!")
+                .setDescription("You've used a get out of jail free card. You're no longer in jail. Go lay low for a while.")
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();

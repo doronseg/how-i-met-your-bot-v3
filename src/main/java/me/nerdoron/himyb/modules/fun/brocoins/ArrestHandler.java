@@ -1,5 +1,6 @@
 package me.nerdoron.himyb.modules.fun.brocoins;
 
+import me.nerdoron.himyb.modules.bot.CooldownManager;
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.bot.Rng;
 import net.dv8tion.jda.api.entities.Member;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import static me.nerdoron.himyb.Global.*;
 
@@ -29,6 +31,20 @@ public class ArrestHandler {
         buttons.add(Button.danger("ARREST:" + uid + ":run", "\uD83D\uDCA8 Try to run"));
         buttons.add(Button.danger("ARREST:" + uid + ":bribe", "\uD83D\uDCB8 Try to bribe them (50% of current cash)"));
 
+
+        if (hasBribe(member)) {
+            if (chance <= 50) {
+                event.replyEmbeds(JailHelper.arrestedEmbed(charge))
+                        .addActionRow(Button.secondary("ARREST:DISABLED", "Using cop bribe...").asDisabled())
+                        .queue();
+                event.getHook().editOriginalEmbeds(JailHelper.activeBribeEmbed()).queueAfter(2, TimeUnit.SECONDS);
+                event.getHook().editOriginalComponents().queue();
+                COOLDOWN_MANAGER.addCooldown("arrested", "Bribed", HOUR_IN_SECONDS / 6);
+                logger.info("{}(ID:{}) was arrested and had an active cop bribe, so they let him go.", member.getUser().getName(), uid);
+                return;
+            }
+        }
+
         event.reply(String.format("You have %d seconds to respond!", rng))
                 .addEmbeds(JailHelper.arrestedEmbed(charge))
                 .addActionRow(buttons)
@@ -39,6 +55,9 @@ public class ArrestHandler {
                 .filter(buttonEvent -> buttonEvent.getComponentId().contains("ARREST:" + uid))
                 .timeout(timeout, () -> {
                     event.getHook().editOriginal("").queue();
+                    if (hasBribe(member)) {
+                        event.getHook().editOriginal(":cop:: Sorry bro, I tried my best.").queue();
+                    }
                     event.getHook().editOriginalEmbeds(JailHelper.timeoutEmbed(potentialTime)).queue();
                     event.getHook().editOriginalComponents().queue();
                     JailHelper.jailMember(member, potentialTime, charge);
@@ -60,6 +79,9 @@ public class ArrestHandler {
                     switch (buttonCategory) {
                         case "cooperate":
                             event.getHook().editOriginal("").queue();
+                            if (hasBribe(member)) {
+                                event.getHook().editOriginal(":cop:: Sorry bro, I tried my best.").queue();
+                            }
                             event.getHook().editOriginalEmbeds(JailHelper.cooperateEmbed(potentialTime)).queue();
                             event.getHook().editOriginalComponents().queue();
                             JailHelper.jailMember(member, potentialTime, charge);
@@ -78,6 +100,9 @@ public class ArrestHandler {
                             }
                             // fail
                             event.getHook().editOriginal("").queue();
+                            if (hasBribe(member)) {
+                                event.getHook().editOriginal(":cop:: Sorry bro, I tried my best.").queue();
+                            }
                             event.getHook().editOriginalEmbeds(JailHelper.failedRunEmbed(potentialTime * 2)).queue();
                             event.getHook().editOriginalComponents().queue();
                             JailHelper.jailMember(member, potentialTime * 2, "RESISTING");
@@ -90,6 +115,9 @@ public class ArrestHandler {
                                 int broCash = BROCOINS_SQL.getBroCash(member);
                                 if (broCash < 35) {
                                     event.getHook().editOriginal("").queue();
+                                    if (hasBribe(member)) {
+                                        event.getHook().editOriginal(":cop:: Sorry bro, I tried my best.").queue();
+                                    }
                                     event.getHook().editOriginalEmbeds(JailHelper.bribeTooLow(potentialTime, broCash)).queue();
                                     event.getHook().editOriginalComponents().queue();
                                     JailHelper.jailMember(member, potentialTime, charge);
@@ -99,7 +127,7 @@ public class ArrestHandler {
                                 }
                                 try {
                                     BROCOINS_SQL.updateCashWithoutMultiplier(member, -(broCash / 2));
-                                    event.getHook().editOriginal("").queue();
+                                    event.getHook().editOriginal(":cop:: Thank you for your contribution.").queue();
                                     event.getHook().editOriginalEmbeds(JailHelper.successBribeEmbed(broCash / 2)).queue();
                                     event.getHook().editOriginalComponents().queue();
                                     COOLDOWN_MANAGER.addCooldown("arrested", "Bribed", HOUR_IN_SECONDS / 4);
@@ -112,6 +140,9 @@ public class ArrestHandler {
                             }
                             //fail
                             event.getHook().editOriginal("").queue();
+                            if (hasBribe(member)) {
+                                event.getHook().editOriginal(":cop:: Sorry bro, I tried my best.").queue();
+                            }
                             event.getHook().editOriginalEmbeds(JailHelper.failedBribeEmbed(potentialTime * 2)).queue();
                             event.getHook().editOriginalComponents().queue();
                             JailHelper.jailMember(member, potentialTime * 2, "BRIBERY");
@@ -121,5 +152,9 @@ public class ArrestHandler {
                             break;
                     }
                 });
+    }
+
+    private static boolean hasBribe(Member member) {
+        return COOLDOWN_MANAGER.hasCooldown(CooldownManager.bribeCooldown(member));
     }
 }
