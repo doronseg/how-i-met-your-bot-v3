@@ -31,7 +31,7 @@ public class GenerateTranscript {
         StringBuilder builder = new StringBuilder();
 
         for (Message message : messages) {
-            String tag = message.getAuthor().getAsTag();
+            String tag = message.getAuthor().getName();
             String content = message.getContentRaw();
             OffsetDateTime time = message.getTimeCreated();
             String parsed = parseTime(time);
