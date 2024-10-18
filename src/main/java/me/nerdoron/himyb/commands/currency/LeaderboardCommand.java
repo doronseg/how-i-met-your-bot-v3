@@ -52,6 +52,6 @@ public class LeaderboardCommand extends SlashCommand {
 
     @Override
     public SlashCommandData getSlash() {
-        return Commands.slash("leaderboard", "Check out the richest people in the server.");
+        return Commands.slash("leaderboard", "Check out the best people in the server.");
     }
 }
