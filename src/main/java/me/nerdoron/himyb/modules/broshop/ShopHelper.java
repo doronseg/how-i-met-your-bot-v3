@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static me.nerdoron.himyb.Global.HOUR_IN_SECONDS;
 import static me.nerdoron.himyb.modules.broshop.ShopItem.*;
 
 public class ShopHelper {
@@ -171,6 +172,61 @@ public class ShopHelper {
         return new EmbedBuilder()
                 .setTitle("Inventory Item Redeemed")
                 .setDescription(String.format("%s `(ID:%s)` redeemed %s", member.getAsMention(), member.getId(), item))
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
+    public static MessageEmbed doneEmbed(Member member, Member memberToTransferTo, String item) {
+        return new EmbedBuilder()
+                .setTitle("\uD83D\uDCBC Item Transaction successful")
+                .setDescription(String.format("%s gave %s to %s.", member.getAsMention(), item, memberToTransferTo.getAsMention()))
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
+    public static MessageEmbed contrabandStartBothInJail(Member member, String item) {
+        return new EmbedBuilder()
+                .setTitle("⛓ Contraband Transaction")
+                .setDescription(String.format("%s is initiating a contraband trade. They wish to give you a %s. \nContraband trade is risky, and might result in jail time for you. Would you like to proceed?", member.getAsMention(), item))
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
+    public static MessageEmbed contrabandStartOtherMemberInJail(Member memberToTransferTo) {
+        return new EmbedBuilder()
+                .setTitle("⛓ Contraband Transaction")
+                .setDescription(String.format("%s is in jail. \nTrying to give them an item is risky, and might result in jail time for you. Would you like to proceed?", memberToTransferTo.getAsMention()))
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
+    public static MessageEmbed extendJailTime(int time) {
+        return new EmbedBuilder()
+                .setTitle("\uD83D\uDC6E Jail Time Extended!")
+                .setDescription(String.format("The prison guards caught you trying to deal contraband. They've extended both your jail sentences by %d hours!", time / HOUR_IN_SECONDS))
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
+
+    public static MessageEmbed contrabandSuccess(Member member, Member memberToTransferTo, String item) {
+        return new EmbedBuilder()
+                .setTitle("⛓ Contraband Transaction Successful")
+                .setDescription(String.format("%s gave %s to %s who is in jail, without getting caught.", member.getAsMention(), item, memberToTransferTo.getAsMention()))
+                .setColor(Global.embedColor)
+                .setFooter(Global.footertext, Global.footerpfp)
+                .build();
+    }
+
+    public static MessageEmbed jailContrabandSuccess(Member member, Member memberToTransferTo, String item) {
+        return new EmbedBuilder()
+                .setTitle("⛓ Contraband Transaction Successful")
+                .setDescription(String.format("%s gave %s to %s, without getting caught.", member.getAsMention(), item, memberToTransferTo.getAsMention()))
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();

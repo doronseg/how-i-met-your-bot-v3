@@ -6,6 +6,7 @@ import me.nerdoron.himyb.modules.bot.Rng;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.slf4j.Logger;
 
@@ -45,10 +46,16 @@ public class ArrestHandler {
             }
         }
 
-        event.reply(String.format("You have %d seconds to respond!", rng))
-                .addEmbeds(JailHelper.arrestedEmbed(charge))
-                .addActionRow(buttons)
-                .queue();
+        if (!event.getHook().getInteraction().isAcknowledged()) {
+            event.reply(String.format("You have %d seconds to respond!", rng))
+                    .addEmbeds(JailHelper.arrestedEmbed(charge))
+                    .addActionRow(buttons)
+                    .queue();
+        } else {
+            event.getHook().editOriginal(String.format("You have %d seconds to respond!", rng)).queue();
+            event.getHook().editOriginalEmbeds(JailHelper.arrestedEmbed(charge)).queue();
+            event.getHook().editOriginalComponents(ActionRow.of(buttons)).queue();
+        }
         final Duration timeout = Duration.ofSeconds(rng);
         event.getJDA().listenOnce(ButtonInteractionEvent.class)
                 .filter(buttonEvent -> buttonEvent.getChannel().getIdLong() == event.getChannel().getIdLong())
@@ -107,7 +114,7 @@ public class ArrestHandler {
                             event.getHook().editOriginalComponents().queue();
                             JailHelper.jailMember(member, potentialTime * 2, "RESISTING");
                             buttonEvent.deferEdit().queue();
-                            logger.info("{}(ID:{}) was arrested and failed to outrun the cops out he was jailed for {} hours.", member.getUser().getName(), uid, potentialTime / HOUR_IN_SECONDS);
+                            logger.info("{}(ID:{}) was arrested and failed to outrun the cops out he was jailed for {} hours.", member.getUser().getName(), uid, potentialTime * 2 / HOUR_IN_SECONDS);
                             break;
                         case "bribe":
                             if (chance > 51) {
@@ -147,7 +154,7 @@ public class ArrestHandler {
                             event.getHook().editOriginalComponents().queue();
                             JailHelper.jailMember(member, potentialTime * 2, "BRIBERY");
                             buttonEvent.deferEdit().queue();
-                            logger.info("{}(ID:{}) was arrested and the cops didn't take his bribe. he was jailed for {} hours.", member.getUser().getName(), uid, potentialTime / HOUR_IN_SECONDS);
+                            logger.info("{}(ID:{}) was arrested and the cops didn't take his bribe. he was jailed for {} hours.", member.getUser().getName(), uid, potentialTime * 2 / HOUR_IN_SECONDS);
 
                             break;
                     }

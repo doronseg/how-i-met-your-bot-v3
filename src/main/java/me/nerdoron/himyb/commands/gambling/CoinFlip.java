@@ -57,7 +57,7 @@ public class CoinFlip extends SlashCommand {
         File video = getHeadsOrTails(rng);
         FileUpload file = FileUpload.fromData(video);
         event.reply(
-                        String.format("You bet %d %s on %s Let's see if you won..", bet, Global.broCoin.getAsMention(), result))
+                        String.format("You bet %d %s on %s Let's see if you won..", bet, Global.broCoin.getAsMention(), type))
                 .addFiles(file)
                 .queue();
 

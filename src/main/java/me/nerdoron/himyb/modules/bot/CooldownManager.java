@@ -66,6 +66,17 @@ public class CooldownManager {
         DB_addNewEntry(identifier + " #" + tag, plus);
     }
 
+    public void extendJailTime(String identifier, String charge, Member member, int additionalTIme) {
+        OffsetDateTime currentCooldownEnd = getCooldownEnd(identifier);
+        if (currentCooldownEnd == null || currentCooldownEnd.isBefore(OffsetDateTime.now())) {
+            addCooldown(jailID(member), charge, additionalTIme);
+            return;
+        }
+        OffsetDateTime newEnd = currentCooldownEnd.plusSeconds(additionalTIme);
+        deleteCooldown(identifier);
+        DB_addNewEntry(identifier + " #" + charge, newEnd);
+    }
+
     public void deleteCooldown(String identifier) {
         DB_removeEntry(identifier);
     }
@@ -104,6 +115,12 @@ public class CooldownManager {
         } else {
             return parseOffsetDateTimeHumanText(cooldown.get(get1stKey(cooldown)));
         }
+    }
+
+    private OffsetDateTime getCooldownEnd(String identifier) {
+        Map<String, OffsetDateTime> cooldown = DB_findIdentifier(identifier);
+        if (cooldown == null) return null;
+        return cooldown.get(get1stKey(cooldown));
     }
 
     private String parseOffsetDateTimeHumanText(OffsetDateTime timeCreated) {

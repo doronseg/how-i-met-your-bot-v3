@@ -59,7 +59,7 @@ public class InventoryHandler {
         }
     }
 
-    private void addToInventory(Member member, String type) throws SQLException {
+    public void addToInventory(Member member, String type) throws SQLException {
         String SQL;
         if (getItemAmount(member, type) == 0) {
             SQL = String.format(
