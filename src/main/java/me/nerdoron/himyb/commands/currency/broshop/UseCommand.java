@@ -63,7 +63,7 @@ public class UseCommand extends SlashCommand {
                         }
                         break;
                     case "I2":
-                        // lottery
+                        event.reply("You can't use a lottery card. Wait patiently until the lottery is rolled.").queue();
                         break;
                     case "I3":
                         JailCard jailCard = new JailCard();
