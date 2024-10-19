@@ -139,6 +139,7 @@ public class GiveItem {
                                     event.getHook().editOriginal(memberToTransferTo.getAsMention()).queue();
                                     event.getHook().editOriginalEmbeds(ShopHelper.contrabandSuccess(member, memberToTransferTo, item)).queue();
                                     success.set(true);
+                                    break;
                                 }
                                 ArrestHandler.initialArrest(event, "CONTRABAND_SMUGGLE", 3 * Global.HOUR_IN_SECONDS);
                                 logger.info("{} (ID:{}) tried to give an item to {}, but failed, and was arrested.", member.getUser().getName(), member.getId(), memberToTransferTo.getUser().getName());
