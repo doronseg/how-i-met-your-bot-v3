@@ -1,5 +1,6 @@
 package me.nerdoron.himyb.modules.broshop.items;
 
+import me.nerdoron.himyb.modules.bot.CooldownManager;
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.broshop.ShopHelper;
 import me.nerdoron.himyb.modules.fun.brocoins.JailHelper;
@@ -22,7 +23,7 @@ public class JailCard {
         }
         JailHelper.unJailMember(member);
         event.replyEmbeds(JailHelper.jailCard()).queue();
-        COOLDOWN_MANAGER.addCooldown("arrested", "card", HOUR_IN_SECONDS / 4);
+        COOLDOWN_MANAGER.addCooldown(CooldownManager.arrestedID(member), "card", HOUR_IN_SECONDS / 4);
         Objects.requireNonNull(Objects.requireNonNull(event.getGuild()).getTextChannelById("1296434268238516274")).sendMessageEmbeds(ShopHelper.cardRedeemed(member, "get out of jail free card.")).queue();
         logger.info("{} (ID:{}) redeemed {}.", member.getUser().getName(), member.getId(), "get out of jail card");
         return true;

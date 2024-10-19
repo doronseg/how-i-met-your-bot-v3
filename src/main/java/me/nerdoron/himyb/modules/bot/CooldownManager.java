@@ -31,6 +31,10 @@ public class CooldownManager {
         return "@" + member.getId() + "jail@";
     }
 
+    public static String arrestedID(Member member) {
+        return "@" + member.getId() + "arrested@";
+    }
+
     public static String expCooldown(Member member, String type) {
         return "@" + member.getId() + type + "@";
     }
