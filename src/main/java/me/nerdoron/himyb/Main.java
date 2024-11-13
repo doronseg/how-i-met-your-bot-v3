@@ -9,6 +9,7 @@ import me.nerdoron.himyb.modules.bot.RegisterEvents;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.slf4j.Logger;
 
 public class Main {
@@ -38,6 +39,7 @@ public class Main {
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MODERATION,
                         GatewayIntent.GUILD_MESSAGE_POLLS, GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
                         GatewayIntent.DIRECT_MESSAGES, GatewayIntent.MESSAGE_CONTENT)
+                .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .build();
         logger.info("Logged in as {}.", jda.getSelfUser().getName());
         jda.awaitReady();
@@ -52,6 +54,7 @@ public class Main {
         Thread.sleep(15 * Global.MIN_IN_MS);
         ChangeStatus.activityTimer(jda);
     }
+
 
     private static void tryDb() {
         Database.connect();
