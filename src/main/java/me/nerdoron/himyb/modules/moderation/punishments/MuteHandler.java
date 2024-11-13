@@ -142,9 +142,7 @@ public class MuteHandler extends ListenerAdapter {
                             }
                         }
                     }
-                }).onError(e -> {
-                    logger.error("Failed to load members: {}", e.getMessage());
-                });
+                }).onError(e -> logger.error("Failed to load members: {}", e.getMessage()));
 
             } catch (Exception e) {
                 logger.error("An error occurred in the scheduled task", e);
