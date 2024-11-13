@@ -35,16 +35,10 @@ public class MuteHandler extends ListenerAdapter {
         Guild guild = event.getGuild();
         if (!guild.getId().equals("850396197646106624")) return;
         Role muteRole = guild.getRoleById(muteRoleId);
-        if (muteRole == null) {
-            logger.warn("Mute role not found!");
-            return;
-        }
+        if (muteRole == null) return;
         List<Role> addedRoles = event.getRoles();
         if (addedRoles.contains(muteRole)) {
-            if (event.getUser().equals(guild.getSelfMember().getUser())) {
-                logger.info("Bot added the mute role, ignoring.");
-                return;
-            }
+            if (event.getUser().equals(guild.getSelfMember().getUser())) return;
             //TODO: Generate modlog
         }
     }
@@ -55,16 +49,10 @@ public class MuteHandler extends ListenerAdapter {
         Guild guild = event.getGuild();
         if (!guild.getId().equals("850396197646106624")) return;
         Role muteRole = guild.getRoleById(muteRoleId);
-        if (muteRole == null) {
-            logger.warn("Mute role not found!");
-            return;
-        }
+        if (muteRole == null) return;
         List<Role> addedRoles = event.getRoles();
         if (addedRoles.contains(muteRole)) {
-            if (event.getUser().equals(guild.getSelfMember().getUser())) {
-                logger.info("Bot added the mute role, ignoring.");
-                return;
-            }
+            if (event.getUser().equals(guild.getSelfMember().getUser())) return;
             //TODO: Generate modlog
         }
     }

@@ -23,30 +23,32 @@ public class BanHandler extends ListenerAdapter {
     public void onGuildBan(GuildBanEvent event) {
         Guild guild = event.getGuild();
         if (!guild.getId().equals("850396197646106624")) return;
+        if (event.getUser().equals(guild.getSelfMember().getUser())) return;
         AtomicReference<String> reason = new AtomicReference<>("Unable to retrieve reason");
-        guild.retrieveAuditLogs().type(ActionType.BAN).queue(entries -> {
+        guild.retrieveAuditLogs().limit(10).type(ActionType.BAN).queue(entries -> {
             AuditLogEntry entry = entries.get(0);
             reason.set(entry.getReason());
-            logger.info("User {} was banned for reason {}", event.getUser(), reason.get());
-            // TODO: Generate modlog with reason
         });
+        logger.info("User {} was banned for reason {}", event.getUser(), reason.get());
+        // TODO: Generate modlog with reason
     }
 
     @Override
     public void onGuildUnban(GuildUnbanEvent event) {
         Guild guild = event.getGuild();
         if (!guild.getId().equals("850396197646106624")) return;
+        if (event.getUser().equals(guild.getSelfMember().getUser())) return;
         AtomicReference<String> reason = new AtomicReference<>("Unable to retrieve reason");
-
         guild.retrieveAuditLogs().type(ActionType.UNBAN).queue(entries -> {
             AuditLogEntry entry = entries.get(0);
             reason.set(entry.getReason());
-            logger.info("User {} was unbanned for reason {}", event.getUser(), reason.get());
-            // TODO: Generate modlog with reason
         });
+        logger.info("User {} was unbanned for reason {}", event.getUser(), reason.get());
+        // TODO: Generate modlog with reason
+
     }
 
-    public CompletableFuture<Boolean> BanMember(Member member, Guild guild, String reason) {
+    public CompletableFuture<Boolean> BanMember(Member member, Member mod, Guild guild, String reason) {
         CompletableFuture<Boolean> result = new CompletableFuture<>();
         if (!guild.getId().equals("850396197646106624") || member.hasPermission(Permission.BAN_MEMBERS)) {
             result.complete(false);
@@ -56,19 +58,17 @@ public class BanHandler extends ListenerAdapter {
         member.getUser().openPrivateChannel()
                 .flatMap(privateChannel -> privateChannel.sendMessage(
                         String.format("You have been banned from how i met your discord for reason `%s`.", reason))
-                )
-                .queue(
-                        success -> guild.ban(member, 7, TimeUnit.DAYS).reason(reason).queue(
-                                banSuccess -> result.complete(true),
-                                banFailure -> result.complete(false)
-                        ),
-                        failure -> result.complete(false)
-                );
+                ).queue();
+        guild.ban(member, 7, TimeUnit.DAYS).reason(reason).queue(
+                banSuccess -> result.complete(true),
+                banFailure -> result.complete(false));
+        //TODO: Generate modlog
+
 
         return result;
     }
 
-    public CompletableFuture<Boolean> UnbanMember(User user, Guild guild, String reason) {
+    public CompletableFuture<Boolean> UnbanMember(User user, Member mod, Guild guild, String reason) {
         CompletableFuture<Boolean> result = new CompletableFuture<>();
         if (!guild.getId().equals("850396197646106624")) {
             result.complete(false);
@@ -76,7 +76,10 @@ public class BanHandler extends ListenerAdapter {
         }
         logger.info("{} (ID:{}) was unbanned for reason: {}.", user.getName(), user.getId(), reason);
         guild.unban(user).reason(reason).queue(
-                success -> result.complete(true),
+                success -> {
+                    result.complete(true);
+                    //TODO: Generate modlog
+                },
                 failure -> result.complete(false)
         );
         return result;

@@ -35,7 +35,7 @@ public class UnbanMemberCommand extends SlashCommand {
             BanHandler banHandler = new BanHandler();
             isUserBanned(guild, targetId).thenAccept(isBanned -> {
                 if (isBanned) {
-                    banHandler.UnbanMember(user, guild, reason).thenAccept(success -> {
+                    banHandler.UnbanMember(user, member, guild, reason).thenAccept(success -> {
                         if (success) {
                             event.reply(String.format("Successfully unbanned %s.", user.getName()))
                                     .setEphemeral(true)
@@ -83,10 +83,10 @@ public class UnbanMemberCommand extends SlashCommand {
 
     @Override
     public SlashCommandData getSlash() {
-        SlashCommandData unmute = Commands.slash("unban", "Unban a user.");
-        unmute.addOption(OptionType.STRING, "userid", "Provide the id of the member you'd like to unban.", true);
-        unmute.addOption(OptionType.STRING, "reason", "What's the reason for the unban?.", true);
-        unmute.setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS));
-        return unmute;
+        SlashCommandData unban = Commands.slash("unban", "Unban a user.");
+        unban.addOption(OptionType.STRING, "userid", "Provide the id of the member you'd like to unban.", true);
+        unban.addOption(OptionType.STRING, "reason", "What's the reason for the unban?.", true);
+        unban.setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS));
+        return unban;
     }
 }

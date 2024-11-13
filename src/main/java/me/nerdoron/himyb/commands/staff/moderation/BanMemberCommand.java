@@ -33,7 +33,7 @@ public class BanMemberCommand extends SlashCommand {
         assert guild != null;
         BanHandler banHandler = new BanHandler();
 
-        banHandler.BanMember(target, guild, reason).thenAccept(success -> {
+        banHandler.BanMember(target, member, guild, reason).thenAccept(success -> {
             if (success) {
                 event.reply(String.format("Successfully banned %s.", target.getAsMention()))
                         .setEphemeral(true)

@@ -11,6 +11,7 @@ import me.nerdoron.himyb.modules.fun.counting.CountingChannelHandler;
 import me.nerdoron.himyb.modules.fun.counting.CountingEditing;
 import me.nerdoron.himyb.modules.fun.server.LeaveJoin;
 import me.nerdoron.himyb.modules.moderation.punishments.BanHandler;
+import me.nerdoron.himyb.modules.moderation.punishments.KickHandler;
 import me.nerdoron.himyb.modules.moderation.punishments.MuteHandler;
 import me.nerdoron.himyb.modules.useful.HelpHandler;
 import me.nerdoron.himyb.modules.useful.applications.EventAutoComplete;
@@ -46,6 +47,7 @@ public class RegisterEvents {
         muteHandler.checkMutes(jda);
         jda.addEventListener(muteHandler);
         jda.addEventListener(new BanHandler());
+        jda.addEventListener(new KickHandler());
 
         //birthdays
         jda.addEventListener(new BirthdayModalHandler());

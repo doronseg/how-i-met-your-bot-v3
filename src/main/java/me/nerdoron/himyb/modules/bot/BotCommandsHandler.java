@@ -12,10 +12,7 @@ import me.nerdoron.himyb.commands.fun.currency.RobUserCommand;
 import me.nerdoron.himyb.commands.fun.currency.WorkCommand;
 import me.nerdoron.himyb.commands.gambling.*;
 import me.nerdoron.himyb.commands.staff.*;
-import me.nerdoron.himyb.commands.staff.moderation.BanMemberCommand;
-import me.nerdoron.himyb.commands.staff.moderation.MuteMemberCommand;
-import me.nerdoron.himyb.commands.staff.moderation.UnbanMemberCommand;
-import me.nerdoron.himyb.commands.staff.moderation.UnmuteMemberCommand;
+import me.nerdoron.himyb.commands.staff.moderation.*;
 import me.nerdoron.himyb.commands.useful.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
@@ -79,6 +76,7 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new UnmuteMemberCommand());
         commands.add(new BanMemberCommand());
         commands.add(new UnbanMemberCommand());
+        commands.add(new KickMemberCommand());
 
         // currency
         commands.add(new BalanceCommand());
