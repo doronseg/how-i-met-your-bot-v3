@@ -3,18 +3,22 @@ package me.nerdoron.himyb.modules.moderation.punishments;
 import me.nerdoron.himyb.Global;
 import me.nerdoron.himyb.modules.bot.CooldownManager;
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
+import me.nerdoron.himyb.modules.moderation.modlogs.ModLogHandler;
+import me.nerdoron.himyb.modules.moderation.modlogs.ModLogType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.audit.ActionType;
+import net.dv8tion.jda.api.audit.AuditLogEntry;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
-import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
@@ -31,30 +35,27 @@ public class MuteHandler extends ListenerAdapter {
 
     @Override
     public void onGuildMemberRoleAdd(GuildMemberRoleAddEvent event) {
-        Member member = event.getMember();
         Guild guild = event.getGuild();
         if (!guild.getId().equals("850396197646106624")) return;
-        Role muteRole = guild.getRoleById(muteRoleId);
-        if (muteRole == null) return;
-        List<Role> addedRoles = event.getRoles();
-        if (addedRoles.contains(muteRole)) {
-            if (event.getUser().equals(guild.getSelfMember().getUser())) return;
-            //TODO: Generate modlog
-        }
-    }
-
-    @Override
-    public void onGuildMemberRoleRemove(GuildMemberRoleRemoveEvent event) {
         Member member = event.getMember();
-        Guild guild = event.getGuild();
-        if (!guild.getId().equals("850396197646106624")) return;
         Role muteRole = guild.getRoleById(muteRoleId);
         if (muteRole == null) return;
-        List<Role> addedRoles = event.getRoles();
-        if (addedRoles.contains(muteRole)) {
-            if (event.getUser().equals(guild.getSelfMember().getUser())) return;
-            //TODO: Generate modlog
-        }
+        List<Role> rolesAdded = event.getRoles();
+        if (!rolesAdded.contains(muteRole)) return;
+        guild.retrieveAuditLogs()
+                .type(ActionType.MEMBER_ROLE_UPDATE)
+                .limit(1)
+                .queue(auditLogs -> {
+                    AuditLogEntry entry = auditLogs.get(0);
+                    if (!Objects.requireNonNull(entry.getUser()).getId().equals(event.getJDA().getSelfUser().getId())) {
+                        guild.removeRoleFromMember(member, muteRole).queue();
+                        entry.getUser().openPrivateChannel()
+                                .flatMap(privateChannel -> privateChannel.sendMessage(
+                                        "You can't manually give the muted role, to give a perm mute, put 0 in the /mute command.")
+                                ).queue();
+                        logger.info("{} (ID:{}) was given the muted role manually, removing role.", member.getUser().getName(), member.getId());
+                    }
+                });
     }
 
 
@@ -73,10 +74,21 @@ public class MuteHandler extends ListenerAdapter {
         }
         logger.info("{} (ID:{}) was muted for reason: {}.", member.getUser().getName(), member.getId(), reason);
         guild.addRoleToMember(member, mutedRole.get()).queue(
+
                 success -> {
-                    COOLDOWN_MANAGER.addCooldown(CooldownManager.muteCooldown(member), timeInHours * Global.HOUR_IN_SECONDS);
+                    if (timeInHours != 0) {
+                        COOLDOWN_MANAGER.addCooldown(CooldownManager.muteCooldown(member), timeInHours * Global.HOUR_IN_SECONDS);
+                        Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
+                                .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.MUTE, mod.getUser(), member.getUser(), reason, timeInHours, 0))
+                                .queue();
+                    } else {
+                        COOLDOWN_MANAGER.addCooldown(CooldownManager.muteCooldown(member), 150000 * Global.HOUR_IN_SECONDS);
+                        Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
+                                .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.MUTE, mod.getUser(), member.getUser(), reason, -1, 0))
+                                .queue();
+                    }
                     result.complete(true);
-                    // TODO: Send modlog
+
                 },
                 failure -> {
                     logger.error("Failed to mute {}: {}", member.getUser().getName(), failure.getMessage());
@@ -102,7 +114,9 @@ public class MuteHandler extends ListenerAdapter {
                 success -> {
                     COOLDOWN_MANAGER.deleteCooldown(CooldownManager.muteCooldown(member));
                     result.complete(true);
-                    // TODO: Send modlog
+                    Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
+                            .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.UNMUTE, mod, member.getUser(), reason, 0, 0))
+                            .queue();
                 },
                 failure -> {
                     logger.error("Failed to unmute {}: {}", member.getUser().getName(), failure.getMessage());

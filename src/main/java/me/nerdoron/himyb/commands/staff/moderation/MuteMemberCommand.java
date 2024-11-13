@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 
 import java.util.Objects;
@@ -59,7 +60,10 @@ public class MuteMemberCommand extends SlashCommand {
         SlashCommandData mute = Commands.slash("mute", "Mute a user.");
         mute.addOption(OptionType.USER, "user", "Who would you like to mute?", true);
         mute.addOption(OptionType.STRING, "reason", "What's the reason for the mute?", true);
-        mute.addOption(OptionType.INTEGER, "timeinhours", "For how long (time in hours) would you like to mute this user?", true);
+        OptionData time = new OptionData(OptionType.INTEGER, "timeinhours", "For how long (time in hours) would you like to mute this user?", true);
+        time.setMinValue(0);
+        time.setMaxValue(56);
+        mute.addOptions(time);
         mute.setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS));
         return mute;
     }

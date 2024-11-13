@@ -31,7 +31,7 @@ public class UnmuteMemberCommand extends SlashCommand {
 
         muteHandler.unMuteMember(target, member.getUser(), guild, reason).thenAccept(success -> {
             if (success) {
-                event.reply(String.format("Successfully unmuted %s. Reason: %s", target.getAsMention(), reason))
+                event.reply(String.format("Successfully unmuted %s.", target.getAsMention()))
                         .setEphemeral(true)
                         .queue();
             } else {

@@ -1,6 +1,8 @@
 package me.nerdoron.himyb.modules.moderation.punishments;
 
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
+import me.nerdoron.himyb.modules.moderation.modlogs.ModLogHandler;
+import me.nerdoron.himyb.modules.moderation.modlogs.ModLogType;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.audit.AuditLogEntry;
@@ -12,6 +14,7 @@ import net.dv8tion.jda.api.events.guild.GuildUnbanEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
@@ -28,9 +31,11 @@ public class BanHandler extends ListenerAdapter {
         guild.retrieveAuditLogs().limit(10).type(ActionType.BAN).queue(entries -> {
             AuditLogEntry entry = entries.get(0);
             reason.set(entry.getReason());
+            Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
+                    .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.BAN, Objects.requireNonNull(entry.getUser()), event.getUser(), reason.get(), 0, 0))
+                    .queue();
+            logger.info("User {} was banned for reason {}", event.getUser(), reason.get());
         });
-        logger.info("User {} was banned for reason {}", event.getUser(), reason.get());
-        // TODO: Generate modlog with reason
     }
 
     @Override
@@ -42,9 +47,12 @@ public class BanHandler extends ListenerAdapter {
         guild.retrieveAuditLogs().type(ActionType.UNBAN).queue(entries -> {
             AuditLogEntry entry = entries.get(0);
             reason.set(entry.getReason());
+            Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
+                    .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.UNBAN, Objects.requireNonNull(entry.getUser()), event.getUser(), reason.get(), 0, 0))
+                    .queue();
+            logger.info("User {} was unbanned for reason {}", event.getUser(), reason.get());
+
         });
-        logger.info("User {} was unbanned for reason {}", event.getUser(), reason.get());
-        // TODO: Generate modlog with reason
 
     }
 
@@ -54,17 +62,19 @@ public class BanHandler extends ListenerAdapter {
             result.complete(false);
             return result;
         }
-        logger.info("{} (ID:{}) was banned for reason: {}.", member.getUser().getName(), member.getId(), reason);
         member.getUser().openPrivateChannel()
                 .flatMap(privateChannel -> privateChannel.sendMessage(
                         String.format("You have been banned from how i met your discord for reason `%s`.", reason))
                 ).queue();
         guild.ban(member, 7, TimeUnit.DAYS).reason(reason).queue(
-                banSuccess -> result.complete(true),
+                banSuccess -> {
+                    result.complete(true);
+                    logger.info("{} (ID:{}) was banned for reason: {}.", member.getUser().getName(), member.getId(), reason);
+                    Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
+                            .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.BAN, mod.getUser(), member.getUser(), reason, 0, 0))
+                            .queue();
+                },
                 banFailure -> result.complete(false));
-        //TODO: Generate modlog
-
-
         return result;
     }
 
@@ -74,11 +84,13 @@ public class BanHandler extends ListenerAdapter {
             result.complete(false);
             return result;
         }
-        logger.info("{} (ID:{}) was unbanned for reason: {}.", user.getName(), user.getId(), reason);
         guild.unban(user).reason(reason).queue(
                 success -> {
                     result.complete(true);
-                    //TODO: Generate modlog
+                    Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
+                            .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.UNBAN, mod.getUser(), user, reason, 0, 0))
+                            .queue();
+                    logger.info("{} (ID:{}) was unbanned for reason: {}.", user.getName(), user.getId(), reason);
                 },
                 failure -> result.complete(false)
         );

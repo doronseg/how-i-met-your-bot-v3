@@ -1,6 +1,8 @@
 package me.nerdoron.himyb.modules.moderation.punishments;
 
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
+import me.nerdoron.himyb.modules.moderation.modlogs.ModLogHandler;
+import me.nerdoron.himyb.modules.moderation.modlogs.ModLogType;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.audit.AuditLogEntry;
@@ -12,6 +14,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -32,7 +35,9 @@ public class KickHandler extends ListenerAdapter {
                     if (entry.getTimeCreated().isAfter(OffsetDateTime.now().minusMinutes(1))) {
                         reason.set(entry.getReason());
                         logger.info("User {} was kicked for reason {}", event.getUser(), reason.get());
-                        //TODO: Generate modlog
+                        Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
+                                .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.KICK, Objects.requireNonNull(entry.getUser()), event.getUser(), reason.get(), 0, 0))
+                                .queue();
                     }
                 }
             }
@@ -51,9 +56,13 @@ public class KickHandler extends ListenerAdapter {
                         String.format("You have been kicked from how i met your discord for reason `%s`.", reason))
                 ).queue();
         guild.kick(member).reason(reason).queue(
-                kickSuccess -> result.complete(true),
+                kickSuccess -> {
+                    result.complete(true);
+                    Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
+                            .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.KICK, mod.getUser(), member.getUser(), reason, 0, 0))
+                            .queue();
+                },
                 kickFailure -> result.complete(false)
-                //TODO: Generate modlog
         );
         return result;
 
