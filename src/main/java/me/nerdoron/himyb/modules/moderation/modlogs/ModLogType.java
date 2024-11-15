@@ -18,15 +18,6 @@ public enum ModLogType {
         this.id = id;
     }
 
-    public static ModLogType getById(int id) {
-        for (ModLogType type : ModLogType.values()) {
-            if (type.getId() == id) {
-                return type;
-            }
-        }
-        return null;
-    }
-
     public int getId() {
         return id;
     }

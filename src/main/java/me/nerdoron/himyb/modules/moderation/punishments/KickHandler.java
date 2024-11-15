@@ -31,28 +31,26 @@ public class KickHandler extends ListenerAdapter {
 
         AtomicReference<String> reason = new AtomicReference<>("Unable to retrieve reason");
 
-        guild.retrieveAuditLogs().type(ActionType.KICK).limit(10).queue(auditLogs -> {
-            auditLogs.stream()
-                    .filter(entry -> entry.getTargetId().equals(userId))
-                    .filter(entry -> entry.getTimeCreated().isAfter(OffsetDateTime.now().minusMinutes(1)))
-                    .findFirst()
-                    .ifPresent(entry -> {
-                        reason.set(entry.getReason() != null ? entry.getReason() : "No reason provided");
-                        logger.info("User {} was kicked for reason {}", event.getUser(), reason.get());
+        guild.retrieveAuditLogs().type(ActionType.KICK).limit(10).queue(auditLogs -> auditLogs.stream()
+                .filter(entry -> entry.getTargetId().equals(userId))
+                .filter(entry -> entry.getTimeCreated().isAfter(OffsetDateTime.now().minusMinutes(1)))
+                .findFirst()
+                .ifPresent(entry -> {
+                    reason.set(entry.getReason() != null ? entry.getReason() : "No reason provided");
+                    logger.info("User {} was kicked for reason {}", event.getUser(), reason.get());
 
-                        User moderator = entry.getUser();
-                        if (moderator != null) {
-                            Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId)).sendMessage("Loading...")
-                                    .queue(message -> {
-                                        String messageId = message.getId();
-                                        MessageEmbed embed = ModLogHandler.generateLog(
-                                                ModLogType.KICK, moderator, event.getUser(), reason.get(), 0, 0, messageId);
-                                        message.editMessage("\u200E").queue();
-                                        message.editMessageEmbeds(embed).queue();
-                                    });
-                        }
-                    });
-        });
+                    User moderator = entry.getUser();
+                    if (moderator != null) {
+                        Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId)).sendMessage("Loading...")
+                                .queue(message -> {
+                                    String messageId = message.getId();
+                                    MessageEmbed embed = ModLogHandler.generateLog(
+                                            ModLogType.KICK, moderator, event.getUser(), reason.get(), 0, 0, messageId);
+                                    message.editMessage("\u200E").queue();
+                                    message.editMessageEmbeds(embed).queue();
+                                });
+                    }
+                }));
     }
 
     public CompletableFuture<Boolean> kickMember(Member member, User mod, Guild guild, String reason) {

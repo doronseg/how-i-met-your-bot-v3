@@ -148,30 +148,15 @@ public class ModLogHandler {
         return -1;
     }
 
-    public static boolean deleteModLogById(int modLogId) {
-        String SQL = "DELETE FROM modlogs WHERE id = ?";
-        assert con != null;
-        try (PreparedStatement ps = con.prepareStatement(SQL)) {
-            ps.setInt(1, modLogId);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public boolean updateModLogReason(int modLogId, String newReason) {
+    public void updateModLogReason(int modLogId, String newReason) {
         String SQL = "UPDATE modlogs SET reason = ? WHERE id = ?";
         assert con != null;
         try (PreparedStatement ps = con.prepareStatement(SQL)) {
             ps.setString(1, newReason);
             ps.setInt(2, modLogId);
-            int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0;
+            ps.executeUpdate();
         } catch (SQLException e) {
             logger.error("Failed to update modlog reason: {}", e.getMessage());
-            return false;
         }
     }
 

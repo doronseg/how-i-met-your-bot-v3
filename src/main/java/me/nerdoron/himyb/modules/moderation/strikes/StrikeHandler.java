@@ -32,10 +32,6 @@ public class StrikeHandler {
     }
 
     public void pardonStrike(SlashCommandInteractionEvent event, Member member, int amount, String reason) {
-        int strikes = StrikeSQL.getStrikes(member);
-        int newStrikeCount = strikes - amount;
-        if (newStrikeCount < 0) newStrikeCount = 0;
-
         boolean updated = StrikeSQL.removeStrike(member, amount);
         if (!updated) {
             event.reply("Failed to pardon strikes, please try again later.").setEphemeral(true).queue();
@@ -105,9 +101,7 @@ public class StrikeHandler {
     }
 
     private void sendDM(Member member, String message) {
-        member.getUser().openPrivateChannel().queue(privateChannel -> {
-            privateChannel.sendMessage(message).queue();
-        });
+        member.getUser().openPrivateChannel().queue(privateChannel -> privateChannel.sendMessage(message).queue());
     }
 
 
