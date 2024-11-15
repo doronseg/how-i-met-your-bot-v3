@@ -23,7 +23,7 @@ public class StrikeHandler {
         int newStrikes = strikes + amount;
 
         if (StrikeSQL.addStrike(member, amount)) {
-            String finalReason = String.format("`[%d -> %d strikes]` %s", strikes, newStrikes, reason);
+            String finalReason = String.format("[%d -> %d strikes] %s", strikes, newStrikes, reason);
             executePunishment(event, newStrikes, member, finalReason);
             return true;
         } else {
