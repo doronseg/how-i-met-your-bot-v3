@@ -1,4 +1,4 @@
-package me.nerdoron.himyb.commands.staff.moderation;
+package me.nerdoron.himyb.commands.staff.moderation.pure;
 
 import me.nerdoron.himyb.modules.bot.SlashCommand;
 import me.nerdoron.himyb.modules.moderation.punishments.MuteHandler;
@@ -31,10 +31,13 @@ public class MuteMemberCommand extends SlashCommand {
             event.reply("You can't mute a moderator.").setEphemeral(true).queue();
             return;
         }
-
+        MuteHandler muteHandler = new MuteHandler();
         Guild guild = event.getGuild();
         assert guild != null;
-        MuteHandler muteHandler = new MuteHandler();
+        if (target.getRoles().contains(guild.getRoleById(MuteHandler.muteRoleId))) {
+            event.reply(String.format("%s is already muted!", target.getAsMention())).setEphemeral(true).queue();
+            return;
+        }
 
         muteHandler.muteMember(target, member, timeInHours, guild, reason).thenAccept(success -> {
             if (success) {
@@ -59,11 +62,11 @@ public class MuteMemberCommand extends SlashCommand {
     public SlashCommandData getSlash() {
         SlashCommandData mute = Commands.slash("mute", "Mute a user.");
         mute.addOption(OptionType.USER, "user", "Who would you like to mute?", true);
-        mute.addOption(OptionType.STRING, "reason", "What's the reason for the mute?", true);
         OptionData time = new OptionData(OptionType.INTEGER, "timeinhours", "For how long (time in hours) would you like to mute this user?", true);
         time.setMinValue(0);
         time.setMaxValue(56);
         mute.addOptions(time);
+        mute.addOption(OptionType.STRING, "reason", "What's the reason for the mute?", true);
         mute.setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS));
         return mute;
     }

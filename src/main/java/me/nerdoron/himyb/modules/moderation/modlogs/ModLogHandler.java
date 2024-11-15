@@ -17,8 +17,8 @@ public class ModLogHandler {
     private static final Logger logger = LoggingHandler.logger(ModLogHandler.class);
     private static final Connection con = Database.connect();
 
-    public static MessageEmbed generateLog(ModLogType modLogType, User mod, User target, String reason, int timeInHours, int pardonedStrikes) {
-        int modLogId = insertNewModLog(target.getId(), mod.getId(), reason, OffsetDateTime.now(), modLogType);
+    public static MessageEmbed generateLog(ModLogType modLogType, User mod, User target, String reason, int timeInHours, int pardonedStrikes, String discordMessageId) {
+        int modLogId = insertNewModLog(target.getId(), mod.getId(), reason, OffsetDateTime.now(), modLogType, discordMessageId);
         String timestamp = OffsetDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         if (modLogId == -1) {
             return new EmbedBuilder()
@@ -116,10 +116,7 @@ public class ModLogHandler {
                         .addField("Modlog ID", String.valueOf(modLogId), true)
                         .addField("Time", timestamp, true)
                         .build();
-
         }
-
-
         return new EmbedBuilder()
                 .setTitle("Error")
                 .setDescription("An unknown error has when trying to generate a modlog!")
@@ -128,9 +125,8 @@ public class ModLogHandler {
                 .build();
     }
 
-
-    private static int insertNewModLog(String memberId, String modId, String reason, OffsetDateTime time, ModLogType modLogType) {
-        String SQL = "INSERT INTO modlogs (memberId, modId, reason, timestamp, type) VALUES (?, ?, ?, ?, ?)";
+    private static int insertNewModLog(String memberId, String modId, String reason, OffsetDateTime time, ModLogType modLogType, String discordMessageId) {
+        String SQL = "INSERT INTO modlogs (memberId, modId, reason, timestamp, type, discordMessageId) VALUES (?, ?, ?, ?, ?, ?)";
         assert con != null;
         try (PreparedStatement ps = con.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, memberId);
@@ -138,6 +134,7 @@ public class ModLogHandler {
             ps.setString(3, reason);
             ps.setString(4, time.toString());
             ps.setInt(5, modLogType.getId());
+            ps.setString(6, discordMessageId);
             ps.executeUpdate();
 
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
@@ -163,4 +160,36 @@ public class ModLogHandler {
         }
         return false;
     }
+
+    public boolean updateModLogReason(int modLogId, String newReason) {
+        String SQL = "UPDATE modlogs SET reason = ? WHERE id = ?";
+        assert con != null;
+        try (PreparedStatement ps = con.prepareStatement(SQL)) {
+            ps.setString(1, newReason);
+            ps.setInt(2, modLogId);
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            logger.error("Failed to update modlog reason: {}", e.getMessage());
+            return false;
+        }
+    }
+
+    public String getDiscordMessageIdByModLogId(int modLogId) {
+        String SQL = "SELECT discordMessageId FROM modlogs WHERE id = ?";
+        assert con != null;
+        try (PreparedStatement ps = con.prepareStatement(SQL)) {
+            ps.setInt(1, modLogId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("discordMessageId");
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("Error retrieving Discord message ID for mod log ID {}: {}", modLogId, e.getMessage());
+        }
+        return null;
+    }
+
+
 }

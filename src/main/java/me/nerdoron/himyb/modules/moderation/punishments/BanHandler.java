@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.audit.AuditLogEntry;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.GuildBanEvent;
 import net.dv8tion.jda.api.events.guild.GuildUnbanEvent;
@@ -32,8 +33,14 @@ public class BanHandler extends ListenerAdapter {
             AuditLogEntry entry = entries.get(0);
             reason.set(entry.getReason());
             Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
-                    .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.BAN, Objects.requireNonNull(entry.getUser()), event.getUser(), reason.get(), 0, 0))
-                    .queue();
+                    .sendMessage("Loading...")
+                    .queue(message -> {
+                        String messageId = message.getId();
+                        MessageEmbed embed = ModLogHandler.generateLog(
+                                ModLogType.BAN, Objects.requireNonNull(entry.getUser()), event.getUser(), reason.get(), 0, 0, messageId);
+                        message.editMessage("\u200E").queue();
+                        message.editMessageEmbeds(embed).queue();
+                    });
             logger.info("User {} was banned for reason {}", event.getUser(), reason.get());
         });
     }
@@ -48,8 +55,14 @@ public class BanHandler extends ListenerAdapter {
             AuditLogEntry entry = entries.get(0);
             reason.set(entry.getReason());
             Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
-                    .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.UNBAN, Objects.requireNonNull(entry.getUser()), event.getUser(), reason.get(), 0, 0))
-                    .queue();
+                    .sendMessage("Loading...")
+                    .queue(message -> {
+                        String messageId = message.getId();
+                        MessageEmbed embed = ModLogHandler.generateLog(
+                                ModLogType.UNBAN, Objects.requireNonNull(entry.getUser()), event.getUser(), reason.get(), 0, 0, messageId);
+                        message.editMessage("\u200E").queue();
+                        message.editMessageEmbeds(embed).queue();
+                    });
             logger.info("User {} was unbanned for reason {}", event.getUser(), reason.get());
 
         });
@@ -71,8 +84,14 @@ public class BanHandler extends ListenerAdapter {
                     result.complete(true);
                     logger.info("{} (ID:{}) was banned for reason: {}.", member.getUser().getName(), member.getId(), reason);
                     Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
-                            .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.BAN, mod.getUser(), member.getUser(), reason, 0, 0))
-                            .queue();
+                            .sendMessage("Loading...")
+                            .queue(message -> {
+                                String messageId = message.getId();
+                                MessageEmbed embed = ModLogHandler.generateLog(
+                                        ModLogType.BAN, mod.getUser(), member.getUser(), reason, 0, 0, messageId);
+                                message.editMessage("\u200E").queue();
+                                message.editMessageEmbeds(embed).queue();
+                            });
                 },
                 banFailure -> result.complete(false));
         return result;
@@ -88,8 +107,14 @@ public class BanHandler extends ListenerAdapter {
                 success -> {
                     result.complete(true);
                     Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
-                            .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.UNBAN, mod.getUser(), user, reason, 0, 0))
-                            .queue();
+                            .sendMessage("Loading...")
+                            .queue(message -> {
+                                String messageId = message.getId();
+                                MessageEmbed embed = ModLogHandler.generateLog(
+                                        ModLogType.UNBAN, mod.getUser(), user, reason, 0, 0, messageId);
+                                message.editMessage("\u200E").queue();
+                                message.editMessageEmbeds(embed).queue();
+                            });
                     logger.info("{} (ID:{}) was unbanned for reason: {}.", user.getName(), user.getId(), reason);
                 },
                 failure -> result.complete(false)

@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.audit.AuditLogEntry;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -36,8 +37,14 @@ public class KickHandler extends ListenerAdapter {
                         reason.set(entry.getReason());
                         logger.info("User {} was kicked for reason {}", event.getUser(), reason.get());
                         Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
-                                .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.KICK, Objects.requireNonNull(entry.getUser()), event.getUser(), reason.get(), 0, 0))
-                                .queue();
+                                .sendMessage("Loading...")
+                                .queue(message -> {
+                                    String messageId = message.getId();
+                                    MessageEmbed embed = ModLogHandler.generateLog(
+                                            ModLogType.KICK, Objects.requireNonNull(entry.getUser()), event.getUser(), reason.get(), 0, 0, messageId);
+                                    message.editMessage("\u200E").queue();
+                                    message.editMessageEmbeds(embed).queue();
+                                });
                     }
                 }
             }
@@ -59,8 +66,14 @@ public class KickHandler extends ListenerAdapter {
                 kickSuccess -> {
                     result.complete(true);
                     Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
-                            .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.KICK, mod.getUser(), member.getUser(), reason, 0, 0))
-                            .queue();
+                            .sendMessage("Loading...")
+                            .queue(message -> {
+                                String messageId = message.getId();
+                                MessageEmbed embed = ModLogHandler.generateLog(
+                                        ModLogType.KICK, mod.getUser(), member.getUser(), reason, 0, 0, messageId);
+                                message.editMessage("\u200E").queue();
+                                message.editMessageEmbeds(embed).queue();
+                            });
                 },
                 kickFailure -> result.complete(false)
         );

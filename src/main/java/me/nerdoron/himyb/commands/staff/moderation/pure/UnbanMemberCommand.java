@@ -1,4 +1,4 @@
-package me.nerdoron.himyb.commands.staff.moderation;
+package me.nerdoron.himyb.commands.staff.moderation.pure;
 
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.bot.SlashCommand;

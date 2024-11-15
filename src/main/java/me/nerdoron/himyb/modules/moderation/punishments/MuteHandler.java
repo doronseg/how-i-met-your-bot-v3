@@ -9,10 +9,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.audit.ActionType;
 import net.dv8tion.jda.api.audit.AuditLogEntry;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRoleAddEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.slf4j.Logger;
@@ -28,9 +25,9 @@ import java.util.concurrent.TimeUnit;
 import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
 
 public class MuteHandler extends ListenerAdapter {
+    public static final String muteRoleId = "1305982548983152762"; // TODO: CHANGE THIS
     private static final Logger logger = LoggingHandler.logger(MuteHandler.class);
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private final String muteRoleId = "1305982548983152762"; // TODO: CHANGE THIS
     private final String guildId = "850396197646106624";
 
     @Override
@@ -74,18 +71,29 @@ public class MuteHandler extends ListenerAdapter {
         }
         logger.info("{} (ID:{}) was muted for reason: {}.", member.getUser().getName(), member.getId(), reason);
         guild.addRoleToMember(member, mutedRole.get()).queue(
-
                 success -> {
                     if (timeInHours != 0) {
                         COOLDOWN_MANAGER.addCooldown(CooldownManager.muteCooldown(member), timeInHours * Global.HOUR_IN_SECONDS);
                         Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
-                                .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.MUTE, mod.getUser(), member.getUser(), reason, timeInHours, 0))
-                                .queue();
+                                .sendMessage("Loading...")
+                                .queue(message -> {
+                                    String messageId = message.getId();
+                                    MessageEmbed embed = ModLogHandler.generateLog(
+                                            ModLogType.MUTE, mod.getUser(), member.getUser(), reason, timeInHours, 0, messageId);
+                                    message.editMessage("\u200E").queue();
+                                    message.editMessageEmbeds(embed).queue();
+                                });
                     } else {
                         COOLDOWN_MANAGER.addCooldown(CooldownManager.muteCooldown(member), 150000 * Global.HOUR_IN_SECONDS);
                         Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
-                                .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.MUTE, mod.getUser(), member.getUser(), reason, -1, 0))
-                                .queue();
+                                .sendMessage("Loading...")
+                                .queue(message -> {
+                                    String messageId = message.getId();
+                                    MessageEmbed embed = ModLogHandler.generateLog(
+                                            ModLogType.MUTE, mod.getUser(), member.getUser(), reason, -1, 0, messageId);
+                                    message.editMessage("\u200E").queue();
+                                    message.editMessageEmbeds(embed).queue();
+                                });
                     }
                     result.complete(true);
 
@@ -115,8 +123,14 @@ public class MuteHandler extends ListenerAdapter {
                     COOLDOWN_MANAGER.deleteCooldown(CooldownManager.muteCooldown(member));
                     result.complete(true);
                     Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
-                            .sendMessageEmbeds(ModLogHandler.generateLog(ModLogType.UNMUTE, mod, member.getUser(), reason, 0, 0))
-                            .queue();
+                            .sendMessage("Loading...")
+                            .queue(message -> {
+                                String messageId = message.getId();
+                                MessageEmbed embed = ModLogHandler.generateLog(
+                                        ModLogType.UNMUTE, mod, member.getUser(), reason, 0, 0, messageId);
+                                message.editMessage("\u200E").queue();
+                                message.editMessageEmbeds(embed).queue();
+                            });
                 },
                 failure -> {
                     logger.error("Failed to unmute {}: {}", member.getUser().getName(), failure.getMessage());
