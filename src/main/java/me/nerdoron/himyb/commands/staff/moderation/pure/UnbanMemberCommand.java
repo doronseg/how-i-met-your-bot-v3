@@ -35,7 +35,7 @@ public class UnbanMemberCommand extends SlashCommand {
             BanHandler banHandler = new BanHandler();
             isUserBanned(guild, targetId).thenAccept(isBanned -> {
                 if (isBanned) {
-                    banHandler.UnbanMember(user, member, guild, reason).thenAccept(success -> {
+                    banHandler.unBanMember(user, member.getUser(), guild, reason).thenAccept(success -> {
                         if (success) {
                             event.reply(String.format("Successfully unbanned %s.", user.getName()))
                                     .setEphemeral(true)

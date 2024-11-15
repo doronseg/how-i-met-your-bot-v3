@@ -33,7 +33,7 @@ public class KickMemberCommand extends SlashCommand {
         assert guild != null;
         KickHandler kickHandler = new KickHandler();
 
-        kickHandler.KickMember(target, member, guild, reason).thenAccept(success -> {
+        kickHandler.kickMember(target, member.getUser(), guild, reason).thenAccept(success -> {
             if (success) {
                 event.reply(String.format("Successfully kicked %s.", target.getAsMention()))
                         .setEphemeral(true)

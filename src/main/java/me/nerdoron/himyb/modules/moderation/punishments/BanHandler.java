@@ -69,7 +69,7 @@ public class BanHandler extends ListenerAdapter {
 
     }
 
-    public CompletableFuture<Boolean> BanMember(Member member, Member mod, Guild guild, String reason) {
+    public CompletableFuture<Boolean> banMember(Member member, User mod, Guild guild, String reason) {
         CompletableFuture<Boolean> result = new CompletableFuture<>();
         if (!guild.getId().equals("850396197646106624") || member.hasPermission(Permission.BAN_MEMBERS)) {
             result.complete(false);
@@ -88,7 +88,7 @@ public class BanHandler extends ListenerAdapter {
                             .queue(message -> {
                                 String messageId = message.getId();
                                 MessageEmbed embed = ModLogHandler.generateLog(
-                                        ModLogType.BAN, mod.getUser(), member.getUser(), reason, 0, 0, messageId);
+                                        ModLogType.BAN, mod, member.getUser(), reason, 0, 0, messageId);
                                 message.editMessage("\u200E").queue();
                                 message.editMessageEmbeds(embed).queue();
                             });
@@ -97,7 +97,7 @@ public class BanHandler extends ListenerAdapter {
         return result;
     }
 
-    public CompletableFuture<Boolean> UnbanMember(User user, Member mod, Guild guild, String reason) {
+    public CompletableFuture<Boolean> unBanMember(User user, User mod, Guild guild, String reason) {
         CompletableFuture<Boolean> result = new CompletableFuture<>();
         if (!guild.getId().equals("850396197646106624")) {
             result.complete(false);
@@ -111,7 +111,7 @@ public class BanHandler extends ListenerAdapter {
                             .queue(message -> {
                                 String messageId = message.getId();
                                 MessageEmbed embed = ModLogHandler.generateLog(
-                                        ModLogType.UNBAN, mod.getUser(), user, reason, 0, 0, messageId);
+                                        ModLogType.UNBAN, mod, user, reason, 0, 0, messageId);
                                 message.editMessage("\u200E").queue();
                                 message.editMessageEmbeds(embed).queue();
                             });

@@ -56,7 +56,7 @@ public class MuteHandler extends ListenerAdapter {
     }
 
 
-    public CompletableFuture<Boolean> muteMember(Member member, Member mod, int timeInHours, Guild guild, String reason) {
+    public CompletableFuture<Boolean> muteMember(Member member, User mod, int timeInHours, Guild guild, String reason) {
         CompletableFuture<Boolean> result = new CompletableFuture<>();
 
         if (!guild.getId().equals(guildId) || member.hasPermission(Permission.BAN_MEMBERS)) {
@@ -79,7 +79,7 @@ public class MuteHandler extends ListenerAdapter {
                                 .queue(message -> {
                                     String messageId = message.getId();
                                     MessageEmbed embed = ModLogHandler.generateLog(
-                                            ModLogType.MUTE, mod.getUser(), member.getUser(), reason, timeInHours, 0, messageId);
+                                            ModLogType.MUTE, mod, member.getUser(), reason, timeInHours, 0, messageId);
                                     message.editMessage("\u200E").queue();
                                     message.editMessageEmbeds(embed).queue();
                                 });
@@ -90,7 +90,7 @@ public class MuteHandler extends ListenerAdapter {
                                 .queue(message -> {
                                     String messageId = message.getId();
                                     MessageEmbed embed = ModLogHandler.generateLog(
-                                            ModLogType.MUTE, mod.getUser(), member.getUser(), reason, -1, 0, messageId);
+                                            ModLogType.MUTE, mod, member.getUser(), reason, -1, 0, messageId);
                                     message.editMessage("\u200E").queue();
                                     message.editMessageEmbeds(embed).queue();
                                 });

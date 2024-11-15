@@ -39,7 +39,7 @@ public class MuteMemberCommand extends SlashCommand {
             return;
         }
 
-        muteHandler.muteMember(target, member, timeInHours, guild, reason).thenAccept(success -> {
+        muteHandler.muteMember(target, member.getUser(), timeInHours, guild, reason).thenAccept(success -> {
             if (success) {
                 event.reply(String.format("Successfully muted %s for %d hours.", target.getAsMention(), timeInHours))
                         .setEphemeral(true)

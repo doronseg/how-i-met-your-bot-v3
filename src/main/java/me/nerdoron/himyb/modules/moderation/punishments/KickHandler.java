@@ -5,7 +5,6 @@ import me.nerdoron.himyb.modules.moderation.modlogs.ModLogHandler;
 import me.nerdoron.himyb.modules.moderation.modlogs.ModLogType;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.audit.ActionType;
-import net.dv8tion.jda.api.audit.AuditLogEntry;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -26,60 +25,67 @@ public class KickHandler extends ListenerAdapter {
     public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
         Guild guild = event.getGuild();
         String userId = event.getUser().getId();
+
         if (event.getUser().equals(event.getJDA().getSelfUser())) return;
         if (!guild.getId().equals("850396197646106624")) return;
+
         AtomicReference<String> reason = new AtomicReference<>("Unable to retrieve reason");
+
         guild.retrieveAuditLogs().type(ActionType.KICK).limit(10).queue(auditLogs -> {
-            for (AuditLogEntry entry : auditLogs) {
-                User target = event.getJDA().retrieveUserById(entry.getTargetId()).complete();
-                if (target != null && target.getId().equals(userId)) {
-                    if (entry.getTimeCreated().isAfter(OffsetDateTime.now().minusMinutes(1))) {
-                        reason.set(entry.getReason());
+            auditLogs.stream()
+                    .filter(entry -> entry.getTargetId().equals(userId))
+                    .filter(entry -> entry.getTimeCreated().isAfter(OffsetDateTime.now().minusMinutes(1)))
+                    .findFirst()
+                    .ifPresent(entry -> {
+                        reason.set(entry.getReason() != null ? entry.getReason() : "No reason provided");
                         logger.info("User {} was kicked for reason {}", event.getUser(), reason.get());
-                        Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
-                                .sendMessage("Loading...")
-                                .queue(message -> {
-                                    String messageId = message.getId();
-                                    MessageEmbed embed = ModLogHandler.generateLog(
-                                            ModLogType.KICK, Objects.requireNonNull(entry.getUser()), event.getUser(), reason.get(), 0, 0, messageId);
-                                    message.editMessage("\u200E").queue();
-                                    message.editMessageEmbeds(embed).queue();
-                                });
-                    }
-                }
-            }
+
+                        User moderator = entry.getUser();
+                        if (moderator != null) {
+                            Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId)).sendMessage("Loading...")
+                                    .queue(message -> {
+                                        String messageId = message.getId();
+                                        MessageEmbed embed = ModLogHandler.generateLog(
+                                                ModLogType.KICK, moderator, event.getUser(), reason.get(), 0, 0, messageId);
+                                        message.editMessage("\u200E").queue();
+                                        message.editMessageEmbeds(embed).queue();
+                                    });
+                        }
+                    });
         });
     }
 
-    public CompletableFuture<Boolean> KickMember(Member member, Member mod, Guild guild, String reason) {
+    public CompletableFuture<Boolean> kickMember(Member member, User mod, Guild guild, String reason) {
         CompletableFuture<Boolean> result = new CompletableFuture<>();
+
         if (!guild.getId().equals("850396197646106624") || member.hasPermission(Permission.BAN_MEMBERS)) {
             result.complete(false);
             return result;
         }
+
         logger.info("{} (ID:{}) was kicked for reason: {}.", member.getUser().getName(), member.getId(), reason);
+
         member.getUser().openPrivateChannel()
                 .flatMap(privateChannel -> privateChannel.sendMessage(
                         String.format("You have been kicked from how i met your discord for reason `%s`.", reason))
                 ).queue();
+
         guild.kick(member).reason(reason).queue(
                 kickSuccess -> {
                     result.complete(true);
-                    Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId))
-                            .sendMessage("Loading...")
+                    Objects.requireNonNull(guild.getTextChannelById(ModLogHandler.modLogChannelId)).sendMessage("Loading...")
                             .queue(message -> {
                                 String messageId = message.getId();
                                 MessageEmbed embed = ModLogHandler.generateLog(
-                                        ModLogType.KICK, mod.getUser(), member.getUser(), reason, 0, 0, messageId);
+                                        ModLogType.KICK, mod, member.getUser(), reason, 0, 0, messageId);
                                 message.editMessage("\u200E").queue();
                                 message.editMessageEmbeds(embed).queue();
                             });
                 },
-                kickFailure -> result.complete(false)
+                result::completeExceptionally
         );
+
         return result;
-
     }
-
 
 }
