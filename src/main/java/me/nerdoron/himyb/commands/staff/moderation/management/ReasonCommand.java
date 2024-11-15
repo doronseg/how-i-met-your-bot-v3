@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class EditModLogReasonCommand extends SlashCommand {
-    private static final Logger logger = LoggingHandler.logger(EditModLogReasonCommand.class);
+public class ReasonCommand extends SlashCommand {
+    private static final Logger logger = LoggingHandler.logger(ReasonCommand.class);
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
@@ -77,7 +77,7 @@ public class EditModLogReasonCommand extends SlashCommand {
 
     @Override
     public SlashCommandData getSlash() {
-        SlashCommandData editLog = Commands.slash("editlog", "Edit a modlog's reason");
+        SlashCommandData editLog = Commands.slash("reason", "Edit a modlog's reason");
         editLog.addOption(OptionType.INTEGER, "id", "Modlog ID", true);
         editLog.addOption(OptionType.STRING, "reason", "New reason", true);
         editLog.setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS));
