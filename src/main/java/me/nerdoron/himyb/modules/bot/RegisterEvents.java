@@ -10,6 +10,7 @@ import me.nerdoron.himyb.modules.fun.autoresponses.Sweden;
 import me.nerdoron.himyb.modules.fun.counting.CountingChannelHandler;
 import me.nerdoron.himyb.modules.fun.counting.CountingEditing;
 import me.nerdoron.himyb.modules.fun.server.LeaveJoin;
+import me.nerdoron.himyb.modules.moderation.management.RaidModeHandler;
 import me.nerdoron.himyb.modules.moderation.punishments.BanHandler;
 import me.nerdoron.himyb.modules.moderation.punishments.KickHandler;
 import me.nerdoron.himyb.modules.moderation.punishments.MuteHandler;
@@ -48,7 +49,7 @@ public class RegisterEvents {
         jda.addEventListener(muteHandler);
         jda.addEventListener(new BanHandler());
         jda.addEventListener(new KickHandler());
-
+        jda.addEventListener(new RaidModeHandler());
         //birthdays
         jda.addEventListener(new BirthdayModalHandler());
         jda.addEventListener(new BirthdayFunction());

@@ -8,9 +8,7 @@ public enum ModLogType {
     UNBAN(5),
     MUTE(6),
     UNMUTE(7),
-    RAID_MODE_ON(8),
-    RAID_MODE_OFF(9);
-
+    RAID_MODE(8);
 
     private final int id;
 

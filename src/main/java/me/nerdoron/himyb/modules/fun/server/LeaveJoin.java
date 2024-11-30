@@ -25,6 +25,7 @@ public class LeaveJoin extends ListenerAdapter {
         joinLeaves.sendMessage(String.format("Welcome %s, to **how i met your discord** <:hello:851462988153618452>", event.getMember().getAsMention())).queue();
         updateChannelName(event.getGuild());
 
+        
     }
 
     public void updateChannelName(Guild guild) {

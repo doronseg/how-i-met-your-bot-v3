@@ -12,6 +12,7 @@ import me.nerdoron.himyb.commands.fun.currency.RobUserCommand;
 import me.nerdoron.himyb.commands.fun.currency.WorkCommand;
 import me.nerdoron.himyb.commands.gambling.*;
 import me.nerdoron.himyb.commands.staff.*;
+import me.nerdoron.himyb.commands.staff.moderation.management.RaidModeCommand;
 import me.nerdoron.himyb.commands.staff.moderation.management.ReasonCommand;
 import me.nerdoron.himyb.commands.staff.moderation.pure.*;
 import me.nerdoron.himyb.commands.staff.moderation.strikes.PardonStrikeCommand;
@@ -83,6 +84,7 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new ReasonCommand());
         commands.add(new StrikeCommand());
         commands.add(new PardonStrikeCommand());
+        commands.add(new RaidModeCommand());
 
         // currency
         commands.add(new BalanceCommand());

@@ -98,21 +98,12 @@ public class ModLogHandler {
                         .addField("Modlog ID", String.valueOf(modLogId), true)
                         .addField("Time", timestamp, true)
                         .build();
-            case RAID_MODE_ON:
+            case RAID_MODE:
                 return new EmbedBuilder()
-                        .setTitle("\uD83D\uDD12 Raid Mode Activated")
-                        .setDescription(String.format("%s activated raid mode.", target.getAsMention()))
+                        .setTitle("\uD83D\uDD12 Raid Mode Toggled")
+                        .setDescription(String.format(reason))
                         .setColor(Global.embedColor)
-                        .addField("Reason", reason, false)
-                        .addField("Modlog ID", String.valueOf(modLogId), true)
-                        .addField("Time", timestamp, true)
-                        .build();
-            case RAID_MODE_OFF:
-                return new EmbedBuilder()
-                        .setTitle("\uD83D\uDD12 Raid Mode Disabled")
-                        .setDescription(String.format("%s disabled raid mode.", target.getAsMention()))
-                        .setColor(Global.embedColor)
-                        .addField("Reason", reason, false)
+                        .addField("Moderator", mod.getAsMention(), false)
                         .addField("Modlog ID", String.valueOf(modLogId), true)
                         .addField("Time", timestamp, true)
                         .build();
