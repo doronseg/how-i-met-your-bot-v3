@@ -5,6 +5,7 @@ import me.nerdoron.himyb.modules.bot.SlashCommand;
 import me.nerdoron.himyb.modules.fun.brocoins.JailHelper;
 import me.nerdoron.himyb.modules.fun.texasholdem.THHandler;
 import me.nerdoron.himyb.modules.fun.texasholdem.THHelper;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -24,6 +25,9 @@ public class UltimateTHCommand extends SlashCommand {
     public void execute(SlashCommandInteractionEvent event) {
         Member member = event.getMember();
         assert member != null;
+        if (!member.hasPermission(Permission.ADMINISTRATOR)) {
+            event.reply("This command is disabled. Sorry!").setEphemeral(true).queue();
+        }
         if (JailHelper.checkIfInJail(member)) {
             event.replyEmbeds(JailHelper.inJailEmbed(member)).queue();
             return;

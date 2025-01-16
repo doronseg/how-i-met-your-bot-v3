@@ -12,11 +12,6 @@ import me.nerdoron.himyb.commands.fun.currency.RobUserCommand;
 import me.nerdoron.himyb.commands.fun.currency.WorkCommand;
 import me.nerdoron.himyb.commands.gambling.*;
 import me.nerdoron.himyb.commands.staff.*;
-import me.nerdoron.himyb.commands.staff.moderation.management.RaidModeCommand;
-import me.nerdoron.himyb.commands.staff.moderation.management.ReasonCommand;
-import me.nerdoron.himyb.commands.staff.moderation.pure.*;
-import me.nerdoron.himyb.commands.staff.moderation.strikes.PardonStrikeCommand;
-import me.nerdoron.himyb.commands.staff.moderation.strikes.StrikeCommand;
 import me.nerdoron.himyb.commands.useful.*;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.Permission;
@@ -74,17 +69,6 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new InventoryCommand());
         commands.add(new UseCommand());
         commands.add(new GiveItemCommand());
-
-        // moderation
-        commands.add(new MuteMemberCommand());
-        commands.add(new UnmuteMemberCommand());
-        commands.add(new BanMemberCommand());
-        commands.add(new UnbanMemberCommand());
-        commands.add(new KickMemberCommand());
-        commands.add(new ReasonCommand());
-        commands.add(new StrikeCommand());
-        commands.add(new PardonStrikeCommand());
-        commands.add(new RaidModeCommand());
 
         // currency
         commands.add(new BalanceCommand());
