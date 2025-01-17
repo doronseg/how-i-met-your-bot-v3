@@ -7,6 +7,7 @@ import me.nerdoron.himyb.modules.fun.autoresponses.Canada;
 import me.nerdoron.himyb.modules.fun.autoresponses.FriendsCringe;
 import me.nerdoron.himyb.modules.fun.autoresponses.Major;
 import me.nerdoron.himyb.modules.fun.autoresponses.Sweden;
+import me.nerdoron.himyb.modules.fun.brocoins.ZitchTimer;
 import me.nerdoron.himyb.modules.fun.counting.CountingChannelHandler;
 import me.nerdoron.himyb.modules.fun.counting.CountingEditing;
 import me.nerdoron.himyb.modules.fun.server.LeaveJoin;
@@ -61,6 +62,10 @@ public class RegisterEvents {
         // counting
         jda.addEventListener(new CountingChannelHandler());
         jda.addEventListener(new CountingEditing());
+
+        // zitch dog
+        new ZitchTimer(jda).start();
+
     }
 
 }
