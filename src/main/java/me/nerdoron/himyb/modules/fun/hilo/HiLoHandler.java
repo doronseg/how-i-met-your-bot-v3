@@ -200,7 +200,7 @@ public class HiLoHandler {
             BROCOINS_SQL.updateCashWithoutMultiplier(member, -game.getBet());
             event.getHook().editOriginalComponents().queue();
             COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
-            event.getHook().editOriginalEmbeds(HiLoHelper.hiLoLose(game.getWinnings(), nextCard, newCard)).queue();
+            event.getHook().editOriginalEmbeds(HiLoHelper.hiLoLose(game.getWinnings() == 0 ? game.getBet() : game.getWinnings(), nextCard, newCard)).queue();
             logger.info("{}(ID:{}) played HiLo, chose higher, and lost {}", member.getUser().getName(), uid, game.getBet());
 
         } catch (SQLException e) {
@@ -223,7 +223,7 @@ public class HiLoHandler {
             BROCOINS_SQL.updateCashWithoutMultiplier(member, -game.getBet());
             event.getHook().editOriginalComponents().queue();
             COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
-            event.getHook().editOriginalEmbeds(HiLoHelper.hiLoLose(game.getWinnings(), nextCard, newCard)).queue();
+            event.getHook().editOriginalEmbeds(HiLoHelper.hiLoLose(game.getWinnings() == 0 ? game.getBet() : game.getWinnings(), nextCard, newCard)).queue();
             logger.info("{}(ID:{}) played HiLo, chose lower, and lost {}", member.getUser().getName(), uid, game.getBet());
         } catch (SQLException e) {
             MessageEmbed err = HiLoHelper.createErrorEmbed(e.getMessage());
