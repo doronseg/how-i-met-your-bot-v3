@@ -116,7 +116,7 @@ public class JailHelper {
     }
 
 
-    private static String checkCharge(Member member) {
+    public static String checkCharge(Member member) {
         if (COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "ROBBERY")) return "`Robbery`";
         if (COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "BRIBERY")) return "`Bribery`";
         if (COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "RESISTING")) return "`Resisting Arrest`";

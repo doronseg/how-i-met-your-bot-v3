@@ -12,8 +12,30 @@ import java.util.ArrayList;
 
 public class BirthdayChecks {
     private static final Logger logger = LoggingHandler.logger(BirthdayChecks.class);
-    @SuppressWarnings("CanBeFinal")
     Connection con = Database.connect();
+
+    public String getBirthday(String uid) {
+        try {
+            String SQL = "SELECT day, month FROM birthday WHERE uid=?";
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, uid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int day = rs.getInt("day");
+                int month = rs.getInt("month");
+
+                BirthdayModalHandler birthdayModalHandler = new BirthdayModalHandler();
+                String formattedMonth = birthdayModalHandler.parseMonth(month);
+                String formattedDay = birthdayModalHandler.parseDay(day);
+
+                return String.format("%s %s", formattedMonth, formattedDay);
+            } else {
+                return "No birthday set.";
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public boolean hasBirthday(String uid) {
         try {
