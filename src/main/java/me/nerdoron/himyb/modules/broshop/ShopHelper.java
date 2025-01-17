@@ -105,8 +105,8 @@ public class ShopHelper {
                 .addField(String.format("`%s` %s", COP_BRIBE.getType(), COP_BRIBE.getName()),
                         String.format("Cops have a 50%% chance to look the other way when you're commiting crimes.\n%d %s", COP_BRIBE.getPrice(), Global.broCoin.getAsMention()),
                         false)
-                .addField(String.format("`%s` %s", LOTTERY_CARD.getType(), LOTTERY_CARD.getName()),
-                        String.format("Buy an entry to this month's lottery.\n%d %s", LOTTERY_CARD.getPrice(), Global.broCoin.getAsMention()),
+                .addField(String.format("~~`%s` %s~~", LOTTERY_CARD.getType(), LOTTERY_CARD.getName()),
+                        String.format("~~Buy an entry to this month's lottery.\n%d %s~~ *currently disabled*", LOTTERY_CARD.getPrice(), Global.broCoin.getAsMention()),
                         false)
                 .addField(String.format("`%s` %s", JAIL_CARD.getType(), JAIL_CARD.getName()),
                         String.format("If you get arrested, use this card to get out of jail\n%d %s", JAIL_CARD.getPrice(), Global.broCoin.getAsMention()),
