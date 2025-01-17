@@ -17,6 +17,7 @@ import me.nerdoron.himyb.modules.useful.birthdays.BirthdayFunction;
 import me.nerdoron.himyb.modules.useful.birthdays.BirthdayModalHandler;
 import me.nerdoron.himyb.modules.useful.selfpromo.SelfPromoAutoMessage;
 import me.nerdoron.himyb.modules.useful.selfpromo.SelfPromoModApproval;
+import me.nerdoron.himyb.modules.useful.suggestions.SuggestCommandAutoComplete;
 import me.nerdoron.himyb.modules.useful.tickets.TicketButtonHandler;
 import me.nerdoron.himyb.modules.useful.tickets.TicketFileMonitor;
 import net.dv8tion.jda.api.JDA;
@@ -55,6 +56,7 @@ public class RegisterEvents {
         jda.addEventListener(new EventManagerApplicationHandler());
         jda.addEventListener(new SelfPromoAutoMessage());
         jda.addEventListener(new SelfPromoModApproval());
+        jda.addEventListener(new SuggestCommandAutoComplete());
 
         // counting
         jda.addEventListener(new CountingChannelHandler());
