@@ -1,5 +1,6 @@
 package me.nerdoron.himyb.commands.currency.broshop;
 
+import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.bot.SlashCommand;
 import me.nerdoron.himyb.modules.broshop.ShopHelper;
 import net.dv8tion.jda.api.entities.Member;
@@ -7,12 +8,11 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SlashCommandData;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 
 public class InventoryCommand extends SlashCommand {
-    private static final Logger logger = LoggerFactory.getLogger(InventoryCommand.class);
+    private static final Logger logger = LoggingHandler.logger(InventoryCommand.class);
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {

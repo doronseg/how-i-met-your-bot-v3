@@ -1,6 +1,7 @@
 package me.nerdoron.himyb.modules.fun.hilo;
 
 import me.nerdoron.himyb.modules.bot.CooldownManager;
+import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.fun.texasholdem.THHelper;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -9,7 +10,6 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import static me.nerdoron.himyb.Global.*;
 
 public class HiLoHandler {
 
-    private static final Logger logger = LoggerFactory.getLogger(HiLoHandler.class);
+    private static final Logger logger = LoggingHandler.logger(HiLoHandler.class);
 
     public void startHiLoGame(SlashCommandInteractionEvent event, int bet) {
         Member member = event.getMember();
