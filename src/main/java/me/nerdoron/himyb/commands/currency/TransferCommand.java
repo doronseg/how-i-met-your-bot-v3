@@ -68,7 +68,7 @@ public class TransferCommand extends SlashCommand {
         return new EmbedBuilder()
                 .setTitle(broCoin.getAsMention() + " Transfer successful.")
                 .setDescription(member.getAsMention() + " transferred " + transfer + " " + broCoin.getAsMention() + " to " + memberToTransferTo.getAsMention() + ".")
-                .addField("Your Bank Balance", BROCOINS_SQL.getBroBank(member) + " " + broCoin.getAsMention(), true)
+                .addField(member.getUser().getName() + "'s Bank Balance", BROCOINS_SQL.getBroBank(member) + " " + broCoin.getAsMention(), true)
                 .addField(memberToTransferTo.getUser().getName() + "'s Bank Balance", BROCOINS_SQL.getBroBank(memberToTransferTo) + " " + broCoin.getAsMention(), true)
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
