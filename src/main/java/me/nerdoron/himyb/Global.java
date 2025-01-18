@@ -15,9 +15,9 @@ import static net.dv8tion.jda.api.entities.emoji.Emoji.fromCustom;
 public class Global {
     public static final Color embedColor = Color.decode("#2f3136");
     public static final String botVersion = "v3.0.0";
-    public static final String jdaVersion = "v5.1.1";
+    public static final String jdaVersion = "v5.2.2";
     public static final String botGithubLink = "https://github.com/doronseg/how-i-met-your-bot-v3";
-    public static final String jdaGithubLink = "https://github.com/discord-jda/JDA/releases/tag/v5.1.0";
+    public static final String jdaGithubLink = "https://github.com/discord-jda/JDA/releases/tag/v5.2.2";
     public static final String footertext = "how i met your bot " + botVersion + " | developed by Doron & Kira";
     public static final String footerpfp = "https://media.discordapp.net/attachments/850432082738937896/901742492347691028/discord_bot_pfp.jpg";
     public static final CustomEmoji broCoin = fromCustom("brocoin", 997162208180064276L, false);
