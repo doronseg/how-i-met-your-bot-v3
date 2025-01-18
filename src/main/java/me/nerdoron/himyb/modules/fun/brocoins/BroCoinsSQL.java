@@ -19,7 +19,7 @@ import java.util.Map;
 public class BroCoinsSQL {
     private static final Logger logger = LoggingHandler.logger(BroCoinsSQL.class);
     private static final Connection con = Database.connect();
-    BroOfTheMonthSQL broOfTheMonthSQL = new BroOfTheMonthSQL();
+    final BroOfTheMonthSQL broOfTheMonthSQL = new BroOfTheMonthSQL();
 
     public boolean hasAccount(Member member) {
         String SQL = "SELECT uid FROM brocoins WHERE UID=?";
@@ -215,6 +215,12 @@ public class BroCoinsSQL {
         } else {
             broOfTheMonthSQL.addLost(member.getId(), Math.abs(amountToChange));
         }
+    }
+
+    public void shopPurchase(Member member, int amountToChange) throws SQLException {
+        int memberCoins = this.getBroCash(member);
+        memberCoins += amountToChange;
+        setCash(member, memberCoins);
     }
 
 }

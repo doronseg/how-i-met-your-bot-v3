@@ -34,7 +34,7 @@ public class InventoryHandler {
         }
 
         try {
-            BROCOINS_SQL.updateCashWithoutMultiplier(member, -price);
+            BROCOINS_SQL.shopPurchase(member, -price);
 
             // roles
             if (type.startsWith("R")) {
@@ -54,7 +54,7 @@ public class InventoryHandler {
                 );
             }
             BroOfTheMonthSQL broOfTheMonthSQL = new BroOfTheMonthSQL();
-            broOfTheMonthSQL.addCoins(member.getId(), price);
+            broOfTheMonthSQL.addSpent(member.getId(), price);
             logger.info("{} (ID:{}) bought {} for {} coins.", member.getUser().getName(), member.getId(), type, price);
         } catch (SQLException e) {
             logger.error("Error during buying item for user {}: {}", member.getId(), e.getMessage());

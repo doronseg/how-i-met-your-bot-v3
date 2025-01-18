@@ -24,9 +24,7 @@ public class ResetCommand extends SlashCommand {
         event.getJDA().listenOnce(MessageReceivedEvent.class)
                 .filter(messageEvent -> messageEvent.getChannel().equals(event.getChannel()))
                 .filter(messageEvent -> Objects.equals(messageEvent.getMember(), member))
-                .timeout(TIMEOUT_DURATION, () -> {
-                    event.getHook().editOriginal("Time out. Nothing was reset.").queue();
-                }).subscribe(messageEvent -> {
+                .timeout(TIMEOUT_DURATION, () -> event.getHook().editOriginal("Time out. Nothing was reset.").queue()).subscribe(messageEvent -> {
                     if (messageEvent.getMessage().getContentRaw().equalsIgnoreCase("yes")) {
                         BroOfTheMonthSQL broOfTheMonthSQL = new BroOfTheMonthSQL();
                         broOfTheMonthSQL.resetStats();
