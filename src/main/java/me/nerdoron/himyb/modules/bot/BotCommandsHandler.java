@@ -51,6 +51,7 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new ApplyCommand());
         commands.add(new RemoveBirthdayCommand());
         commands.add(new CommendCommand());
+        commands.add(new ResetCommand());
 
         //fun
         commands.add(new EightBallCommand());
