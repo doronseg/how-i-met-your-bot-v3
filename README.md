@@ -21,8 +21,8 @@ the token.
 
 ```
 TOKEN=YOUR TOKEN GOES HERE
-
 DB=jdbc:sqlite:db.db
+AMARI=YOUR TOKEN GOES HERE
 ```
 
 ### Database
@@ -31,14 +31,22 @@ As of right now, we have 1 SQLITE databases, if you want to contribute and make 
 make sure to create an issue first.
 
 ```SQL
-CREATE TABLE "filemonitor" (
-	"messageid"	TEXT NOT NULL,
-	"attachment"	TEXT NOT NULL
+CREATE TABLE "birthday" (
+	"uid"	TEXT UNIQUE,
+	"day"	INTEGER,
+	"month"	INTEGER,
+	PRIMARY KEY("uid")
 );
 
-CREATE TABLE "cooldowns" (
-	"uid"	TEXT,
-	"cooldown"	INTEGER
+CREATE TABLE "botm" (
+	"uid"	TEXT NOT NULL UNIQUE,
+	"zitch"	INTEGER,
+	"coins"	INTEGER,
+	"crimes"	INTEGER,
+	"spent"	INTEGER,
+	"commendation"	INTEGER,
+	"lost"	INTEGER,
+	PRIMARY KEY("uid")
 );
 
 CREATE TABLE "brocoins" (
@@ -48,11 +56,31 @@ CREATE TABLE "brocoins" (
 	PRIMARY KEY("uid")
 );
 
-CREATE TABLE "birthday" (
-	"uid"	TEXT UNIQUE,
-	"day"	INTEGER,
-	"month"	INTEGER,
-	PRIMARY KEY("uid")
+CREATE TABLE "cooldowns" (
+	"uid"	TEXT,
+	"cooldown"	INTEGER
+);
+
+CREATE TABLE "filemonitor" (
+	"messageid"	TEXT NOT NULL,
+	"attachment"	TEXT NOT NULL
+);
+
+CREATE TABLE "inventory" (
+	"uid"	TEXT NOT NULL UNIQUE,
+	"X1"	INTEGER,
+	"X2"	INTEGER,
+	"X3"	INTEGER,
+	"X4"	INTEGER,
+	"X5"	INTEGER,
+	"C1"	INTEGER,
+	"C2"	INTEGER,
+	"C3"	INTEGER,
+	"C4"	INTEGER,
+	"C5"	INTEGER,
+	"I1"	INTEGER,
+	"I2"	INTEGER,
+	"I3"	INTEGER
 );
 ```
 
