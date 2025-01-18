@@ -22,9 +22,9 @@ public class BJHelper {
     private static final Logger logger = LoggingHandler.logger(BJHandler.class);
 
 
-    public static MessageEmbed blackJackMain(int bet) {
+    public static MessageEmbed blackJackMain(int bet, Member member) {
         return new EmbedBuilder()
-                .setTitle("♣️♦️ Blackjack")
+                .setTitle(String.format("♣️♦️ %s's Blackjack Game", member.getUser().getName()))
                 .setDescription("Starting a new Blackjack game for you...")
                 .addField("Your bet:", String.format("%d %s", bet, Global.broCoin.getAsMention()), false)
                 .addField("Explanation", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/Blackjack-Explanation)", false)
@@ -33,9 +33,9 @@ public class BJHelper {
                 .build();
     }
 
-    public static MessageEmbed blackJackTimeOut(int bet) {
+    public static MessageEmbed blackJackTimeOut(int bet, Member member) {
         return new EmbedBuilder()
-                .setTitle("♣️♦️ Timeout!")
+                .setTitle(String.format("♣️♦️ %s's Blackjack Game", member.getUser().getName()))
                 .setDescription("You failed to respond in 5 minutes, therefore you automatically lost.")
                 .addField("Amount lost:", String.format("%d %s", bet, Global.broCoin.getAsMention()), false)
                 .setColor(Global.embedColor)
@@ -43,12 +43,12 @@ public class BJHelper {
                 .build();
     }
 
-    public static MessageEmbed blackJackGame(int bet, List<BJCard> userCards, List<BJCard> dealerCards, boolean showDealerFullHand) {
+    public static MessageEmbed blackJackGame(int bet, List<BJCard> userCards, List<BJCard> dealerCards, boolean showDealerFullHand, Member member) {
         EmbedBuilder embedBuilder = new EmbedBuilder()
-                .setTitle("♣️♦️ Blackjack")
+                .setTitle(String.format("♣️♦️ %s's Blackjack Game", member.getUser().getName()))
                 .setDescription("You have 5 minutes to respond.")
                 .addField("Your cards:", formatCardListWithValues(userCards, true), false) // Show full hand and individual card values
-                .addField("My cards:", formatCardListWithValues(dealerCards, showDealerFullHand), false) // Show dealer's cards (one hidden if phase 1)
+                .addField("Bot's cards:", formatCardListWithValues(dealerCards, showDealerFullHand), false) // Show dealer's cards (one hidden if phase 1)
                 .addField("Your bet:", String.format("%d %s", bet, Global.broCoin.getAsMention()), false)
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp);
@@ -63,13 +63,13 @@ public class BJHelper {
 
         if (userHand == 21) {
             endBjGame(member);
-            result = String.format("You win! You earned %d %s.", bet, Global.broCoin.getAsMention());
+            result = String.format("**You win!** You earned %d %s.", bet, Global.broCoin.getAsMention());
             logger.info("{}(ID:{}) played blackjack for {} and won.", member.getUser().getName(), member.getId(), bet);
             return new EmbedBuilder()
                     .setTitle("♣️♦️ Blackjack - Game Over")
                     .setDescription(result)
                     .addField("Your cards:", formatCardListWithValues(userCards, true), false)
-                    .addField("My cards:", formatCardListWithValues(dealerCards, false), false)
+                    .addField("Bot's cards:", formatCardListWithValues(dealerCards, false), false)
                     .setColor(Global.embedColor)
                     .setFooter(Global.footertext, Global.footerpfp)
                     .build();
@@ -83,7 +83,7 @@ public class BJHelper {
 
 
         if (userHand > 21) {
-            result = String.format("You busted! You lose %d %s.", bet, Global.broCoin.getAsMention());
+            result = String.format("**You busted!** You lose %d %s.", bet, Global.broCoin.getAsMention());
             BROCOINS_SQL.updateCashWithoutMultiplier(member, -bet);
             logger.info("{}(ID:{}) played blackjack for {} and lost.", member.getUser().getName(), member.getId(), bet);
             endBjGame(member);
@@ -91,27 +91,27 @@ public class BJHelper {
                     .setTitle("♣️♦️ Blackjack - Game Over")
                     .setDescription(result)
                     .addField("Your cards:", formatCardListWithValues(userCards, true), false) // Show full hand and individual card values
-                    .addField("My cards:", formatCardListWithValues(dealerCards, false), false)
+                    .addField("Bot's cards:", formatCardListWithValues(dealerCards, false), false)
                     .setColor(Global.embedColor)
                     .setFooter(Global.footertext, Global.footerpfp)
                     .build();
         } else if (userHand > botHand) {
-            result = String.format("You win! You earned %d %s.", bet, Global.broCoin.getAsMention());
+            result = String.format("**You win!!!** You earned %d %s.", bet * 2, Global.broCoin.getAsMention());
             logger.info("{}(ID:{}) played blackjack for {} and won.", member.getUser().getName(), member.getId(), bet);
             BROCOINS_SQL.updateCashMultiplierDM(member, bet);
         } else if (botHand > 21) {
-            result = String.format("You win! You earned %d %s.", bet, Global.broCoin.getAsMention());
+            result = String.format("**You win!!!** You earned %d %s.", bet * 2, Global.broCoin.getAsMention());
             logger.info("{}(ID:{}) played blackjack for {} and won.", member.getUser().getName(), member.getId(), bet);
             BROCOINS_SQL.updateCashMultiplierDM(member, bet);
         } else if (userHand == botHand) {
-            result = String.format("It's a tie. You get your bet back of %d %s back.", bet, Global.broCoin.getAsMention());
+            result = String.format("**It's a tie.** You get your bet of %d %s back.", bet, Global.broCoin.getAsMention());
             logger.info("{}(ID:{}) played blackjack for {} and tied.", member.getUser().getName(), member.getId(), bet);
         } else if (botHand == 21) {
-            result = String.format("Bot wins. You lose %d %s.", bet, Global.broCoin.getAsMention());
+            result = String.format("**Bot wins.** You lose %d %s.", bet, Global.broCoin.getAsMention());
             logger.info("{}(ID:{}) played blackjack for {} and lost.", member.getUser().getName(), member.getId(), bet);
             BROCOINS_SQL.updateCashWithoutMultiplier(member, -bet);
         } else {
-            result = String.format("Bot wins. You lose %d %s.", bet, Global.broCoin.getAsMention());
+            result = String.format("**Bot wins.** You lose %d %s.", bet, Global.broCoin.getAsMention());
             logger.info("{}(ID:{}) played blackjack for {} and lost.", member.getUser().getName(), member.getId(), bet);
             BROCOINS_SQL.updateCashWithoutMultiplier(member, -bet);
         }
@@ -121,7 +121,7 @@ public class BJHelper {
                 .setTitle("♣️♦️ Blackjack - Game Over")
                 .setDescription(result)
                 .addField("Your cards:", formatCardListWithValues(userCards, true), false) // Show full hand and individual card values
-                .addField("My cards:", formatCardListWithValues(dealerCards, true), false)
+                .addField("Bot's cards:", formatCardListWithValues(dealerCards, true), false)
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();
@@ -168,7 +168,7 @@ public class BJHelper {
         if (!showFullHand && cards.size() > 1) {
             BJCard firstCard = cards.get(0);
             int firstCardValue = firstCard.getNumber();
-            sb.append(firstCard.getCard()).append(" (").append(firstCardValue).append(") ");
+            sb.append(firstCard.getCard()).append(" **").append(firstCardValue).append("** ");
             return sb.append(BJCard.backOfCard.getAsMention()).append(" (Total: ?)").toString().trim();
         }
 
@@ -181,8 +181,8 @@ public class BJHelper {
             } else if (cardValue > 10) {
                 cardValue = 10;
             }
+            sb.append(card.getCard()).append(" **").append(cardValue).append("** ");
 
-            sb.append(card.getCard()).append(" (").append(cardValue).append(") ");
             totalValue += cardValue;
         }
 
@@ -191,7 +191,7 @@ public class BJHelper {
             aceCount--;
         }
 
-        return sb.append("(Total: ").append(totalValue).append(")").toString().trim();
+        return sb.append("(Total: **").append(totalValue).append("**)").toString().trim();
     }
 
 
