@@ -36,6 +36,7 @@ public class LDHandler {
             if (no2 == Character.getNumericValue(Integer.toString(number).charAt(1))) {
                 if (no3 == Character.getNumericValue(Integer.toString(number).charAt(2))) {
                     event.getHook().editOriginalEmbeds(LDHelper.stageThreeWin(bet, number, no1, no2, no3)).queueAfter(6, TimeUnit.SECONDS);
+                    win = true;
                 } else {
                     event.getHook().editOriginalEmbeds(LDHelper.stageThreeLose(bet, number, no1, no2, no3)).queueAfter(6, TimeUnit.SECONDS);
                 }
