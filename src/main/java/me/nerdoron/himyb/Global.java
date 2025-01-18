@@ -28,7 +28,6 @@ public class Global {
     public static final int SECONDS_IN_MS = 1000;
     public static final int MIN_IN_MS = SECONDS_IN_MS * 60;
     // classes and definitions
-    //public static final JailHandler JAIL_CHECKER = new JailHandler();
     public static final BroCoinsSQL BROCOINS_SQL = new BroCoinsSQL();
     public static final Duration TIMEOUT_DURATION = Duration.ofMinutes(5);
     // cards
