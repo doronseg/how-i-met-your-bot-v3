@@ -68,7 +68,7 @@ public class GiveCashCommand extends SlashCommand {
         return new EmbedBuilder()
                 .setTitle(broCoin.getAsMention() + " Cash transaction successful.")
                 .setDescription(member.getAsMention() + " gave " + transfer + " " + broCoin.getAsMention() + " in cash to " + memberToTransferTo.getAsMention() + ".")
-                .addField("Your Cash Balance", BROCOINS_SQL.getBroCash(member) + " " + broCoin.getAsMention(), true)
+                .addField(member.getUser().getName() + "'s Cash Balance", BROCOINS_SQL.getBroCash(member) + " " + broCoin.getAsMention(), true)
                 .addField(memberToTransferTo.getUser().getName() + "'s Cash Balance", BROCOINS_SQL.getBroCash(memberToTransferTo) + " " + broCoin.getAsMention(), true)
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
