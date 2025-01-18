@@ -57,6 +57,7 @@ public class ProfileHelper {
                 .addField("Successful Crimes", String.valueOf(broOfTheMonthSQL.getCrimes(id)), true)
                 .addField("Commendations", String.valueOf(broOfTheMonthSQL.getCommendation(id)), true)
                 .addField("Coins Gained", String.format("%d %s", broOfTheMonthSQL.getCoins(id), Global.broCoin.getAsMention()), true)
+                .addField("Coins Lost", String.format("%d %s", broOfTheMonthSQL.getLost(id), Global.broCoin.getAsMention()), true)
                 .addField("Coins Spent", String.format("%d %s", broOfTheMonthSQL.getSpent(id), Global.broCoin.getAsMention()), true)
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)

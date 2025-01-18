@@ -14,17 +14,6 @@ public class BroOfTheMonthSQL {
     private static final Logger logger = LoggingHandler.logger(BroOfTheMonthSQL.class);
     private static final Connection con = Database.connect();
 
-    static {
-        try {
-            assert con != null;
-            try (PreparedStatement ps = con.prepareStatement("PRAGMA journal_mode=WAL;")) {
-                ps.execute();
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException("Failed to enable WAL mode", e);
-        }
-    }
-
     public void incrementZitch(String uid) {
         incrementUserStat(uid, "zitch");
     }
@@ -43,6 +32,10 @@ public class BroOfTheMonthSQL {
 
     public void addSpent(String uid, int amount) {
         addToUserStat(uid, "spent", amount);
+    }
+
+    public void addLost(String uid, int amount) {
+        addToUserStat(uid, "lost", amount);
     }
 
     public int getZitch(String uid) {
@@ -65,26 +58,50 @@ public class BroOfTheMonthSQL {
         return getUserStat(uid, "commendation");
     }
 
+    public int getLost(String uid) {
+        return getUserStat(uid, "lost");
+    }
+
     public void resetStats() {
-        String SQL = "UPDATE botm SET zitch=0, coins=0, crimes=0, spent=0, commendation=0";
-        executeWithRetry(SQL, ps -> {
-        });
-        logger.warn("All user stats have been reset to zero.");
+        String SQL = "UPDATE botm SET zitch=0, coins=0, crimes=0, spent=0, commendation=0, lost=0";
+        try {
+            assert con != null;
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.executeUpdate();
+            ps.close();
+            logger.warn("All user stats have been reset to zero.");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void incrementUserStat(String uid, String column) {
         ensureUserExists(uid);
         String SQL = "UPDATE botm SET " + column + " = " + column + " + 1 WHERE uid=?";
-        executeWithRetry(SQL, ps -> ps.setString(1, uid));
+        try {
+            assert con != null;
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, uid);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private void addToUserStat(String uid, String column, int amount) {
         ensureUserExists(uid);
         String SQL = "UPDATE botm SET " + column + " = " + column + " + ? WHERE uid=?";
-        executeWithRetry(SQL, ps -> {
+        try {
+            assert con != null;
+            PreparedStatement ps = con.prepareStatement(SQL);
             ps.setInt(1, amount);
             ps.setString(2, uid);
-        });
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private int getUserStat(String uid, String column) {
@@ -92,15 +109,19 @@ public class BroOfTheMonthSQL {
         String SQL = "SELECT " + column + " FROM botm WHERE uid=?";
         try {
             assert con != null;
-            try (PreparedStatement ps = con.prepareStatement(SQL)) {
-                ps.setString(1, uid);
-                try (ResultSet rs = ps.executeQuery()) {
-                    return rs.next() ? rs.getInt(column) : 0;
-                }
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, uid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int value = rs.getInt(column);
+                ps.close();
+                return value;
             }
+            ps.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return 0;
     }
 
     private void ensureUserExists(String uid) {
@@ -113,50 +134,27 @@ public class BroOfTheMonthSQL {
         String SQL = "SELECT uid FROM botm WHERE uid=?";
         try {
             assert con != null;
-            try (PreparedStatement ps = con.prepareStatement(SQL)) {
-                ps.setString(1, uid);
-                try (ResultSet rs = ps.executeQuery()) {
-                    return rs.next();
-                }
-            }
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, uid);
+            ResultSet rs = ps.executeQuery();
+            boolean exists = rs.next();
+            ps.close();
+            return exists;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     private void insertUser(String uid) {
-        String SQL = "INSERT INTO botm (uid, zitch, coins, crimes, spent, commendation) VALUES (?, 0, 0, 0, 0, 0)";
-        executeWithRetry(SQL, ps -> ps.setString(1, uid));
-    }
-
-    private void executeWithRetry(String sql, StatementPopulator populator) {
-        int retries = 5;
-        while (retries > 0) {
-            try {
-                assert con != null;
-                try (PreparedStatement ps = con.prepareStatement(sql)) {
-                    populator.populate(ps);
-                    ps.executeUpdate();
-                    return;
-                }
-            } catch (SQLException e) {
-                if ("SQLITE_BUSY" .equals(e.getSQLState())) {
-                    retries--;
-                    try {
-                        Thread.sleep(100); // Small delay before retry
-                    } catch (InterruptedException ex) {
-                        Thread.currentThread().interrupt();
-                    }
-                } else {
-                    throw new RuntimeException(e);
-                }
-            }
+        String SQL = "INSERT INTO botm (uid, zitch, coins, crimes, spent, commendation, lost) VALUES (?, 0, 0, 0, 0, 0, 0)";
+        try {
+            assert con != null;
+            PreparedStatement ps = con.prepareStatement(SQL);
+            ps.setString(1, uid);
+            ps.executeUpdate();
+            ps.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
-        throw new RuntimeException("Database operation failed after retries.");
-    }
-
-    @FunctionalInterface
-    private interface StatementPopulator {
-        void populate(PreparedStatement ps) throws SQLException;
     }
 }
