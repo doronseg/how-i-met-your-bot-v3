@@ -68,7 +68,7 @@ public class RobUserCommand extends SlashCommand {
                         getUser().getName(), memberToRob.getId());
                 event.reply(memberToRob.getAsMention()).addEmbeds(CurrencyHelper.successfulRobEmbed(memberToRob, reward)).queue();
                 BroOfTheMonthSQL broOfTheMonthSQL = new BroOfTheMonthSQL();
-                broOfTheMonthSQL.incrementZitch(member.getId());
+                broOfTheMonthSQL.incrementCrimes(member.getId());
                 COOLDOWN_MANAGER.addCooldown(commandID(event), "success", HOUR_IN_SECONDS / 2);
             } catch (SQLException e) {
                 event.reply("An error has occurred. Please try again").setEphemeral(true).queue();

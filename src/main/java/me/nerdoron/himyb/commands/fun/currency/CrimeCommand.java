@@ -46,7 +46,7 @@ public class CrimeCommand extends SlashCommand {
                 assert member != null;
                 logger.info("{}(ID:{}) won {} while committing a crime.", member.getUser().getName(), member.getId(), reward);
                 BroOfTheMonthSQL broOfTheMonthSQL = new BroOfTheMonthSQL();
-                broOfTheMonthSQL.incrementZitch(member.getId());
+                broOfTheMonthSQL.incrementCrimes(member.getId());
                 event.replyEmbeds(successCrimeEmbed(reward)).queue();
             } catch (SQLException e) {
                 assert member != null;
