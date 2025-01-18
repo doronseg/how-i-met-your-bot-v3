@@ -52,7 +52,7 @@ public class ProfileHelper {
                 .addField("Level", api.getAmariLevel(id), true)
                 .addField("Experience", api.getAmariExp(id), true)
                 .addField("Server Rank", api.getLeaderboardPosition(id), true)
-                .addField("Bro Of The Month Stats", "Stats for Bro Of The Month", false)
+                .addField("Monthly Stats", "Monthly stats", false)
                 .addField("Zitch Dogs", String.valueOf(broOfTheMonthSQL.getZitch(id)), true)
                 .addField("Successful Crimes", String.valueOf(broOfTheMonthSQL.getCrimes(id)), true)
                 .addField("Commendations", String.valueOf(broOfTheMonthSQL.getCommendation(id)), true)
