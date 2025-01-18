@@ -3,6 +3,7 @@ package me.nerdoron.himyb.modules.broshop;
 import me.nerdoron.himyb.Global;
 import me.nerdoron.himyb.modules.bot.Database;
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
+import me.nerdoron.himyb.modules.fun.broofthemonth.BroOfTheMonthSQL;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -52,6 +53,8 @@ public class InventoryHandler {
                                 .setEphemeral(true).queue()
                 );
             }
+            BroOfTheMonthSQL broOfTheMonthSQL = new BroOfTheMonthSQL();
+            broOfTheMonthSQL.addCoins(member.getId(), price);
             logger.info("{} (ID:{}) bought {} for {} coins.", member.getUser().getName(), member.getId(), type, price);
         } catch (SQLException e) {
             logger.error("Error during buying item for user {}: {}", member.getId(), e.getMessage());
