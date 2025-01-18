@@ -65,7 +65,7 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new RussianRoulette());
         commands.add(new LuckyDraw());
         commands.add(new BlackJackCommand());
-        commands.add(new UltimateTHCommand());
+        //commands.add(new UltimateTHCommand());
         commands.add(new HiLoCommand());
 
         //shop
