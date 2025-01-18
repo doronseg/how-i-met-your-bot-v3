@@ -37,7 +37,7 @@ public class Main {
         String token = dotenv.get("TOKEN");
         JDA jda = JDABuilder.createLight(token)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS, GatewayIntent.GUILD_MODERATION,
-                        GatewayIntent.GUILD_MESSAGE_POLLS, GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
+                        GatewayIntent.GUILD_MESSAGE_POLLS, GatewayIntent.GUILD_EXPRESSIONS,
                         GatewayIntent.DIRECT_MESSAGES, GatewayIntent.MESSAGE_CONTENT)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .build();

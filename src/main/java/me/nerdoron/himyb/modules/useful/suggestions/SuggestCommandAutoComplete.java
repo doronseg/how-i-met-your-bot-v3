@@ -10,7 +10,7 @@ import java.util.List;
 
 public class SuggestCommandAutoComplete extends ListenerAdapter {
 
-    List<String> types = new ArrayList<>(Arrays.asList("server", "bot"));
+    final List<String> types = new ArrayList<>(Arrays.asList("server", "bot"));
 
     @Override
     public void onCommandAutoCompleteInteraction(CommandAutoCompleteInteractionEvent event) {

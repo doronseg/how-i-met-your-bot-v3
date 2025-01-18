@@ -12,11 +12,12 @@ import java.util.ArrayList;
 
 public class BirthdayChecks {
     private static final Logger logger = LoggingHandler.logger(BirthdayChecks.class);
-    Connection con = Database.connect();
+    final Connection con = Database.connect();
 
     public String getBirthday(String uid) {
         try {
             String SQL = "SELECT day, month FROM birthday WHERE uid=?";
+            assert con != null;
             PreparedStatement ps = con.prepareStatement(SQL);
             ps.setString(1, uid);
             ResultSet rs = ps.executeQuery();
@@ -40,6 +41,7 @@ public class BirthdayChecks {
     public boolean hasBirthday(String uid) {
         try {
             String SQL = "SELECT month FROM birthday WHERE uid=?";
+            assert con != null;
             PreparedStatement ps = con.prepareStatement(SQL);
             ps.setString(1, uid);
             ResultSet rs = ps.executeQuery();
@@ -58,6 +60,7 @@ public class BirthdayChecks {
         ArrayList<String> users = new ArrayList<>();
         try {
             String SQL = "select uid FROM birthday WHERE day=? AND month=?";
+            assert con != null;
             PreparedStatement ps = con.prepareStatement(SQL);
             ps.setString(1, day + "");
             ps.setString(2, month + "");
