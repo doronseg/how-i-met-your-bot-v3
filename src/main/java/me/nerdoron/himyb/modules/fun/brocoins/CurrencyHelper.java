@@ -53,7 +53,7 @@ public class CurrencyHelper {
     public static MessageEmbed unsuccessfulRobEmbed(Member memberToRob) {
         return new EmbedBuilder()
                 .setTitle("\uD83E\uDD26\u200D♂ Robbery unsuccessful")
-                .setDescription(String.format("You tried to robbed %s, but they caught you. They decided not to press charges against you.", memberToRob.getAsMention()))
+                .setDescription(String.format("You tried to rob %s, but they caught you. They decided not to press charges against you.", memberToRob.getAsMention()))
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();
