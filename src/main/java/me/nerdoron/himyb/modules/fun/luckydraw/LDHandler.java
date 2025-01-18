@@ -34,10 +34,13 @@ public class LDHandler {
         if (no1 == Character.getNumericValue(Integer.toString(number).charAt(0))) {
             event.getHook().editOriginalEmbeds(LDHelper.stageTwo(bet, number, no1, no2)).queueAfter(4, TimeUnit.SECONDS);
             if (no2 == Character.getNumericValue(Integer.toString(number).charAt(1))) {
-                event.getHook().editOriginalEmbeds(LDHelper.stageThreeWin(bet, number, no1, no2, no3)).queueAfter(6, TimeUnit.SECONDS);
-                win = true;
+                if (no3 == Character.getNumericValue(Integer.toString(number).charAt(2))) {
+                    event.getHook().editOriginalEmbeds(LDHelper.stageThreeWin(bet, number, no1, no2, no3)).queueAfter(6, TimeUnit.SECONDS);
+                } else {
+                    event.getHook().editOriginalEmbeds(LDHelper.stageThreeLose(bet, number, no1, no2, no3)).queueAfter(6, TimeUnit.SECONDS);
+                }
             } else {
-                event.getHook().editOriginalEmbeds(LDHelper.stageTwoLose(bet, number, no1, no2)).queueAfter(6, TimeUnit.SECONDS);
+                event.getHook().editOriginalEmbeds(LDHelper.stageTwoLose(bet, number, no1, no2)).queueAfter(4, TimeUnit.SECONDS);
             }
         } else {
             event.getHook().editOriginalEmbeds(LDHelper.stageOneLose(bet, number, no1)).queueAfter(2, TimeUnit.SECONDS);

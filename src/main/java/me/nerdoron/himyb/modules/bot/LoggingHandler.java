@@ -40,6 +40,10 @@ public class LoggingHandler {
             String[] dots = clazz.getName().split("\\.");
             return getTimeStamp() + " BLACKJACK > " + dots[dots.length - 1];
         }
+        if (clazz.getName().contains("modules.fun.luckydraw")) {
+            String[] dots = clazz.getName().split("\\.");
+            return getTimeStamp() + " LUCKYDRAW > " + dots[dots.length - 1];
+        }
         if (clazz.getName().contains("modules.fun.hilo")) {
             String[] dots = clazz.getName().split("\\.");
             return getTimeStamp() + " HILO > " + dots[dots.length - 1];
