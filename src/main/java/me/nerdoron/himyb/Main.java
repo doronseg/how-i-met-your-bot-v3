@@ -48,9 +48,7 @@ public class Main {
         logger.info("Attempting to establish database connection..");
         tryDb();
 
-        // initial status change
         ChangeStatus.changeActivity(jda);
-        // Time to change status every 15-30 minutes:
         Thread.sleep(15 * Global.MIN_IN_MS);
         ChangeStatus.activityTimer(jda);
     }
