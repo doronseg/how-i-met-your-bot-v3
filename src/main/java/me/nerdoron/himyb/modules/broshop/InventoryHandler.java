@@ -45,6 +45,10 @@ public class InventoryHandler {
                 //other
             } else {
                 addToInventory(member, type);
+                if (type.equalsIgnoreCase("I2")) {
+                    event.reply("Lottery is currently disabled.").queue();
+                    return;
+                }
                 int noOfItem = getItemAmount(member, type);
                 if (noOfItem == 0) noOfItem = 1;
                 int finalNoOfItem = noOfItem;
