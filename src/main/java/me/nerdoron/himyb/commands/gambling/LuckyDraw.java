@@ -56,7 +56,7 @@ public class LuckyDraw extends SlashCommand {
         OptionData bet = new OptionData(OptionType.INTEGER, "bet", "How much do you want to bet?", true);
         OptionData number = new OptionData(OptionType.INTEGER, "number",
                 "Which number would you like to place your bet on?", true);
-        bet.setMinValue(15);
+        bet.setMinValue(5);
         number.setMinValue(1);
         number.setMaxValue(999);
         ld.addOptions(bet, number);
