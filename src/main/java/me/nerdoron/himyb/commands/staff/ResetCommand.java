@@ -23,11 +23,9 @@ public class ResetCommand extends SlashCommand {
         event.reply("Are you sure you want to reset stats? Reply `yes/no`. This action will time-out in 5 minutes if there's no response").queue();
         event.getJDA().listenOnce(MessageReceivedEvent.class)
                 .filter(messageEvent -> messageEvent.getChannel().equals(event.getChannel()))
-                .filter(messageEvent -> messageEvent.getAuthor().equals(member))
-                .filter(messageEvent -> Objects.requireNonNull(messageEvent.getMember()).hasPermission(Permission.ADMINISTRATOR))
+                .filter(messageEvent -> Objects.equals(messageEvent.getMember(), member))
                 .timeout(TIMEOUT_DURATION, () -> {
                     event.getHook().editOriginal("Time out. Nothing was reset.").queue();
-                    return;
                 }).subscribe(messageEvent -> {
                     if (messageEvent.getMessage().getContentRaw().equalsIgnoreCase("yes")) {
                         BroOfTheMonthSQL broOfTheMonthSQL = new BroOfTheMonthSQL();
