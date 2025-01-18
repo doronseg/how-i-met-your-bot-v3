@@ -4,6 +4,7 @@ import me.nerdoron.himyb.Global;
 import me.nerdoron.himyb.modules.bot.CooldownManager;
 import me.nerdoron.himyb.modules.bot.Database;
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
+import me.nerdoron.himyb.modules.fun.broofthemonth.BroOfTheMonthSQL;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import java.util.Map;
 public class BroCoinsSQL {
     private static final Logger logger = LoggingHandler.logger(BroCoinsSQL.class);
     private static final Connection con = Database.connect();
+    BroOfTheMonthSQL broOfTheMonthSQL = new BroOfTheMonthSQL();
 
     public boolean hasAccount(Member member) {
         String SQL = "SELECT uid FROM brocoins WHERE UID=?";
@@ -161,34 +163,58 @@ public class BroCoinsSQL {
     public void updateCashMultiplier(Member member, SlashCommandInteractionEvent event, int amountToChange) throws SQLException {
         int memberCoins = this.getBroCash(member);
         if (amountToChange > 0 && hasCoinBoost(member)) {
-            memberCoins += amountToChange;
             CoinMultiplier multiplier = CoinMultiplier.getMultiplier(member);
-            setCash(member, multiplier.applyMultiplier(memberCoins));
-            event.getChannel().sendMessage(String.format("%s won %d %s thanks to their active coin multiplier!", member.getAsMention(), multiplier.applyMultiplier(amountToChange), Global.broCoin.getAsMention())).queue();
-            return;
+            int gainedAmount = multiplier.applyMultiplier(amountToChange);
+            memberCoins += gainedAmount;
+            setCash(member, memberCoins);
+            broOfTheMonthSQL.addCoins(member.getId(), gainedAmount);
+
+            event.getChannel().sendMessage(String.format("%s won %d %s thanks to their active coin multiplier!",
+                    member.getAsMention(), gainedAmount, Global.broCoin.getAsMention())).queue();
+        } else {
+            memberCoins += amountToChange;
+            setCash(member, memberCoins);
+            if (amountToChange > 0) {
+                broOfTheMonthSQL.addCoins(member.getId(), amountToChange);
+            } else {
+                broOfTheMonthSQL.addLost(member.getId(), Math.abs(amountToChange));
+            }
         }
-        memberCoins += amountToChange;
-        setCash(member, memberCoins);
     }
 
     public void updateCashMultiplierDM(Member member, int amountToChange) throws SQLException {
         int memberCoins = this.getBroCash(member);
         if (amountToChange > 0 && hasCoinBoost(member)) {
-            memberCoins += amountToChange;
             CoinMultiplier multiplier = CoinMultiplier.getMultiplier(member);
-            setCash(member, multiplier.applyMultiplier(memberCoins));
+            int gainedAmount = multiplier.applyMultiplier(amountToChange);
+            memberCoins += gainedAmount;
+            setCash(member, memberCoins);
+            broOfTheMonthSQL.addCoins(member.getId(), gainedAmount);
+
             member.getUser().openPrivateChannel().flatMap(channel ->
-                    channel.sendMessage(String.format("You won %d %s thanks to your active coin multiplier!", multiplier.applyMultiplier(amountToChange), Global.broCoin.getAsMention()))
+                    channel.sendMessage(String.format("You won %d %s thanks to your active coin multiplier!",
+                            gainedAmount, Global.broCoin.getAsMention()))
             ).queue();
-            return;
+        } else {
+            memberCoins += amountToChange;
+            setCash(member, memberCoins);
+            if (amountToChange > 0) {
+                broOfTheMonthSQL.addCoins(member.getId(), amountToChange);
+            } else {
+                broOfTheMonthSQL.addLost(member.getId(), Math.abs(amountToChange));
+            }
         }
-        memberCoins += amountToChange;
-        setCash(member, memberCoins);
     }
 
     public void updateCashWithoutMultiplier(Member member, int amountToChange) throws SQLException {
         int memberCoins = this.getBroCash(member);
         memberCoins += amountToChange;
         setCash(member, memberCoins);
+        if (amountToChange > 0) {
+            broOfTheMonthSQL.addCoins(member.getId(), amountToChange);
+        } else {
+            broOfTheMonthSQL.addLost(member.getId(), Math.abs(amountToChange));
+        }
     }
+
 }

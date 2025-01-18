@@ -3,6 +3,7 @@ package me.nerdoron.himyb.modules.fun.brocoins;
 import me.nerdoron.himyb.Global;
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.bot.Rng;
+import me.nerdoron.himyb.modules.fun.broofthemonth.BroOfTheMonthSQL;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -97,6 +98,8 @@ public class ZitchTimer {
                         broCoinsSQL.updateCashMultiplierDM(member, reward);
                         message.editMessage(String.format("Zitch dog! %s won %d %s.", member.getAsMention(), reward, Global.broCoin.getAsMention())).queue();
                         logger.info("{}(ID:{}) won zitch dog and received {} coins.", member.getUser().getName(), member.getId(), reward);
+                        BroOfTheMonthSQL broOfTheMonthSQL = new BroOfTheMonthSQL();
+                        broOfTheMonthSQL.incrementZitch(member.getId());
                         waitingForResponse.set(false);
                         scheduleNext();
                     } catch (SQLException e) {

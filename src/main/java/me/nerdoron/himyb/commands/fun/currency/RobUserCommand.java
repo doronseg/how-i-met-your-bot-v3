@@ -7,6 +7,7 @@ import me.nerdoron.himyb.modules.fun.brocoins.ArrestHandler;
 import me.nerdoron.himyb.modules.fun.brocoins.CheckCrimeCooldowns;
 import me.nerdoron.himyb.modules.fun.brocoins.CurrencyHelper;
 import me.nerdoron.himyb.modules.fun.brocoins.JailHelper;
+import me.nerdoron.himyb.modules.fun.broofthemonth.BroOfTheMonthSQL;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -66,6 +67,8 @@ public class RobUserCommand extends SlashCommand {
                 logger.info("{}(ID:{}) won {} coins while robbing {}(ID:{}).", member.getUser().getName(), member.getId(), reward, memberToRob.
                         getUser().getName(), memberToRob.getId());
                 event.reply(memberToRob.getAsMention()).addEmbeds(CurrencyHelper.successfulRobEmbed(memberToRob, reward)).queue();
+                BroOfTheMonthSQL broOfTheMonthSQL = new BroOfTheMonthSQL();
+                broOfTheMonthSQL.incrementZitch(member.getId());
                 COOLDOWN_MANAGER.addCooldown(commandID(event), "success", HOUR_IN_SECONDS / 2);
             } catch (SQLException e) {
                 event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
