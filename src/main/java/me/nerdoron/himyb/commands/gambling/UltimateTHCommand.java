@@ -8,6 +8,7 @@ import me.nerdoron.himyb.modules.fun.texasholdem.THHelper;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
@@ -71,6 +72,7 @@ public class UltimateTHCommand extends SlashCommand {
         SlashCommandData cmd = Commands.slash("ultimatepoker", "Play a round of ultimate Texas Hold'em with the bot as the dealer");
         OptionData bet = new OptionData(OptionType.INTEGER, "bet", "How many BroCoins do you want to enter with?", true);
         OptionData trips = new OptionData(OptionType.INTEGER, "trips", "How many BroCoins do you want to bet on trips? (Optional)", false);
+        cmd.setDefaultPermissions(DefaultMemberPermissions.DISABLED);
         bet.setMinValue(20);
         cmd.addOptions(bet, trips);
         return cmd;
