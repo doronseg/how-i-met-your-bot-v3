@@ -26,7 +26,7 @@ public class ShopHelper {
     public static MessageEmbed shopXp() {
         return new EmbedBuilder()
                 .setTitle("\uD83D\uDCC8 XP Boosters")
-                .setDescription("A list of all available XP Boosters you can buy. Prices are TBD." +
+                .setDescription("A list of all available XP Boosters you can buy. **Prices are TBD.**" +
                         "\nTo buy an item, use `/buy X1|X2|X3|X4|X5`.\nBoosters are not stackable.")
                 .addField(String.format("`%s` %s", XP_BOOSTER1.getType(), XP_BOOSTER1.getName()),
                         String.format("Grants an additional experience point for every message sent for 24 hours.\n%d %s", XP_BOOSTER1.getPrice(), Global.broCoin.getAsMention()),
@@ -51,22 +51,22 @@ public class ShopHelper {
     public static MessageEmbed shopCoin() {
         return new EmbedBuilder()
                 .setTitle(Global.broCoin.getAsMention() + " Coin Multipliers")
-                .setDescription("A list of all available Coin multiplier you can buy. Prices are TBD." +
+                .setDescription("A list of all available Coin multiplier you can buy. **Prices are TBD.**" +
                         "\nTo buy an item, use `/buy C1|C2|C3|C4|C5`.\nMultipliers are not stackable.")
                 .addField(String.format("`%s` %s", COIN_MULTIPLIER1.getType(), COIN_MULTIPLIER1.getName()),
-                        String.format("Puts a 125%% multiplier on all earned coins for 24 hours.\n%d %s", COIN_MULTIPLIER1.getPrice(), Global.broCoin.getAsMention()),
+                        String.format("Puts a 1.25x multiplier on all earned coins for 24 hours.\n%d %s", COIN_MULTIPLIER1.getPrice(), Global.broCoin.getAsMention()),
                         false)
                 .addField(String.format("`%s` %s", COIN_MULTIPLIER2.getType(), COIN_MULTIPLIER2.getName()),
-                        String.format("Puts a 125%% multiplier on all earned coins for 48 hours.\n%d %s", COIN_MULTIPLIER2.getPrice(), Global.broCoin.getAsMention()),
+                        String.format("Puts a 1.25x multiplier on all earned coins for 48 hours.\n%d %s", COIN_MULTIPLIER2.getPrice(), Global.broCoin.getAsMention()),
                         false)
                 .addField(String.format("`%s` %s", COIN_MULTIPLIER3.getType(), COIN_MULTIPLIER3.getName()),
-                        String.format("Puts a 150%% multiplier on all earned coins for 24 hours.\n%d %s", COIN_MULTIPLIER3.getPrice(), Global.broCoin.getAsMention()),
+                        String.format("Puts a 1.5x multiplier on all earned coins for 24 hours.\n%d %s", COIN_MULTIPLIER3.getPrice(), Global.broCoin.getAsMention()),
                         false)
                 .addField(String.format("`%s` %s", COIN_MULTIPLIER4.getType(), COIN_MULTIPLIER4.getName()),
-                        String.format("Puts a 150%% multiplier on all earned coins for 48 hours.\n%d %s", COIN_MULTIPLIER4.getPrice(), Global.broCoin.getAsMention()),
+                        String.format("Puts a 1.5x multiplier on all earned coins for 48 hours.\n%d %s", COIN_MULTIPLIER4.getPrice(), Global.broCoin.getAsMention()),
                         false)
                 .addField(String.format("`%s` %s", COIN_MULTIPLIER5.getType(), COIN_MULTIPLIER5.getName()),
-                        String.format("Puts a *250%%* multiplier on all earned coins **1 hour**.\n%d %s", COIN_MULTIPLIER5.getPrice(), Global.broCoin.getAsMention()),
+                        String.format("Puts a *2.50x* multiplier on all earned coins **1 hour**.\n%d %s", COIN_MULTIPLIER5.getPrice(), Global.broCoin.getAsMention()),
                         false)
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
@@ -77,7 +77,7 @@ public class ShopHelper {
         return new EmbedBuilder()
                 .setTitle("✨ Custom Roles")
                 .setColor(Global.embedColor)
-                .setDescription("A list of all available custom roles you can buy. Prices are TBD." +
+                .setDescription("A list of all available custom roles you can buy. **Prices are TBD.**" +
                         "\nTo buy an item, use `/buy R1|R2|R3|R4`.")
                 .addField(String.format("`%s` %s", CUSTOM_ROLE1.getType(), CUSTOM_ROLE1.getName()),
                         String.format("Grants you a cosmetic custom role for a month.\n%d %s", CUSTOM_ROLE1.getPrice(), Global.broCoin.getAsMention()),
@@ -100,7 +100,7 @@ public class ShopHelper {
         return new EmbedBuilder()
                 .setTitle("\uD83D\uDCBC Items")
                 .setColor(Global.embedColor)
-                .setDescription("A list of all available items you can buy. Prices are TBD." +
+                .setDescription("A list of all available items you can buy. **Prices are TBD.**" +
                         "\nTo buy an item, use `/buy I1|I2|I3`.")
                 .addField(String.format("`%s` %s", COP_BRIBE.getType(), COP_BRIBE.getName()),
                         String.format("Cops have a 50%% chance to look the other way when you're commiting crimes.\n%d %s", COP_BRIBE.getPrice(), Global.broCoin.getAsMention()),
@@ -118,11 +118,11 @@ public class ShopHelper {
     public static MessageEmbed inventoryEmbed(Member member) throws SQLException {
         InventoryHandler inventoryHandler = new InventoryHandler();
         return new EmbedBuilder()
-                .setTitle("\uD83D\uDCBC Inventory")
+                .setTitle(String.format("\uD83D\uDCBC %s's Inventory", member.getUser().getName()))
                 .setDescription("Your inventory, to use an item use `/use [ID]`.")
                 .addField("\uD83D\uDCC8 XP Boosters",
                         String.format("`X1` **24-Hour Novice Booster** - %d\n" +
-                                        "`X2` - **48-Hour Novice Booster** - %d\n" +
+                                        "`X2` **48-Hour Novice Booster** - %d\n" +
                                         "`X3` **24-Hour Apprentice Booster** - %d\n" +
                                         "`X4` **48-Hour Apprentice Booster** - %d\n" +
                                         "`X5` **Grandmaster Booster** - %d",
@@ -134,14 +134,14 @@ public class ShopHelper {
                                         "`C2` **48-Hour Noob Multipliers** - %d\n" +
                                         "`C3` **24-Hour Pro Multipliers** - %d\n" +
                                         "`C4` **48-Hour Pro Multipliers** - %d\n" +
-                                        "`C5` - **Gambler Multipliers** - %d",
+                                        "`C5` **Gambler Multipliers** - %d",
                                 inventoryHandler.getItemAmount(member, "C1"), inventoryHandler.getItemAmount(member, "C2"),
                                 inventoryHandler.getItemAmount(member, "C3"), inventoryHandler.getItemAmount(member, "C4"),
                                 inventoryHandler.getItemAmount(member, "C5")), false)
                 .addField("\uD83D\uDCBC Items",
                         String.format("`I1` **24-Hour Cop Bribe** - %d\n" +
                                         "`I2` **Lottery Cards** (Unusable) - %d\n" +
-                                        "`I3` - **Get Out Of Jail Free Cards** - %d",
+                                        "`I3` **Get Out Of Jail Free Cards** - %d",
                                 inventoryHandler.getItemAmount(member, "I1"), inventoryHandler.getItemAmount(member, "I2"), inventoryHandler.getItemAmount(member, "I3")),
                         false)
                 .setColor(Global.embedColor)
