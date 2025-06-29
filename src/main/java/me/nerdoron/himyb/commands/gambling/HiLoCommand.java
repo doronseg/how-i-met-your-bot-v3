@@ -46,7 +46,7 @@ public class HiLoCommand extends SlashCommand {
         }
 
 
-        event.replyEmbeds(HiLoHelper.hiLoStarting()).queue();
+        event.replyEmbeds(HiLoHelper.hiLoStarting(member)).queue();
         hiLoHandler.startHiLoGame(event, bet);
 
     }

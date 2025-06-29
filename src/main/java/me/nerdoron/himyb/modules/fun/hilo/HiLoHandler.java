@@ -12,10 +12,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.slf4j.Logger;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static me.nerdoron.himyb.Global.*;
 
@@ -33,7 +30,7 @@ public class HiLoHandler {
 
         HiLoGame game = new HiLoGame(table, bet, deck);
         HiLoHelper.startHiLoGame(member, game);
-        event.getHook().editOriginalEmbeds(HiLoHelper.hiLoInit(bet)).queue();
+        event.getHook().editOriginalEmbeds(HiLoHelper.hiLoInit(bet, member)).queue();
 
         ArrayList<Button> preGameButtons = new ArrayList<>();
         preGameButtons.add(Button.success("HL:" + uid + ":start", "Start Game"));
@@ -43,6 +40,7 @@ public class HiLoHandler {
 
         event.getJDA().listenOnce(ButtonInteractionEvent.class)
                 .filter(buttonInteractionEvent -> buttonInteractionEvent.getChannel().getId().equals(event.getChannel().getId()))
+                .filter(buttonInteractionEvent -> Objects.requireNonNull(buttonInteractionEvent.getMember()).equals(event.getMember()))
                 .timeout(TIMEOUT_DURATION, () -> {
                     event.getHook().editOriginalEmbeds(THHelper.failureToStart()).queue();
                     event.getHook().editOriginalComponents().queue();
@@ -103,7 +101,7 @@ public class HiLoHandler {
             return;
         }
 
-        event.getHook().editOriginalEmbeds(HiLoHelper.hiLoFirst(game.getBet(), firstCard)).queue();
+        event.getHook().editOriginalEmbeds(HiLoHelper.hiLoFirst(game.getBet(), firstCard, member)).queue();
         event.getHook().editOriginalComponents(ActionRow.of(getButtons(uid))).queue();
         game.setNoOfRounds(1);
 
@@ -120,7 +118,7 @@ public class HiLoHandler {
         HiLoCard previousCard = table.get(table.size() - 2);
 
 
-        event.getHook().editOriginalEmbeds(HiLoHelper.hiLoGame(game.getWinnings(), noOfRounds, previousCard, tableCards(noOfRounds))).queue();
+        event.getHook().editOriginalEmbeds(HiLoHelper.hiLoGame(game.getWinnings(), noOfRounds, previousCard, tableCards(noOfRounds), member)).queue();
         event.getHook().editOriginalComponents(ActionRow.of(getButtons(uid))).queue();
 
         // game listener
@@ -147,6 +145,7 @@ public class HiLoHandler {
     private void gameListener(SlashCommandInteractionEvent event, HiLoGame game, Member member, String uid, HiLoCard newCard, HiLoCard nextCard, int noOfRounds) {
         event.getJDA().listenOnce(ButtonInteractionEvent.class)
                 .filter(buttonInteractionEvent -> buttonInteractionEvent.getChannel().getId().equals(event.getChannel().getId()))
+                .filter(buttonInteractionEvent -> Objects.requireNonNull(buttonInteractionEvent.getMember()).equals(event.getMember()))
                 .timeout(TIMEOUT_DURATION, () -> {
                     event.getHook().editOriginalEmbeds(THHelper.failureToStart()).queue();
                     event.getHook().editOriginalComponents().queue();

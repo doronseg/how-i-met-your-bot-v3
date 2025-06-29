@@ -11,18 +11,18 @@ import java.util.Map;
 public class HiLoHelper {
     private static final Map<Member, HiLoGame> activeGames = new HashMap<>();
 
-    public static MessageEmbed hiLoStarting() {
+    public static MessageEmbed hiLoStarting(Member member) {
         return new EmbedBuilder()
-                .setTitle("♣️♦️ Hi-Lo")
+                .setTitle(String.format("♣️♦️ %s's Hi-Lo", member.getUser().getName()))
                 .setDescription("Starting game...")
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();
     }
 
-    public static MessageEmbed hiLoInit(int bet) {
+    public static MessageEmbed hiLoInit(int bet, Member member) {
         return new EmbedBuilder()
-                .setTitle("♣️♦️ Hi-Lo")
+                .setTitle(String.format("♣️♦️ %s's Hi-Lo", member.getUser().getName()))
                 .setDescription("Welcome to Hi-Lo. Click Start Game when you're ready to start.")
                 .addField("Initial bet:", String.format("%d %s", bet, Global.broCoin.getAsMention()), true)
                 .addField("How the game works", "[Click here!](https://github.com/doronseg/how-i-met-your-bot-v3/wiki/HiLo-Explanation)", false)
@@ -31,9 +31,9 @@ public class HiLoHelper {
                 .build();
     }
 
-    public static MessageEmbed hiLoFirst(int bet, HiLoCard card) {
+    public static MessageEmbed hiLoFirst(int bet, HiLoCard card, Member member) {
         return new EmbedBuilder()
-                .setTitle("♣️♦️ Hi-Lo")
+                .setTitle(String.format("♣️♦️ %s's Hi-Lo", member.getUser().getName()))
                 .setDescription("Round 1 of HiLo. Here's your first card, will the next card be higher or lower?")
                 .addField("Your Card", formatCardWithName(card), true)
                 .addField("Next card", HiLoCard.backOfCard.getAsMention(), true)
@@ -44,9 +44,9 @@ public class HiLoHelper {
                 .build();
     }
 
-    public static MessageEmbed hiLoGame(int bet, int noOfRounds, HiLoCard card, String table) {
+    public static MessageEmbed hiLoGame(int bet, int noOfRounds, HiLoCard card, String table, Member member) {
         return new EmbedBuilder()
-                .setTitle("♣️♦️ Hi-Lo")
+                .setTitle(String.format("♣️♦️ %s's Hi-Lo", member.getUser().getName()))
                 .setDescription(String.format("Correct!\n Round %d of HiLo. Here's the next card, will the next card be higher or lower?", noOfRounds))
                 .addField("Your Card", formatCardWithName(card), true)
                 .addField("Next card", HiLoCard.backOfCard.getAsMention(), true)
