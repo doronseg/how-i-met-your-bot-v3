@@ -1,5 +1,6 @@
 package me.nerdoron.himyb.commands.currency.broshop;
 
+import me.nerdoron.himyb.modules.bot.CooldownManager;
 import me.nerdoron.himyb.modules.bot.LoggingHandler;
 import me.nerdoron.himyb.modules.bot.SlashCommand;
 import me.nerdoron.himyb.modules.broshop.InventoryHandler;
@@ -15,6 +16,8 @@ import org.slf4j.Logger;
 import java.sql.SQLException;
 import java.util.Objects;
 
+import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
+
 public class GiveItemCommand extends SlashCommand {
     private static final Logger logger = LoggingHandler.logger(GiveItem.class);
 
@@ -25,6 +28,12 @@ public class GiveItemCommand extends SlashCommand {
         Member memberToTransferTo = Objects.requireNonNull(event.getOption("user")).getAsMember();
         assert memberToTransferTo != null;
         String item = Objects.requireNonNull(event.getOption("item")).getAsString();
+
+        if (COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "CONTRABAND_SMUGGLE") || COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "CONTRABAND_DEAL")) {
+            event.reply(String.format("You're in jail for contraband dealings, the guards are watching you. Try again in %s.", COOLDOWN_MANAGER.parseCooldown(CooldownManager.jailID(member)))).setEphemeral(true).queue();
+            return;
+        }
+
 
         ShopItem selectedItem = null;
         for (ShopItem shopItem : ShopItem.values()) {
