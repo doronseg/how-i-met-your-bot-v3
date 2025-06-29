@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 
 public class EventAutoComplete extends ListenerAdapter {
     final String[] positions = new String[]{
-            "Event Manager"
+            "Event Manager", "Moderator"
     };
 
     @Override
