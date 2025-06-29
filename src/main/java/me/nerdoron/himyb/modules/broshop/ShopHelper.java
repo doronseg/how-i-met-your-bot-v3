@@ -207,7 +207,7 @@ public class ShopHelper {
     public static MessageEmbed extendJailTime(int time) {
         return new EmbedBuilder()
                 .setTitle("\uD83D\uDC6E Jail Time Extended!")
-                .setDescription(String.format("The prison guards caught you trying to deal contraband. They've extended both your jail sentences by %d hours!", time / HOUR_IN_SECONDS))
+                .setDescription(String.format("The prison guards caught you trying to deal contraband. They've extended both your jail sentences by %d hours, and seized the contraband!", time / HOUR_IN_SECONDS))
                 .setColor(Global.embedColor)
                 .setFooter(Global.footertext, Global.footerpfp)
                 .build();
