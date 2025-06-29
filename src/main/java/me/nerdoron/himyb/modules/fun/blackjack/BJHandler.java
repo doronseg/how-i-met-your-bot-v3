@@ -192,10 +192,15 @@ public class BJHandler {
                 event.getHook().editOriginalEmbeds(err).queue();
             }
         }
-        MessageEmbed phaseTwo = BJHelper.blackJackGame(bet, userHand, botHand, false, member);
-        event.getHook().editOriginalEmbeds(phaseTwo).queue();
-        bjGame(event, bet, member, member.getId(), userHand, deck, botHand);
-        buttonInteractionEvent.deferEdit().queue();
+        try {
+            MessageEmbed resolveGame = BJHelper.resolveGame(bet, userHand, botHand, deck, member);
+            event.getHook().editOriginalEmbeds(resolveGame).queue();
+            event.getHook().editOriginalComponents().queue();
+            COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
+        } catch (SQLException e) {
+            MessageEmbed err = BJHelper.createErrorEmbed(e.getMessage());
+            event.getHook().editOriginalEmbeds(err).queue();
+        }
     }
 
     private Boolean bust(List<BJCard> userHand) {
