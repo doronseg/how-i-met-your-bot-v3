@@ -12,10 +12,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import org.slf4j.Logger;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 import static me.nerdoron.himyb.Global.*;
 
@@ -54,7 +51,7 @@ public class BJHandler {
         botHand.add(drawCard(deck));
 
         // Start game phase 1
-        MessageEmbed phaseOne = BJHelper.blackJackGame(bet, userHand, botHand, false);
+        MessageEmbed phaseOne = BJHelper.blackJackGame(bet, userHand, botHand, false, member);
         BlackjackGame game = new BlackjackGame();
         BJHelper.startNewBjGame(member, game);
         Thread.sleep(3 * Global.SECONDS_IN_MS);
@@ -78,8 +75,9 @@ public class BJHandler {
     private void bjGame(SlashCommandInteractionEvent event, int bet, Member member, String uid, List<BJCard> userHand, List<BJCard> deck, List<BJCard> botHand) {
         event.getJDA().listenOnce(ButtonInteractionEvent.class)
                 .filter(buttonInteractionEvent -> buttonInteractionEvent.getChannel().getId().equals(event.getChannel().getId()))
+                .filter(buttonInteractionEvent -> Objects.requireNonNull(buttonInteractionEvent.getMember()).equals(event.getMember()))
                 .timeout(TIMEOUT_DURATION, () -> {
-                    event.getHook().editOriginalEmbeds(BJHelper.blackJackTimeOut(bet)).queue();
+                    event.getHook().editOriginalEmbeds(BJHelper.blackJackTimeOut(bet, member)).queue();
                     event.getHook().editOriginalComponents().queue();
                     COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), 5 * 60);
                     BJHelper.endBjGame(member);
@@ -156,7 +154,7 @@ public class BJHandler {
                 event.getHook().editOriginalEmbeds(err).queue();
             }
         }
-        MessageEmbed phaseTwo = BJHelper.blackJackGame(bet, userHand, botHand, false);
+        MessageEmbed phaseTwo = BJHelper.blackJackGame(bet, userHand, botHand, false, member);
         event.getHook().editOriginalEmbeds(phaseTwo).queue();
         bjGame(event, bet, member, member.getId(), userHand, deck, botHand);
         buttonInteractionEvent.deferEdit().queue();
@@ -194,7 +192,7 @@ public class BJHandler {
                 event.getHook().editOriginalEmbeds(err).queue();
             }
         }
-        MessageEmbed phaseTwo = BJHelper.blackJackGame(bet, userHand, botHand, false);
+        MessageEmbed phaseTwo = BJHelper.blackJackGame(bet, userHand, botHand, false, member);
         event.getHook().editOriginalEmbeds(phaseTwo).queue();
         bjGame(event, bet, member, member.getId(), userHand, deck, botHand);
         buttonInteractionEvent.deferEdit().queue();

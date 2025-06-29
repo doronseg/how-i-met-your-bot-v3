@@ -47,7 +47,7 @@ public class BlackJackCommand extends SlashCommand {
             return;
         }
 
-        event.replyEmbeds(BJHelper.blackJackMain(bet)).queue();
+        event.replyEmbeds(BJHelper.blackJackMain(bet, member)).queue();
         try {
             bjHandler.startBJGame(event, bet);
         } catch (InterruptedException e) {
