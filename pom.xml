@@ -61,7 +61,7 @@
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>5.2.2</version>
+            <version>5.6.1</version>
             <exclusions>
                 <!-- Removes audio as to save space, you can remove the exclusion if you want to use audio -->
                 <exclusion>
