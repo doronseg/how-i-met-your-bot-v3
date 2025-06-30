@@ -89,7 +89,7 @@ public class HiLoHandler {
         if (tie(firstCard, newCard)) {
             HiLoHelper.endHiLoGame(member);
             try {
-                BROCOINS_SQL.updateCashMultiplier(member, event, game.getWinnings() - game.getBet());
+                BROCOINS_SQL.updateCashMultiplier(member, event, game.getBet());
                 event.getHook().editOriginalComponents().queue();
                 event.getHook().editOriginalEmbeds(HiLoHelper.tie(game.getWinnings(), newCard, firstCard)).queue();
                 logger.info("{}(ID:{}) played HiLo, and tied on the first round. Not winning anything.", member.getUser().getName(), uid);
