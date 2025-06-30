@@ -26,6 +26,7 @@ public class TimeCommand extends SlashCommand {
 
         TimezoneSQL timezoneSQL = new TimezoneSQL();
         try {
+            assert target != null;
             if (!timezoneSQL.userHasTimezone(target.getId())) {
                 event.reply(String.format("%s doesn't have a timezone set!", target.getAsMention())).setEphemeral(true).queue();
                 return;

@@ -27,7 +27,7 @@ import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
 public class RussianRoulette extends SlashCommand {
     private static final Logger logger = LoggingHandler.logger(RussianRoulette.class);
 
-    @SuppressWarnings("LoggingSimilarMessage")
+    @SuppressWarnings({"LoggingSimilarMessage", "RedundantSuppression"})
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         Member member = event.getMember();

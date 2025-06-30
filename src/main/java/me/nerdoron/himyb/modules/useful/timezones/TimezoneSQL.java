@@ -44,6 +44,7 @@ public class TimezoneSQL {
         return timezone;
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public boolean userHasTimezone(String uid) {
         String SQL = "SELECT uid from timezones WHERE uid=?";
         assert con != null;

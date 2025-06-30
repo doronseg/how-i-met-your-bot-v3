@@ -26,7 +26,7 @@ import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
 public class CoinFlip extends SlashCommand {
     private static final Logger logger = LoggingHandler.logger(CoinFlip.class);
 
-    @SuppressWarnings("LoggingSimilarMessage")
+    @SuppressWarnings({"LoggingSimilarMessage", "RedundantSuppression"})
     @Override
     public void execute(SlashCommandInteractionEvent event) {
 

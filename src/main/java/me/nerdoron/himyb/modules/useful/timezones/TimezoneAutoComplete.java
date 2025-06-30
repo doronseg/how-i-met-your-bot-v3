@@ -6,7 +6,6 @@ import net.dv8tion.jda.api.interactions.commands.Command;
 
 import java.time.ZoneId;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public class TimezoneAutoComplete extends ListenerAdapter {
@@ -25,7 +24,6 @@ public class TimezoneAutoComplete extends ListenerAdapter {
         if (!event.getName().equals("settimezone")) return;
 
         String input = event.getFocusedOption().getValue();
-        Set<String> allZones = ZoneId.getAvailableZoneIds();
 
         List<Command.Choice> choices = searchTimezones(input).stream()
                 .map(tz -> new Command.Choice(tz, tz))

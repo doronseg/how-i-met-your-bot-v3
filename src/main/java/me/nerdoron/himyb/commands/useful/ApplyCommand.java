@@ -31,7 +31,7 @@ public class ApplyCommand extends SlashCommand {
         }
         AccessAmariAPI api = new AccessAmariAPI();
         if (position.equals("Moderator")) {
-            if (!(api.getAmariLevel(event.getMember().getId()).equals(String.valueOf(5)))) {
+            if (!(api.getAmariLevel(Objects.requireNonNull(event.getMember()).getId()).equals(String.valueOf(5)))) {
                 event.reply("You must be at least level 5 to apply for moderator.").queue();
                 return;
             }

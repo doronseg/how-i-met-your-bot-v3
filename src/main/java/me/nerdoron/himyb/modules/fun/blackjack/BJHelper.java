@@ -14,7 +14,7 @@ import java.util.Map;
 
 import static me.nerdoron.himyb.Global.BROCOINS_SQL;
 
-@SuppressWarnings("LoggingSimilarMessage")
+@SuppressWarnings({"LoggingSimilarMessage", "RedundantSuppression"})
 public class BJHelper {
 
     final static BJHandler bjHandler = new BJHandler();
