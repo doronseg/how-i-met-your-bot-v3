@@ -182,6 +182,12 @@ public class BroCoinsSQL {
         }
     }
 
+    public void changeCashBalance(Member member, int amountToChange) throws SQLException {
+        int memberCoins = this.getBroCash(member);
+        memberCoins += amountToChange;
+        setCash(member, memberCoins);
+    }
+
     public void updateCashMultiplierDM(Member member, int amountToChange) throws SQLException {
         int memberCoins = this.getBroCash(member);
         if (amountToChange > 0 && hasCoinBoost(member)) {
