@@ -31,9 +31,8 @@
                                     <mainClass>me.nerdoron.himyb.Main</mainClass>
                                 </transformer>
                             </transformers>
-
                             <createDependencyReducedPom>false</createDependencyReducedPom>
-                            <finalName>your-project-name</finalName>
+                            <finalName>how-i-met-your-bot</finalName>
                         </configuration>
                     </execution>
                 </executions>

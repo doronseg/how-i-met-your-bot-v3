@@ -64,7 +64,7 @@ public class LeaderboardCommand extends SlashCommand {
                 } else if (pos == 3) {
                     emote = " :third_place:";
                 } else {
-                    emote = " <:BroCoin:997169032522375230>";
+                    emote = " " + broCoin.getAsMention();
                 }
 
                 users.append("`").append(pos).append(".` **").append(textCoins).append("** ").append(emote).append("\t").append("<@!").append(sortedUserId).append(">").append("\n");
