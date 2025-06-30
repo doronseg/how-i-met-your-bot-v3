@@ -67,7 +67,7 @@ public class LeaderboardCommand extends SlashCommand {
                     emote = " <:BroCoin:997169032522375230>";
                 }
 
-                users.append(pos).append(". **`").append(textCoins).append("`** ").append(emote).append("\t").append("<@!").append(sortedUserId).append(">").append("\n");
+                users.append("`").append(pos).append(".` **").append(textCoins).append("** ").append(emote).append("\t").append("<@!").append(sortedUserId).append(">").append("\n");
                 pos += 1;
             }
         }
@@ -88,6 +88,6 @@ public class LeaderboardCommand extends SlashCommand {
 
     @Override
     public SlashCommandData getSlash() {
-        return Commands.slash("leaderboard", "Check out the best people in the server.");
+        return Commands.slash("leaderboard", "Check out the richest people in the server.");
     }
 }
