@@ -34,7 +34,7 @@ public class TimeCommand extends SlashCommand {
             ZoneId tz = ZoneId.of(timezoneSQL.getUserTimezone(target.getId()));
             ZonedDateTime now = ZonedDateTime.now(tz);
             String time = now.format(DateTimeFormatter.ofPattern("HH:mm"));
-            event.reply(String.format("%s's current time is **%s**.", target.getAsMention(), time)).queue();
+            event.reply(String.format("%s's current time is **%s**.", target.getUser().getName(), time)).queue();
         } catch (SQLException | DateTimeException ex) {
             event.reply("An error occurred while trying to get this user timezone.").queue();
             logger.error("Error occurred while trying to get a timezone: {}", ex.getMessage());
