@@ -21,6 +21,7 @@ import me.nerdoron.himyb.modules.useful.selfpromo.SelfPromoModApproval;
 import me.nerdoron.himyb.modules.useful.suggestions.SuggestCommandAutoComplete;
 import me.nerdoron.himyb.modules.useful.tickets.TicketButtonHandler;
 import me.nerdoron.himyb.modules.useful.tickets.TicketFileMonitor;
+import me.nerdoron.himyb.modules.useful.timezones.TimezoneAutoComplete;
 import net.dv8tion.jda.api.JDA;
 
 public class RegisterEvents {
@@ -58,6 +59,7 @@ public class RegisterEvents {
         jda.addEventListener(new SelfPromoAutoMessage());
         jda.addEventListener(new SelfPromoModApproval());
         jda.addEventListener(new SuggestCommandAutoComplete());
+        jda.addEventListener(new TimezoneAutoComplete());
 
         // counting
         jda.addEventListener(new CountingChannelHandler());

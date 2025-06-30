@@ -43,6 +43,8 @@ public class BotCommandsHandler extends ListenerAdapter {
         commands.add(new SuggestCommand());
         commands.add(new SelfPromoCommand());
         commands.add(new BOTMLeaderboard());
+        commands.add(new SetTimezoneCommand());
+        commands.add(new TimeCommand());
 
         //staff
         commands.add(new ReviveCommand());
