@@ -43,3 +43,4 @@ build/
 /db.db-journal
 /db.db-shm
 /db.db-wal
+/himyb-v3.jar
