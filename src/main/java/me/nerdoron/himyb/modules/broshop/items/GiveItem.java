@@ -17,181 +17,173 @@ import org.slf4j.Logger;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
-import static me.nerdoron.himyb.modules.fun.brocoins.JailHelper.checkIfInJail;
 
 public class GiveItem {
 
     private static final Logger logger = LoggingHandler.logger(GiveItem.class);
 
-    public Boolean giveItem(Member member, Member memberToTransferTo, String item, SlashCommandInteractionEvent event) {
-        boolean memberInJail = checkIfInJail(member);
-        boolean memberToTransferToInJail = checkIfInJail(memberToTransferTo);
+    public void giveItem(Member member, Member memberToTransferTo, String item, SlashCommandInteractionEvent event, Consumer<Boolean> callback) {
+        boolean memberInJail = JailHelper.checkIfInJail(member);
+        boolean memberToTransferInJail = JailHelper.checkIfInJail(memberToTransferTo);
         int rng = Rng.generateNumber(1, 10);
 
-        if (memberInJail && memberToTransferToInJail) {
+        // Both in jail
+        if (memberInJail && memberToTransferInJail) {
             String uid = memberToTransferTo.getId();
             ArrayList<Button> buttons = new ArrayList<>();
             buttons.add(Button.success("CB:" + uid + ":accept", "Accept"));
             buttons.add(Button.danger("CB:" + uid + ":deny", "Deny"));
-            final Duration timeout = Duration.ofMinutes(5);
 
-            CompletableFuture<Boolean> future = new CompletableFuture<>();
-
-            event.reply(String.format("%s You have 5 minutes to respond.", memberToTransferTo.getAsMention()))
+            event.reply(String.format("%s you have  minutes to respond.", memberToTransferTo.getAsMention()))
                     .addEmbeds(ShopHelper.contrabandStartBothInJail(member, item))
                     .addActionRow(buttons)
-                    .queue();
-
-            event.getJDA().listenOnce(ButtonInteractionEvent.class)
-                    .filter(buttonInteractionEvent -> buttonInteractionEvent.getChannel().getId().equals(event.getChannel().getId()))
-                    .timeout(timeout, () -> {
-                        event.getHook().editOriginal(String.format("%s failed to respond in time. Aborting action.", memberToTransferTo.getAsMention())).queue();
-                        event.getHook().editOriginalEmbeds().queue();
-                        event.getHook().editOriginalComponents().queue();
-                        future.complete(false);
-                    })
-                    .subscribe(buttonInteractionEvent -> {
-                        handleButtonInteraction(buttonInteractionEvent, member, memberToTransferTo, item, rng, future, event);
+                    .queue(message -> {
+                        event.getJDA().listenOnce(ButtonInteractionEvent.class)
+                                .filter(buttonEvent -> buttonEvent.getChannel().getId().equals(event.getChannel().getId()))
+                                .timeout(Duration.ofMinutes(5), () -> {
+                                    message.editOriginal(String.format("%s failed to respond in time. Aborting action.", member.getAsMention())).setEmbeds().setComponents().queue();
+                                    callback.accept(false);
+                                })
+                                .subscribe(e -> {
+                                    try {
+                                        handleButtonInteraction(e, event, member, memberToTransferTo, item, rng, callback, message.getId());
+                                    } catch (SQLException ex) {
+                                        event.getHook().editOriginal("Error.").setEmbeds().setComponents();
+                                        callback.accept(false);
+                                        logger.error("Error occurred while trying to smuggle, {}", ex.getMessage());
+                                    }
+                                });
                     });
-
-            return future.join(); // Optionally block for synchronous handling
+            return;
         }
 
-        if (!memberInJail && memberToTransferToInJail) {
+        // Target in jail
+        if (!memberInJail && memberToTransferInJail) {
             String uid = member.getId();
             ArrayList<Button> buttons = new ArrayList<>();
             buttons.add(Button.success("CB:" + uid + ":proceed", "Proceed"));
             buttons.add(Button.danger("CB:" + uid + ":abort", "Abort"));
-            final Duration timeout = Duration.ofSeconds(10);
-
-            CompletableFuture<Boolean> future = new CompletableFuture<>();
 
             event.reply("You have 10 seconds to respond.")
                     .addEmbeds(ShopHelper.contrabandStartOtherMemberInJail(memberToTransferTo))
                     .addActionRow(buttons)
-                    .queue();
+                    .queue(sentMessage -> {
+                        String sentMessageId = sentMessage.getId();
 
-            event.getJDA().listenOnce(ButtonInteractionEvent.class)
-                    .filter(buttonInteractionEvent -> buttonInteractionEvent.getChannel().getId().equals(event.getChannel().getId()))
-                    .timeout(timeout, () -> {
-                        event.getHook().editOriginal("You failed to respond in time. Aborting action.").queue();
-                        event.getHook().editOriginalEmbeds().queue();
-                        event.getHook().editOriginalComponents().queue();
-                        future.complete(false);
-                    })
-                    .subscribe(buttonInteractionEvent -> {
-                        handleSmugglingButtonInteraction(buttonInteractionEvent, member, memberToTransferTo, item, rng, future, event);
+                        event.getJDA().listenOnce(ButtonInteractionEvent.class)
+                                .filter(buttonEvent -> buttonEvent.getChannel().getId().equals(event.getChannel().getId()))
+                                .timeout(Duration.ofSeconds(10), () -> {
+                                    sentMessage.editOriginal("You failed to respond in time. Aborting action.").setEmbeds().setComponents().queue();
+                                    logger.info("timeout");
+                                })
+                                .subscribe(e -> {
+                                    logger.info("subscribe");
+                                    try {
+                                        handleSmugglingInteraction(e, event, member, memberToTransferTo, item, rng, callback, sentMessageId);
+                                    } catch (SQLException ex) {
+                                        event.getHook().editOriginal("Error.").setEmbeds().setComponents();
+                                        callback.accept(false);
+                                        logger.error("Error occurred while trying to smuggle, {}", ex.getMessage());
+                                    }
+                                });
                     });
-
-            return future.join(); // Optionally block for synchronous handling
+            return;
         }
 
+        //Member in jail, target not
         if (memberInJail) {
             event.replyEmbeds(JailHelper.inJailEmbed(member)).queue();
-            return false;
-        }
-
-        event.reply(memberToTransferTo.getAsMention())
-                .addEmbeds(ShopHelper.doneEmbed(member, memberToTransferTo, item)).queue();
-        return true;
-    }
-
-    private void handleButtonInteraction(ButtonInteractionEvent buttonInteractionEvent, Member member, Member memberToTransferTo,
-                                         String item, int rng, CompletableFuture<Boolean> future, SlashCommandInteractionEvent event) {
-        String buttonId = buttonInteractionEvent.getComponentId();
-        if (!buttonId.contains("CB:")) return;
-
-        String[] buttonSplit = buttonId.split(":");
-        String userId = buttonSplit[1];
-        String buttonCategory = buttonSplit[2];
-
-        if (!userId.equals(buttonInteractionEvent.getUser().getId())) {
+            callback.accept(false);
             return;
         }
 
-        switch (buttonCategory.toLowerCase()) {
-            case "accept":
-                buttonInteractionEvent.deferEdit().queue();
-                event.getHook().editOriginalComponents().queue();
-                if (rng <= 5) {
-                    event.getHook().editOriginal(memberToTransferTo.getAsMention()).queue();
-                    event.getHook().editOriginalEmbeds(ShopHelper.jailContrabandSuccess(member, memberToTransferTo, item)).queue();
-                    future.complete(true);
-                } else {
-                    extendJailTime(member, memberToTransferTo, item, future, event);
-                }
-                break;
+        // Regular
+        event.reply(memberToTransferTo.getAsMention()).addEmbeds(ShopHelper.doneEmbed(member, memberToTransferTo, item))
+                .addEmbeds(ShopHelper.doneEmbed(member, memberToTransferTo, item))
+                .queue();
+        callback.accept(true);
+    }
 
-            case "deny":
-                buttonInteractionEvent.deferEdit().queue();
-                event.getHook().editOriginalComponents().queue();
-                event.getHook().editOriginalEmbeds().queue();
-                event.getHook().editOriginal(String.format("%s aborted the transfer.", memberToTransferTo.getAsMention())).queue();
-                future.complete(false);
-                break;
+
+    private void handleButtonInteraction(ButtonInteractionEvent e, SlashCommandInteractionEvent event, Member member, Member memberToTransferTo, String item, int rng, Consumer<Boolean> callback, String messageId) throws SQLException {
+        String[] parts = e.getComponentId().split(":");
+        String userId = parts[1];
+        String action = parts[2];
+
+        if (!e.getUser().getId().equals(userId)) return;
+
+        e.deferEdit().queue();
+
+        if (action.equalsIgnoreCase("accept")) {
+            if (rng <= 5) {
+                e.getMessage().editMessage(memberToTransferTo.getAsMention())
+                        .setEmbeds(ShopHelper.jailContrabandSuccess(member, memberToTransferTo, item))
+                        .setComponents()
+                        .queue();
+                callback.accept(true);
+            } else {
+                extendJailTime(member, memberToTransferTo, item, event);
+                callback.accept(false);
+            }
+        } else if (action.equalsIgnoreCase("deny")) {
+            e.getMessage().editMessage(String.format("%s aborted the transfer.", memberToTransferTo.getAsMention()))
+                    .setEmbeds()
+                    .setComponents()
+                    .queue();
+            callback.accept(false);
         }
     }
 
-    private void handleSmugglingButtonInteraction(ButtonInteractionEvent buttonInteractionEvent, Member member,
-                                                  Member memberToTransferTo, String item, int rng, CompletableFuture<Boolean> future, SlashCommandInteractionEvent event) {
-        String buttonId = buttonInteractionEvent.getComponentId();
-        if (!buttonId.contains("CB:")) return;
-
-        String[] buttonSplit = buttonId.split(":");
-        String userId = buttonSplit[1];
-        String buttonCategory = buttonSplit[2];
-
-        if (!userId.equals(buttonInteractionEvent.getUser().getId())) {
-            return;
-        }
-
-        switch (buttonCategory.toLowerCase()) {
-            case "proceed":
-                buttonInteractionEvent.deferEdit().queue();
-                event.getHook().editOriginalComponents().queue();
-                if (rng < 3) {
-                    event.getHook().editOriginal(memberToTransferTo.getAsMention()).queue();
-                    event.getHook().editOriginalEmbeds(ShopHelper.contrabandSuccess(member, memberToTransferTo, item)).queue();
-                    future.complete(true);
-                } else {
-                    ArrestHandler.initialArrest(event, "CONTRABAND_SMUGGLE", 3 * Global.HOUR_IN_SECONDS);
-                    removeItemFromInventory(member, item);
-                    future.complete(false);
-                }
-                break;
-
-            case "abort":
-                buttonInteractionEvent.deferEdit().queue();
-                event.getHook().editOriginalComponents().queue();
-                event.getHook().editOriginalEmbeds().queue();
-                event.getHook().editOriginal("You aborted the transfer.").queue();
-                future.complete(false);
-                break;
-        }
-    }
-
-    private void extendJailTime(Member member, Member memberToTransferTo, String item, CompletableFuture<Boolean> future, SlashCommandInteractionEvent event) {
-        int extraTime = 2 * Global.HOUR_IN_SECONDS;
-        String memberCooldown = CooldownManager.jailID(member);
-        String memberToTransferToCooldown = CooldownManager.jailID(memberToTransferTo);
-        COOLDOWN_MANAGER.extendJailTime(memberCooldown, "CONTRABAND_DEAL", member, extraTime);
-        COOLDOWN_MANAGER.extendJailTime(memberToTransferToCooldown, "CONTRABAND_DEAL", memberToTransferTo, extraTime);
-        event.getHook().editOriginalComponents().queue();
-        event.getHook().editOriginalEmbeds(ShopHelper.extendJailTime(extraTime)).queue();
-        event.getHook().editOriginal(String.format("%s %s", member.getAsMention(), memberToTransferTo.getAsMention())).queue();
-        removeItemFromInventory(member, item);
-        future.complete(false);
-    }
-
-    private void removeItemFromInventory(Member member, String item) {
+    private void handleSmugglingInteraction(ButtonInteractionEvent e, SlashCommandInteractionEvent event, Member member, Member target,
+                                            String item, int rng, Consumer<Boolean> callback, String messageId) throws SQLException {
         InventoryHandler inventoryHandler = new InventoryHandler();
-        try {
-            inventoryHandler.removeFromInventory(member, item);
-        } catch (SQLException e) {
-            logger.error("Error removing item from inventory: {}", e.getMessage(), e);
+        String[] parts = e.getComponentId().split(":");
+        String userId = parts[1];
+        String action = parts[2];
+
+        if (!e.getUser().getId().equals(userId)) return;
+
+        e.deferEdit().queue();
+
+        if ("proceed".equalsIgnoreCase(action)) {
+            if (rng < 3) {
+                e.getMessage().editMessage(target.getAsMention())
+                        .setEmbeds(ShopHelper.contrabandSuccess(member, target, item))
+                        .setComponents()
+                        .queue();
+                callback.accept(true);
+            } else {
+                inventoryHandler.removeFromInventory(member, item);
+                ArrestHandler.initialArrest(event, "CONTRABAND_SMUGGLE", 3 * Global.HOUR_IN_SECONDS);
+                callback.accept(false);
+            }
+        } else if ("abort".equalsIgnoreCase(action)) {
+            e.getMessage().editMessage("You aborted the transfer.")
+                    .setEmbeds()
+                    .setComponents()
+                    .queue();
+            callback.accept(false);
         }
     }
+
+    private void extendJailTime(Member member, Member target, String item, SlashCommandInteractionEvent event) throws SQLException {
+        InventoryHandler inventoryHandler = new InventoryHandler();
+        int extra = 2 * Global.HOUR_IN_SECONDS;
+        String memberCooldown = CooldownManager.jailID(member);
+        String targetCooldown = CooldownManager.jailID(target);
+
+        COOLDOWN_MANAGER.extendJailTime(memberCooldown, "CONTRABAND_DEAL", member, extra);
+        COOLDOWN_MANAGER.extendJailTime(targetCooldown, "CONTRABAND_DEAL", target, extra);
+
+        event.getHook().editOriginal(String.format("%s %s", member.getAsMention(), target.getAsMention()))
+                .setEmbeds(ShopHelper.extendJailTime(extra))
+                .setComponents()
+                .queue();
+        inventoryHandler.removeFromInventory(member, item);
+    }
+
+
 }

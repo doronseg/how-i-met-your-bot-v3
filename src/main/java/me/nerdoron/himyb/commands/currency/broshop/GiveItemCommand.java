@@ -27,7 +27,7 @@ public class GiveItemCommand extends SlashCommand {
         assert member != null;
         Member memberToTransferTo = Objects.requireNonNull(event.getOption("user")).getAsMember();
         assert memberToTransferTo != null;
-        String item = Objects.requireNonNull(event.getOption("item")).getAsString();
+        String item = Objects.requireNonNull(event.getOption("item")).getAsString().toUpperCase();
 
         if (COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "CONTRABAND_SMUGGLE") || COOLDOWN_MANAGER.hasTag(CooldownManager.jailID(member), "CONTRABAND_DEAL")) {
             event.reply(String.format("You're in jail for contraband dealings, the guards are watching you. Try again in %s.", COOLDOWN_MANAGER.parseCooldown(CooldownManager.jailID(member)))).setEphemeral(true).queue();
@@ -60,13 +60,20 @@ public class GiveItemCommand extends SlashCommand {
                 return;
             }
 
-            item = item.toUpperCase();
             GiveItem giveItem = new GiveItem();
-            if (giveItem.giveItem(member, memberToTransferTo, selectedItem.getName(), event)) {
-                inventoryHandler.removeFromInventory(member, item);
-                inventoryHandler.addToInventory(memberToTransferTo, item);
-                logger.info("{} (ID:{}) gave {} to {}", member.getUser().getName(), member.getId(), item, memberToTransferTo.getUser().getName());
-            }
+            giveItem.giveItem(member, memberToTransferTo, item, event, success -> {
+                if (success) {
+                    try {
+                        inventoryHandler.removeFromInventory(member, item);
+                        inventoryHandler.addToInventory(memberToTransferTo, item);
+                        logger.info("{} gave {} to {}", member.getEffectiveName(), item, memberToTransferTo.getEffectiveName());
+                    } catch (SQLException e) {
+                        logger.error("Inventory update failed", e);
+                    }
+                } else {
+                    logger.info("Item transfer aborted or failed.");
+                }
+            });
 
 
         } catch (SQLException e) {
