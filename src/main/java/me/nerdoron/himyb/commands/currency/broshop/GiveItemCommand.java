@@ -83,7 +83,7 @@ public class GiveItemCommand extends SlashCommand {
 
     @Override
     public SlashCommandData getSlash() {
-        SlashCommandData giveitem = Commands.slash("give-item", "Give cash to another user.");
+        SlashCommandData giveitem = Commands.slash("give-item", "Give an item to another user.");
         giveitem.addOption(OptionType.STRING, "item", "Which item would you like to give?", true, true);
         giveitem.addOption(OptionType.USER, "user", "who would you like to give to?", true);
         return giveitem;
