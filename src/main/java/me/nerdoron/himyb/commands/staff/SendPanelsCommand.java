@@ -21,7 +21,7 @@ public class SendPanelsCommand extends SlashCommand {
 
         ArrayList<Button> buttons = new ArrayList<>();
         buttons.add(Button.primary("TICKET:" + uid + ":STAFF", "\uD83D\uDCC7 Create a ticket"));
-        buttons.add(Button.danger("TICKET:" + uid + ":ADMIN", "\uD83D\uDCC7 Create an Admin ticket"));
+        buttons.add(Button.primary("TICKET:" + uid + ":ADMIN", "\uD83D\uDCC7 Create an Admin ticket"));
 
         event.getChannel().sendMessageEmbeds(Panels.AdminStaff)
                 .addActionRow(buttons)

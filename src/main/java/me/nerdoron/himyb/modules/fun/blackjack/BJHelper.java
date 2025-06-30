@@ -65,6 +65,7 @@ public class BJHelper {
             endBjGame(member);
             result = String.format("**You win!** You earned %d %s.", bet, Global.broCoin.getAsMention());
             logger.info("{}(ID:{}) played blackjack for {} and won.", member.getUser().getName(), member.getId(), bet);
+            BROCOINS_SQL.updateCashMultiplierDM(member, bet);
             return new EmbedBuilder()
                     .setTitle("♣️♦️ Blackjack - Game Over")
                     .setDescription(result)

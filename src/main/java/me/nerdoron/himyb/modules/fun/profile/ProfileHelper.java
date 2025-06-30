@@ -8,10 +8,14 @@ import me.nerdoron.himyb.modules.fun.brocoins.BroCoinsSQL;
 import me.nerdoron.himyb.modules.fun.brocoins.JailHelper;
 import me.nerdoron.himyb.modules.fun.broofthemonth.BroOfTheMonthSQL;
 import me.nerdoron.himyb.modules.useful.birthdays.BirthdayChecks;
+import me.nerdoron.himyb.modules.useful.timezones.TimezoneSQL;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 
+import java.sql.SQLException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static me.nerdoron.himyb.Global.COOLDOWN_MANAGER;
@@ -36,7 +40,19 @@ public class ProfileHelper {
         String joinDate = formatter.format(member.getTimeJoined());
         String creationDate = formatter.format(member.getTimeCreated());
         String id = member.getId();
-
+        String timezone;
+        TimezoneSQL timezoneSQL = new TimezoneSQL();
+        if (!timezoneSQL.userHasTimezone(member.getId())) {
+            timezone = String.format("%s doesn't have a timezone set!", member.getAsMention());
+        } else {
+            try {
+                ZoneId tz = ZoneId.of(timezoneSQL.getUserTimezone(member.getId()));
+                ZonedDateTime now = ZonedDateTime.now(tz);
+                timezone = now.format(DateTimeFormatter.ofPattern("HH:mm"));
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
         return new EmbedBuilder()
                 .setTitle(String.format("%s's user profile", member.getUser().getEffectiveName()))
                 .setThumbnail(member.getEffectiveAvatarUrl())
@@ -47,7 +63,7 @@ public class ProfileHelper {
                 .addField("BroCash balance", String.format("%s %s", broCoinsSQL.getBroCash(member), Global.broCoin.getAsMention()), true)
                 .addField("BroBank balance", String.format("%s %s", broCoinsSQL.getBroBank(member), Global.broCoin.getAsMention()), true)
                 .addField("BroCoins Rank", positionText, true)
-                .addField("Is in jail?", JailHelper.checkIfInJail(member) ? "Yes" : "No", true)
+                .addField("Current time", timezone, true)
                 .addField("Jail Status", jailStatus, true)
                 .addField("Birthday", birthdayChecks.getBirthday(id), true)
                 .addField("Level", api.getAmariLevel(id), true)

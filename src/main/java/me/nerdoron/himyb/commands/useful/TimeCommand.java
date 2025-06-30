@@ -44,7 +44,7 @@ public class TimeCommand extends SlashCommand {
 
     @Override
     public SlashCommandData getSlash() {
-        SlashCommandData time = Commands.slash("time", "Check a what time it is for a user");
+        SlashCommandData time = Commands.slash("time", "Check what time it is for a user");
         time.addOption(OptionType.USER, "user", "Which user?", true);
         return time;
     }

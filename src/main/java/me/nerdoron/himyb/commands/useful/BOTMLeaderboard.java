@@ -33,7 +33,7 @@ public class BOTMLeaderboard extends SlashCommand {
                 case 1:
                     emote = ":second_place:";
                     break;
-                case 3:
+                case 2:
                     emote = ":third_place: ";
                     break;
                 default:
