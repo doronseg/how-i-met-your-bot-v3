@@ -1,6 +1,7 @@
 package me.nerdoron.himyb.modules.fun.server;
 
 
+import me.nerdoron.himyb.modules.fun.brocoins.BroCoinsSQL;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.VoiceChannel;
@@ -8,12 +9,21 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.sql.SQLException;
+
 public class LeaveJoin extends ListenerAdapter {
 
     @Override
     public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
         TextChannel joinLeaves = event.getGuild().getTextChannelById("867770758976372766");
         assert joinLeaves != null;
+        BroCoinsSQL broCoinsSQL = new BroCoinsSQL();
+        try {
+            broCoinsSQL.setCash(event.getMember(), 0);
+            broCoinsSQL.setBank(event.getMember(), 0);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         joinLeaves.sendMessage(String.format("**%s** is now the Blitz! <:awman:853645381215715360>", event.getUser().getName())).queue();
         updateChannelName(event.getGuild());
     }
@@ -25,7 +35,7 @@ public class LeaveJoin extends ListenerAdapter {
         joinLeaves.sendMessage(String.format("Welcome %s, to **how i met your discord** <:hello:851462988153618452>", event.getMember().getAsMention())).queue();
         updateChannelName(event.getGuild());
 
-        
+
     }
 
     public void updateChannelName(Guild guild) {
