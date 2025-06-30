@@ -165,7 +165,7 @@ public class BroOfTheMonthSQL {
         List<LeaderboardEntry> leaderboard = new ArrayList<>();
         String SQL =
                 "SELECT uid, " +
-                        "(zitch + crimes + spent) + " +
+                        "((zitch*2) + crimes + (spent/100)) + " +
                         "(commendation * 5) + " +
                         "(coins / 50) - " +
                         "(lost / 100) AS total_points " +
