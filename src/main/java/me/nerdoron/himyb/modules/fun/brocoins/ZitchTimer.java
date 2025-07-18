@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.slf4j.Logger;
 
 import java.sql.SQLException;
+import java.time.Duration;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -86,6 +87,10 @@ public class ZitchTimer {
         jda.listenOnce(MessageReceivedEvent.class)
                 .filter(event -> event.getChannel().equals(channel))
                 .filter(event -> event.getMessage().getContentRaw().equalsIgnoreCase("zitch dog"))
+                .timeout(Duration.ofMinutes(10), () -> {
+                    message.delete().queue();
+                    waitingForResponse.set(false);
+                })
                 .subscribe(event -> {
                     Member member = event.getMember();
                     if (member == null) {
@@ -96,7 +101,7 @@ public class ZitchTimer {
                     int reward = Rng.generateNumber(3, 10);
                     try {
                         broCoinsSQL.updateCashMultiplierDM(member, reward);
-                        message.editMessage(String.format("Zitch dog! %s won %d %s.", member.getAsMention(), reward, Global.broCoin.getAsMention())).queue();
+                        message.editMessage(String.format("Zitch dog! %s won %d %s. Your new cash balance is %d %s.", member.getAsMention(), reward, Global.broCoin.getAsMention(), broCoinsSQL.getBroCash(member), Global.broCoin.getAsMention())).queue();
                         logger.info("{}(ID:{}) won zitch dog and received {} coins.", member.getUser().getName(), member.getId(), reward);
                         BroOfTheMonthSQL broOfTheMonthSQL = new BroOfTheMonthSQL();
                         broOfTheMonthSQL.incrementZitch(member.getId());
