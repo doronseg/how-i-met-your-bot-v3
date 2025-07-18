@@ -23,7 +23,7 @@ public class ReviveCommand extends SlashCommand {
         if (!member.hasPermission(Permission.MESSAGE_MANAGE))
             return;
         event.getChannel().sendMessage("<@&900487372251213955>").queue();
-        event.getChannel().sendMessage("<@&900487372251213955>").queue();
+        event.getChannel().sendMessage("https://tenor.com/view/googas-wet-wet-cat-dead-chat-dead-chat-xd-gif-20820186").queue();
         event.deferReply().setEphemeral(true).setContent("Reviving chat..").queue();
 
     }
