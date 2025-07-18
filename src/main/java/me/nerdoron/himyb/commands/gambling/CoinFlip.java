@@ -18,6 +18,8 @@ import org.slf4j.Logger;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static me.nerdoron.himyb.Global.BROCOINS_SQL;
@@ -63,22 +65,31 @@ public class CoinFlip extends SlashCommand {
 
 
         if (type.equals(result)) {
-            // win
-            try {
-                BROCOINS_SQL.updateCashMultiplier(event.getMember(), event, bet);
-                event.getHook().editOriginal(String.format("%s bet %d %s on a coin flip, won, and doubled their bet!", member.getAsMention(), bet, Global.broCoin.getAsMention())).queueAfter(10, TimeUnit.SECONDS);
-                logger.info("{}(ID:{}) won a coin flip while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
-                COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.HOUR_IN_SECONDS / 2);
-            } catch (SQLException e) {
-                logger.error("{}(ID:{}) Tried to flip a coin, but an error has occurred.", member.getUser().getName(), member.getId());
-                e.printStackTrace();
-                event.reply("An error has occurred. Don't worry, you haven't lost your bet.").setEphemeral(true).queue();
+            try (ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor()) {
+                // win
+                scheduler.schedule(() -> {
+                    try {
+                        BROCOINS_SQL.updateCashMultiplier(event.getMember(), event, bet);
+                        logger.info("{}(ID:{}) won a coin flip while betting {}.",
+                                event.getUser().getAsTag(), event.getMember().getId(), bet);
+                        event.getHook().editOriginal(String.format(
+                                "%s bet %d %s on a coin flip, won, and doubled their bet!",
+                                member.getAsMention(), bet, Global.broCoin.getAsMention()
+                        )).queue();
+                        COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.HOUR_IN_SECONDS / 2);
+                    } catch (SQLException e) {
+                        logger.error("{}(ID:{}) Tried to flip a coin, but an error has occurred.",
+                                member.getUser().getName(), member.getId(), e);
+                        event.reply("An error has occurred. Don't worry, you haven't lost your bet.").setEphemeral(true).queue();
+                    }
+                }, 10, TimeUnit.SECONDS);
+                scheduler.shutdown();
             }
         } else {
             try {
                 BROCOINS_SQL.updateCashWithoutMultiplier(event.getMember(), -(bet));
                 event.getHook().editOriginal((String.format("%s bet %d %s on a coin flip, lost, and lost their bet!", member.getAsMention(), bet, Global.broCoin.getAsMention()))).queueAfter(10, TimeUnit.SECONDS);
-                logger.info("{}(ID:{}) lost a coin flip while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
+                logger.info("{}(ID:{}) lost a coin flip while betting {}.", event.getUser().getAsTag(), Objects.requireNonNull(event.getMember()).getId(), bet);
                 Global.COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.HOUR_IN_SECONDS / 2);
             } catch (SQLException e) {
                 logger.error("{}(ID:{}) Tried to flip a coin, but an error has occurred.", member.getUser().getName(), member.getId());

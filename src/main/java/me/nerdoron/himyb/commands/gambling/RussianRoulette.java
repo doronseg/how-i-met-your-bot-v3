@@ -19,6 +19,8 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import static me.nerdoron.himyb.Global.BROCOINS_SQL;
@@ -58,23 +60,28 @@ public class RussianRoulette extends SlashCommand {
                 .queue();
 
         if (doesWin(rand, number)) {
-            // win
-            try {
-                BROCOINS_SQL.updateCashMultiplier(event.getMember(), event, 2 * bet);
-                event.getHook().editOriginal(String.format("You bet %d %s on %d and won %d %s!", bet, Global.broCoin.getAsMention(), number, bet * 3, Global.broCoin.getAsMention())).queueAfter(10, TimeUnit.SECONDS);
-                logger.info("{}(ID:{}) won a russian roulette while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
-                COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.HOUR_IN_SECONDS / 2);
-            } catch (SQLException e) {
-                logger.error("{}(ID:{}) Tried to bet on russian roulette, but an error has occurred.", member.getUser().getName(), member.getId());
-                e.printStackTrace();
-                event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
+            try (ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor()) {
+                // win
+                scheduler.schedule(() -> {
+                    try {
+                        BROCOINS_SQL.updateCashMultiplier(event.getMember(), event, 2 * bet);
+                        event.getHook().editOriginal(String.format("You bet %d %s on %d and won %d %s!", bet, Global.broCoin.getAsMention(), number, bet * 3, Global.broCoin.getAsMention())).queueAfter(10, TimeUnit.SECONDS);
+                        logger.info("{}(ID:{}) won a russian roulette while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
+                        COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.HOUR_IN_SECONDS / 2);
+                    } catch (SQLException e) {
+                        logger.error("{}(ID:{}) Tried to bet on russian roulette, but an error has occurred.", member.getUser().getName(), member.getId());
+                        e.printStackTrace();
+                        event.reply("An error has occurred. Please try again").setEphemeral(true).queue();
+                    }
+                }, 10, TimeUnit.SECONDS);
+                scheduler.shutdown();
             }
         } else {
             // lose
             try {
                 BROCOINS_SQL.updateCashWithoutMultiplier(event.getMember(), -bet);
                 event.getHook().editOriginal(String.format("You bet %d %s on %d and lost. What a shame!", bet, Global.broCoin.getAsMention(), number)).queueAfter(10, TimeUnit.SECONDS);
-                logger.info("{}(ID:{}) lost a russian roulette while betting {}.", event.getUser().getAsTag(), event.getMember().getId(), bet);
+                logger.info("{}(ID:{}) lost a russian roulette while betting {}.", event.getUser().getAsTag(), Objects.requireNonNull(event.getMember()).getId(), bet);
                 COOLDOWN_MANAGER.addCooldown(CooldownManager.commandID(event), Global.HOUR_IN_SECONDS / 2);
             } catch (SQLException e) {
                 logger.error("{}(ID:{}) Tried to bet on russian roulette, but an error has occurred.", member.getUser().getName(), member.getId());
